@@ -170,9 +170,7 @@ namespace NovaWright.NumberPush.LevelGenerator
                     level);
 
             int crateCount =
-                random.Next(
-                    difficulty.MinimumCrates,
-                    difficulty.MaximumCrates + 1);
+    difficulty.MinimumCrates;
 
             if (availableCells.Count <
                 crateCount * 2 + 1)

@@ -2,80 +2,91 @@
 title: "Number Push Level 1"
 layout: post
 level: 1
-difficulty: "Early"
+complexity: 1
 ---
 
 # Number Push Level 1
 
 ## Level Information
 
-- **Difficulty:** Early
+- **Complexity:** 1
 - **Board:** 10 × 12
 - **Crates:** 1
-- **Interior Walls:** 0
-- **Minimum Solution:** 4 pushes
+- **Interior Walls:** 2
+- **Minimum Solution:** 5 pushes
 - **Generator Seed:** 12345
 
 ## Crates
 
-- **Crate 1:** Position (6, 6), Distance 1
+- **Crate 1:** Position (8, 5), Distance 1
 
 ## Goals
 
-- **Goal 1:** (10, 6)
+- **Goal 1:** (4, 4)
 
 ## Solution
 
-**Minimum pushes:** 4
+**Minimum pushes:** 5
 
 ### Push 1
 
 - **Crate:** 1
-- **Direction:** Right
+- **Direction:** Up
 - **Distance:** 1
-- **Player Start:** (4, 7)
-- **Player Push Position:** (5, 6)
-- **Crate Start:** (6, 6)
-- **Crate End:** (7, 6)
-- **Player Walk:** (4, 7) → (4, 6) → (5, 6)
+- **Player Start:** (2, 8)
+- **Player Push Position:** (8, 6)
+- **Crate Start:** (8, 5)
+- **Crate End:** (8, 4)
+- **Player Walk:** (2, 8) → (3, 8) → (4, 8) → (5, 8) → (5, 7) → (5, 6) → (6, 6) → (7, 6) → (8, 6)
 
 ### Push 2
 
 - **Crate:** 1
-- **Direction:** Right
+- **Direction:** Left
 - **Distance:** 1
-- **Player Start:** (6, 6)
-- **Player Push Position:** (6, 6)
-- **Crate Start:** (7, 6)
-- **Crate End:** (8, 6)
-- **Player Walk:** (6, 6)
+- **Player Start:** (8, 5)
+- **Player Push Position:** (9, 4)
+- **Crate Start:** (8, 4)
+- **Crate End:** (7, 4)
+- **Player Walk:** (8, 5) → (9, 5) → (9, 4)
 
 ### Push 3
 
 - **Crate:** 1
-- **Direction:** Right
+- **Direction:** Left
 - **Distance:** 1
-- **Player Start:** (7, 6)
-- **Player Push Position:** (7, 6)
-- **Crate Start:** (8, 6)
-- **Crate End:** (9, 6)
-- **Player Walk:** (7, 6)
+- **Player Start:** (8, 4)
+- **Player Push Position:** (8, 4)
+- **Crate Start:** (7, 4)
+- **Crate End:** (6, 4)
+- **Player Walk:** (8, 4)
 
 ### Push 4
 
 - **Crate:** 1
-- **Direction:** Right
+- **Direction:** Left
 - **Distance:** 1
-- **Player Start:** (8, 6)
-- **Player Push Position:** (8, 6)
-- **Crate Start:** (9, 6)
-- **Crate End:** (10, 6)
-- **Player Walk:** (8, 6)
+- **Player Start:** (7, 4)
+- **Player Push Position:** (7, 4)
+- **Crate Start:** (6, 4)
+- **Crate End:** (5, 4)
+- **Player Walk:** (7, 4)
+
+### Push 5
+
+- **Crate:** 1
+- **Direction:** Left
+- **Distance:** 1
+- **Player Start:** (6, 4)
+- **Player Push Position:** (6, 4)
+- **Crate Start:** (5, 4)
+- **Crate End:** (4, 4)
+- **Player Walk:** (6, 4)
 
 ## Generation Settings
 
-- **Target Pushes:** 1–4
+- **Target Pushes:** 4–13
 - **Crate Count Range:** 1–2
-- **Crate Distance Range:** 1–2
-- **Interior Wall Range:** 0–5
+- **Crate Distance Range:** 1–1
+- **Interior Wall Range:** 2–8
 
