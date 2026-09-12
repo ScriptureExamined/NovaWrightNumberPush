@@ -642,8 +642,7 @@ namespace NovaWrightNumberPush
                     NumberPushMarkdownExporter.Export(
                         result.Level!,
                         result.Solution!,
-                        result.Profile!,
-                        result.Settings!,
+                        result.Difficulty!,
                         seed,
                         outputDirectory);
 
@@ -774,7 +773,7 @@ namespace NovaWrightNumberPush
 
                 statusLabel.Text =
                     $"Level {levelNumber} generated successfully.\r\n" +
-                    $"Difficulty: {result.Profile!.Name}\r\n" +
+                    $"Complexity: {result.Difficulty!.Complexity}\r\n" +
                     $"Board: {result.Level!.Rows} x {result.Level.Columns}\r\n" +
                     $"Crates: {result.CrateCount}\r\n" +
                     $"Interior walls: {result.InteriorWallCount}\r\n" +

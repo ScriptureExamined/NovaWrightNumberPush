@@ -8,8 +8,7 @@ namespace NovaWright.NumberPush.LevelGenerator
         public static string Export(
             NumberPushLevel level,
             NumberPushSolution solution,
-            DifficultyProfile profile,
-            DifficultySettings settings,
+            NumberPushDifficulty difficulty,
             int seed,
             string outputDirectory)
         {
@@ -34,7 +33,7 @@ namespace NovaWright.NumberPush.LevelGenerator
             markdown.AppendLine(
                 $"level: {level.LevelNumber}");
             markdown.AppendLine(
-                $"difficulty: \"{profile.Name}\"");
+                $"complexity: {difficulty.Complexity}");
             markdown.AppendLine("---");
             markdown.AppendLine();
 
@@ -46,7 +45,7 @@ namespace NovaWright.NumberPush.LevelGenerator
             markdown.AppendLine();
 
             markdown.AppendLine(
-                $"- **Difficulty:** {profile.Name}");
+                $"- **Complexity:** {difficulty.Complexity}");
             markdown.AppendLine(
                 $"- **Board:** {level.Rows} × {level.Columns}");
             markdown.AppendLine(
@@ -165,23 +164,23 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             markdown.AppendLine(
                 $"- **Target Pushes:** " +
-                $"{settings.MinimumSolutionPushes}–" +
-                $"{settings.MaximumSolutionPushes}");
+                $"{difficulty.MinimumSolutionPushes}–" +
+                $"{difficulty.MaximumSolutionPushes}");
 
             markdown.AppendLine(
                 $"- **Crate Count Range:** " +
-                $"{settings.MinimumCrates}–" +
-                $"{settings.MaximumCrates}");
+                $"{difficulty.MinimumCrates}–" +
+                $"{difficulty.MaximumCrates}");
 
             markdown.AppendLine(
                 $"- **Crate Distance Range:** " +
-                $"{settings.MinimumCrateDistance}–" +
-                $"{settings.MaximumCrateDistance}");
+                $"{difficulty.MinimumCrateDistance}–" +
+                $"{difficulty.MaximumCrateDistance}");
 
             markdown.AppendLine(
                 $"- **Interior Wall Range:** " +
-                $"{settings.MinimumInteriorWalls}–" +
-                $"{settings.MaximumInteriorWalls}");
+                $"{difficulty.MinimumInteriorWalls}–" +
+                $"{difficulty.MaximumInteriorWalls}");
 
             markdown.AppendLine();
 
