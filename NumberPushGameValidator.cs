@@ -148,14 +148,6 @@
             List<int> levelNumbers =
                 levelRepository.GetAvailableLevelNumbers();
 
-            if (levelNumbers.Count == 0)
-            {
-                errors.Add(
-                    "The game must contain at least one level.");
-
-                return;
-            }
-
             HashSet<int> validatedLevelNumbers =
                 new HashSet<int>();
 

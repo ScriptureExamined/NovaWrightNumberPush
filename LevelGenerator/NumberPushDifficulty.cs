@@ -70,10 +70,12 @@
                 Complexity * 4 + 4;
 
             MinimumSolutionPushes =
-                Complexity * 4;
+    4 +
+    Complexity / 2;
 
             MaximumSolutionPushes =
-                Complexity * 7 + 6;
+                10 +
+                Complexity;
 
             StartingRows =
                 10;
