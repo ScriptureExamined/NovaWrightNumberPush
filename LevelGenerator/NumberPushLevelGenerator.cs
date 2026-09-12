@@ -6,89 +6,63 @@ namespace NovaWright.NumberPush.LevelGenerator
     {
         private readonly Random random;
 
-        // --------------------------------------------------------
-        // Current board size
-        //
-        // These persist between generated levels.
-        //
-        // Once the generator has to increase the board size,
-        // that larger size becomes the new normal size.
-        // --------------------------------------------------------
-
         private int? currentRows;
-
         private int? currentColumns;
 
         public NumberPushLevelGenerator(int seed)
         {
-            random = new Random(seed);
+            random =
+                new Random(seed);
         }
 
         public NumberPushLevel? Generate(
-    int levelNumber,
-    NumberPushDifficulty difficulty)
+            int levelNumber,
+            NumberPushDifficulty difficulty)
         {
             if (difficulty == null)
             {
                 throw new ArgumentNullException(
                     nameof(difficulty));
             }
-            if (settings.StartingRows <= 0 ||
-                settings.StartingColumns <= 0)
+
+            if (difficulty.StartingRows <= 0 ||
+                difficulty.StartingColumns <= 0)
             {
                 throw new ArgumentException(
                     "Starting board dimensions must be greater than zero.",
-                    nameof(settings));
+                    nameof(difficulty));
             }
 
-            if (settings.RowIncrease <= 0 ||
-                settings.ColumnIncrease <= 0)
-            {
-                throw new ArgumentException(
-                    "Board size increases must be greater than zero.",
-                    nameof(settings));
-            }
-
-            if (settings.MaximumRows <
-                settings.StartingRows ||
-                settings.MaximumColumns <
-                settings.StartingColumns)
+            if (difficulty.MaximumRows <
+                difficulty.StartingRows ||
+                difficulty.MaximumColumns <
+                difficulty.StartingColumns)
             {
                 throw new ArgumentException(
                     "Maximum board dimensions cannot be smaller than the starting dimensions.",
-                    nameof(settings));
+                    nameof(difficulty));
             }
-
-            // ----------------------------------------------------
-            // Establish the starting size.
-            //
-            // This only happens the first time Generate() is
-            // called. After that, the current board size persists
-            // between levels.
-            // ----------------------------------------------------
 
             if (!currentRows.HasValue ||
                 !currentColumns.HasValue)
             {
                 currentRows =
-                    settings.StartingRows;
+                    difficulty.StartingRows;
 
                 currentColumns =
-                    settings.StartingColumns;
+                    difficulty.StartingColumns;
             }
             else
             {
-                // If a later difficulty profile starts at a larger
-                // size, make sure we never move backwards.
                 currentRows =
                     Math.Max(
                         currentRows.Value,
-                        settings.StartingRows);
+                        difficulty.StartingRows);
 
                 currentColumns =
                     Math.Max(
                         currentColumns.Value,
-                        settings.StartingColumns);
+                        difficulty.StartingColumns);
             }
 
             int rows =
@@ -97,17 +71,17 @@ namespace NovaWright.NumberPush.LevelGenerator
             int columns =
                 currentColumns.Value;
 
-            while (rows <= settings.MaximumRows &&
-                   columns <= settings.MaximumColumns)
+            while (rows <= difficulty.MaximumRows &&
+                   columns <= difficulty.MaximumColumns)
             {
                 for (int attempt = 0;
-                     attempt < settings.MaximumAttempts;
+                     attempt < difficulty.MaximumAttempts;
                      attempt++)
                 {
                     NumberPushLevel? candidate =
                         CreateCandidate(
                             levelNumber,
-                            settings,
+                            difficulty,
                             rows,
                             columns);
 
@@ -117,7 +91,8 @@ namespace NovaWright.NumberPush.LevelGenerator
                     }
 
                     NumberPushSolver solver =
-                        new NumberPushSolver(candidate);
+                        new NumberPushSolver(
+                            candidate);
 
                     int minimumSolution =
                         solver.FindMinimumPushes();
@@ -128,26 +103,22 @@ namespace NovaWright.NumberPush.LevelGenerator
                     }
 
                     if (minimumSolution <
-                        settings.MinimumSolutionPushes)
+                        difficulty.MinimumSolutionPushes)
                     {
                         continue;
                     }
 
                     if (minimumSolution >
-                        settings.MaximumSolutionPushes)
+                        difficulty.MaximumSolutionPushes)
                     {
                         continue;
                     }
 
-                    // ------------------------------------------------
-                    // Candidate accepted.
-                    //
-                    // Remember the board size so the next level
-                    // starts at this same size.
-                    // ------------------------------------------------
+                    currentRows =
+                        rows;
 
-                    currentRows = rows;
-                    currentColumns = columns;
+                    currentColumns =
+                        columns;
 
                     return candidate;
                 }
@@ -157,17 +128,14 @@ namespace NovaWright.NumberPush.LevelGenerator
                     $"{rows}x{columns}. " +
                     $"Increasing board size.");
 
-                // ----------------------------------------------------
-                // Increase the persistent board size.
-                //
-                // The next level will also begin at this size.
-                // ----------------------------------------------------
+                rows += 2;
+                columns += 2;
 
-                rows += settings.RowIncrease;
-                columns += settings.ColumnIncrease;
+                currentRows =
+                    rows;
 
-                currentRows = rows;
-                currentColumns = columns;
+                currentColumns =
+                    columns;
             }
 
             return null;
@@ -175,7 +143,7 @@ namespace NovaWright.NumberPush.LevelGenerator
 
         private NumberPushLevel? CreateCandidate(
             int levelNumber,
-            DifficultySettings settings,
+            NumberPushDifficulty difficulty,
             int rows,
             int columns)
         {
@@ -187,22 +155,24 @@ namespace NovaWright.NumberPush.LevelGenerator
                     Columns = columns
                 };
 
-            CreateOuterWalls(level);
+            CreateOuterWalls(
+                level);
 
             if (!CreateInteriorWalls(
-                    level,
-                    settings))
+                level,
+                difficulty))
             {
                 return null;
             }
 
             List<Point> availableCells =
-                GetAvailableCells(level);
+                GetAvailableCells(
+                    level);
 
             int crateCount =
                 random.Next(
-                    settings.MinimumCrates,
-                    settings.MaximumCrates + 1);
+                    difficulty.MinimumCrates,
+                    difficulty.MaximumCrates + 1);
 
             if (availableCells.Count <
                 crateCount * 2 + 1)
@@ -210,11 +180,8 @@ namespace NovaWright.NumberPush.LevelGenerator
                 return null;
             }
 
-            Shuffle(availableCells);
-
-            // ----------------------------------------------------
-            // Create crates
-            // ----------------------------------------------------
+            Shuffle(
+                availableCells);
 
             List<Point> cratePositions =
                 availableCells
@@ -225,8 +192,8 @@ namespace NovaWright.NumberPush.LevelGenerator
             {
                 int distance =
                     random.Next(
-                        settings.MinimumCrateDistance,
-                        settings.MaximumCrateDistance + 1);
+                        difficulty.MinimumCrateDistance,
+                        difficulty.MaximumCrateDistance + 1);
 
                 level.Crates.Add(
                     new NumberPushCrate(
@@ -234,18 +201,16 @@ namespace NovaWright.NumberPush.LevelGenerator
                         distance));
             }
 
-            // ----------------------------------------------------
-            // Create goals
-            // ----------------------------------------------------
-
             List<Point> goalCandidates =
                 availableCells
                     .Where(
                         cell =>
-                            !cratePositions.Contains(cell))
+                            !cratePositions.Contains(
+                                cell))
                     .ToList();
 
-            Shuffle(goalCandidates);
+            Shuffle(
+                goalCandidates);
 
             if (goalCandidates.Count < crateCount)
             {
@@ -260,16 +225,14 @@ namespace NovaWright.NumberPush.LevelGenerator
                     goalCandidates[i]);
             }
 
-            // ----------------------------------------------------
-            // Create player starting position
-            // ----------------------------------------------------
-
             List<Point> playerCandidates =
                 availableCells
                     .Where(
                         cell =>
-                            !cratePositions.Contains(cell) &&
-                            !level.Goals.Contains(cell))
+                            !cratePositions.Contains(
+                                cell) &&
+                            !level.Goals.Contains(
+                                cell))
                     .ToList();
 
             if (playerCandidates.Count == 0)
@@ -287,14 +250,15 @@ namespace NovaWright.NumberPush.LevelGenerator
 
         private bool CreateInteriorWalls(
             NumberPushLevel level,
-            DifficultySettings settings)
+            NumberPushDifficulty difficulty)
         {
             int wallCount =
                 random.Next(
-                    settings.MinimumInteriorWalls,
-                    settings.MaximumInteriorWalls + 1);
+                    difficulty.MinimumInteriorWalls,
+                    difficulty.MaximumInteriorWalls + 1);
 
-            List<Point> candidates = new();
+            List<Point> candidates =
+                new List<Point>();
 
             for (int y = 1;
                  y < level.Rows - 1;
@@ -305,11 +269,14 @@ namespace NovaWright.NumberPush.LevelGenerator
                      x++)
                 {
                     candidates.Add(
-                        new Point(x, y));
+                        new Point(
+                            x,
+                            y));
                 }
             }
 
-            Shuffle(candidates);
+            Shuffle(
+                candidates);
 
             int wallsAdded = 0;
 
@@ -327,7 +294,8 @@ namespace NovaWright.NumberPush.LevelGenerator
                         1,
                         1));
 
-                if (!IsBoardConnected(level))
+                if (!IsBoardConnected(
+                    level))
                 {
                     level.Walls.RemoveAt(
                         level.Walls.Count - 1);
@@ -345,22 +313,28 @@ namespace NovaWright.NumberPush.LevelGenerator
             NumberPushLevel level)
         {
             List<Point> availableCells =
-                GetAvailableCells(level);
+                GetAvailableCells(
+                    level);
 
             if (availableCells.Count == 0)
             {
                 return false;
             }
 
-            HashSet<Point> visited = new();
+            HashSet<Point> visited =
+                new HashSet<Point>();
 
-            Queue<Point> queue = new();
+            Queue<Point> queue =
+                new Queue<Point>();
 
             Point start =
                 availableCells[0];
 
-            visited.Add(start);
-            queue.Enqueue(start);
+            visited.Add(
+                start);
+
+            queue.Enqueue(
+                start);
 
             Point[] directions =
             {
@@ -382,14 +356,18 @@ namespace NovaWright.NumberPush.LevelGenerator
                             current.X + direction.X,
                             current.Y + direction.Y);
 
-                    if (IsWall(level, next))
+                    if (IsWall(
+                        level,
+                        next))
                     {
                         continue;
                     }
 
-                    if (visited.Add(next))
+                    if (visited.Add(
+                        next))
                     {
-                        queue.Enqueue(next);
+                        queue.Enqueue(
+                            next);
                     }
                 }
             }
@@ -443,7 +421,8 @@ namespace NovaWright.NumberPush.LevelGenerator
         private List<Point> GetAvailableCells(
             NumberPushLevel level)
         {
-            List<Point> cells = new();
+            List<Point> cells =
+                new List<Point>();
 
             for (int y = 1;
                  y < level.Rows - 1;
@@ -454,11 +433,16 @@ namespace NovaWright.NumberPush.LevelGenerator
                      x++)
                 {
                     Point point =
-                        new Point(x, y);
+                        new Point(
+                            x,
+                            y);
 
-                    if (!IsWall(level, point))
+                    if (!IsWall(
+                        level,
+                        point))
                     {
-                        cells.Add(point);
+                        cells.Add(
+                            point);
                     }
                 }
             }
@@ -492,7 +476,8 @@ namespace NovaWright.NumberPush.LevelGenerator
                  i--)
             {
                 int j =
-                    random.Next(i + 1);
+                    random.Next(
+                        i + 1);
 
                 (list[i], list[j]) =
                     (list[j], list[i]);
