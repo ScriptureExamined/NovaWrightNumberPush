@@ -50,14 +50,11 @@
                 (levelNumber - 1) / 10;
 
             MinimumCrates =
-                Math.Min(
-                    1 + Complexity / 3,
-                    6);
+    1 +
+    Complexity / 3;
 
             MaximumCrates =
-                Math.Min(
-                    MinimumCrates + 1,
-                    8);
+                MinimumCrates + 1;
 
             MinimumCrateDistance =
                 Math.Max(
