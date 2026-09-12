@@ -24,14 +24,14 @@ namespace NovaWrightNumberPush
         private readonly CheckBox showCrateNumbersCheckBox;
 
         public NumberPushGeneratorForm(
-    NumberPushGame game,
-    NumberPushGameSession gameSession)
+            NumberPushGame game,
+            NumberPushGameSession gameSession)
         {
-
             this.game = game;
 
             this.gameSession =
                 gameSession;
+
             Text =
                 "Number Push Level Generator";
 
@@ -39,10 +39,15 @@ namespace NovaWrightNumberPush
                 FormStartPosition.CenterParent;
 
             ClientSize =
-                new Size(600, 500);
+                new Size(
+                    600,
+                    575);
 
             BackColor =
-                Color.FromArgb(12, 15, 22);
+                Color.FromArgb(
+                    12,
+                    15,
+                    22);
 
             Label titleLabel =
                 new Label();
@@ -57,7 +62,10 @@ namespace NovaWrightNumberPush
                     FontStyle.Bold);
 
             titleLabel.ForeColor =
-                Color.FromArgb(70, 170, 255);
+                Color.FromArgb(
+                    70,
+                    170,
+                    255);
 
             titleLabel.AutoSize =
                 true;
@@ -90,7 +98,7 @@ namespace NovaWrightNumberPush
             levelLabel.Location =
                 new Point(
                     30,
-                    100);
+                    85);
 
             Controls.Add(
                 levelLabel);
@@ -115,7 +123,7 @@ namespace NovaWrightNumberPush
             levelNumberInput.Location =
                 new Point(
                     30,
-                    125);
+                    115);
 
             levelNumberInput.Size =
                 new Size(
@@ -126,7 +134,7 @@ namespace NovaWrightNumberPush
                 levelNumberInput);
 
             Label rangeLabel =
-    new Label();
+                new Label();
 
             rangeLabel.Text =
                 "Generate Level Range";
@@ -145,7 +153,7 @@ namespace NovaWrightNumberPush
             rangeLabel.Location =
                 new Point(
                     30,
-                    165);
+                    225);
 
             Controls.Add(
                 rangeLabel);
@@ -170,7 +178,7 @@ namespace NovaWrightNumberPush
             firstLevelInput.Location =
                 new Point(
                     30,
-                    190);
+                    255);
 
             firstLevelInput.Size =
                 new Size(
@@ -200,7 +208,7 @@ namespace NovaWrightNumberPush
             lastLevelInput.Location =
                 new Point(
                     140,
-                    190);
+                    255);
 
             lastLevelInput.Size =
                 new Size(
@@ -230,7 +238,7 @@ namespace NovaWrightNumberPush
             seedLabel.Location =
                 new Point(
                     220,
-                    100);
+                    85);
 
             Controls.Add(
                 seedLabel);
@@ -255,7 +263,7 @@ namespace NovaWrightNumberPush
             seedInput.Location =
                 new Point(
                     220,
-                    125);
+                    115);
 
             seedInput.Size =
                 new Size(
@@ -306,7 +314,7 @@ namespace NovaWrightNumberPush
             generateButton.Location =
                 new Point(
                     30,
-                    200);
+                    160);
 
             generateButton.Cursor =
                 Cursors.Hand;
@@ -318,7 +326,7 @@ namespace NovaWrightNumberPush
                 generateButton);
 
             generateRangeButton =
-    new Button();
+                new Button();
 
             generateRangeButton.Text =
                 "GENERATE RANGE";
@@ -357,8 +365,8 @@ namespace NovaWrightNumberPush
 
             generateRangeButton.Location =
                 new Point(
-                    230,
-                    200);
+                    30,
+                    295);
 
             generateRangeButton.Cursor =
                 Cursors.Hand;
@@ -368,6 +376,39 @@ namespace NovaWrightNumberPush
 
             Controls.Add(
                 generateRangeButton);
+
+            // --------------------------------------------------------
+            // Progress Bar
+            // --------------------------------------------------------
+
+            progressBar =
+                new ProgressBar();
+
+            progressBar.Style =
+                ProgressBarStyle.Marquee;
+
+            progressBar.MarqueeAnimationSpeed =
+                30;
+
+            progressBar.Size =
+                new Size(
+                    540,
+                    20);
+
+            progressBar.Location =
+                new Point(
+                    30,
+                    350);
+
+            progressBar.Visible =
+                false;
+
+            Controls.Add(
+                progressBar);
+
+            // --------------------------------------------------------
+            // Status
+            // --------------------------------------------------------
 
             statusLabel =
                 new Label();
@@ -389,38 +430,17 @@ namespace NovaWrightNumberPush
             statusLabel.Location =
                 new Point(
                     30,
-                    270);
+                    380);
 
             Controls.Add(
                 statusLabel);
 
-            progressBar =
-    new ProgressBar();
-
-            progressBar.Style =
-                ProgressBarStyle.Marquee;
-
-            progressBar.MarqueeAnimationSpeed =
-                30;
-
-            progressBar.Size =
-                new Size(
-                    540,
-                    20);
-
-            progressBar.Location =
-                new Point(
-                    30,
-                    300);
-
-            progressBar.Visible =
-                false;
-
-            Controls.Add(
-                progressBar);
+            // --------------------------------------------------------
+            // Options
+            // --------------------------------------------------------
 
             openLevelCheckBox =
-    new CheckBox();
+                new CheckBox();
 
             openLevelCheckBox.Text =
                 "Open generated level after creation";
@@ -432,12 +452,12 @@ namespace NovaWrightNumberPush
                 true;
 
             openLevelCheckBox.ForeColor =
-    Color.White;
+                Color.White;
 
             openLevelCheckBox.Location =
                 new Point(
                     230,
-                    330);
+                    440);
 
             Controls.Add(
                 openLevelCheckBox);
@@ -455,18 +475,18 @@ namespace NovaWrightNumberPush
                 true;
 
             openMarkdownCheckBox.ForeColor =
-    Color.White;
+                Color.White;
 
             openMarkdownCheckBox.Location =
                 new Point(
                     230,
-                    360);
+                    470);
 
             Controls.Add(
                 openMarkdownCheckBox);
 
             showCrateNumbersCheckBox =
-    new CheckBox();
+                new CheckBox();
 
             showCrateNumbersCheckBox.Text =
                 "Show crate numbers";
@@ -483,10 +503,14 @@ namespace NovaWrightNumberPush
             showCrateNumbersCheckBox.Location =
                 new Point(
                     230,
-                    390);
+                    500);
 
             Controls.Add(
                 showCrateNumbersCheckBox);
+
+            // --------------------------------------------------------
+            // Close
+            // --------------------------------------------------------
 
             closeButton =
                 new Button();
@@ -528,7 +552,7 @@ namespace NovaWrightNumberPush
             closeButton.Location =
                 new Point(
                     30,
-                    330);
+                    465);
 
             closeButton.Cursor =
                 Cursors.Hand;
@@ -541,8 +565,8 @@ namespace NovaWrightNumberPush
         }
 
         private async void GenerateRangeButton_Click(
-    object? sender,
-    EventArgs e)
+            object? sender,
+            EventArgs e)
         {
             int firstLevel =
                 (int)firstLevelInput.Value;
@@ -663,8 +687,8 @@ namespace NovaWrightNumberPush
         }
 
         private async void GenerateButton_Click(
-    object? sender,
-    EventArgs e)
+            object? sender,
+            EventArgs e)
         {
             int levelNumber =
                 (int)levelNumberInput.Value;
@@ -715,19 +739,28 @@ namespace NovaWrightNumberPush
                 levelRepository.SaveLevel(
                     result.Level!);
 
+                string projectDirectory =
+                    Directory.GetParent(
+                        AppContext.BaseDirectory)!
+                    .Parent!
+                    .Parent!
+                    .Parent!
+                    .FullName;
+
                 string outputDirectory =
-    Path.Combine(
-        AppContext.BaseDirectory,
-        "GeneratedLevels");
+                    Path.Combine(
+                        projectDirectory,
+                        "Game",
+                        "GeneratedLevels");
 
                 string markdownFile =
-    NumberPushMarkdownExporter.Export(
-        result.Level!,
-        result.Solution!,
-        result.Profile!,
-        result.Settings!,
-        seed,
-        outputDirectory);
+                    NumberPushMarkdownExporter.Export(
+                        result.Level!,
+                        result.Solution!,
+                        result.Profile!,
+                        result.Settings!,
+                        seed,
+                        outputDirectory);
 
                 if (openMarkdownCheckBox.Checked)
                 {
@@ -740,16 +773,16 @@ namespace NovaWrightNumberPush
                 }
 
                 statusLabel.Text =
-    $"Level {levelNumber} generated successfully.\r\n" +
-    $"Difficulty: {result.Profile!.Name}\r\n" +
-    $"Board: {result.Level!.Rows} x {result.Level.Columns}\r\n" +
-    $"Crates: {result.CrateCount}\r\n" +
-    $"Interior walls: {result.InteriorWallCount}\r\n" +
-    $"Solution: {result.Solution!.MinimumPushes} pushes\r\n" +
-    $"Generation: {result.GenerationMilliseconds} ms\r\n" +
-    $"Solver: {result.SolutionMilliseconds} ms\r\n" +
-    $"Seed: {seed}\r\n" +
-    $"Markdown: {markdownFile}";
+                    $"Level {levelNumber} generated successfully.\r\n" +
+                    $"Difficulty: {result.Profile!.Name}\r\n" +
+                    $"Board: {result.Level!.Rows} x {result.Level.Columns}\r\n" +
+                    $"Crates: {result.CrateCount}\r\n" +
+                    $"Interior walls: {result.InteriorWallCount}\r\n" +
+                    $"Solution: {result.Solution!.MinimumPushes} pushes\r\n" +
+                    $"Generation: {result.GenerationMilliseconds} ms\r\n" +
+                    $"Solver: {result.SolutionMilliseconds} ms\r\n" +
+                    $"Seed: {seed}\r\n" +
+                    $"Markdown: {markdownFile}";
 
                 Hide();
 
@@ -758,11 +791,11 @@ namespace NovaWrightNumberPush
                     Hide();
 
                     using NumberPushForm gameForm =
-    new NumberPushForm(
-        game,
-        gameSession,
-        result.Level!,
-        showCrateNumbersCheckBox.Checked);
+                        new NumberPushForm(
+                            game,
+                            gameSession,
+                            result.Level!,
+                            showCrateNumbersCheckBox.Checked);
 
                     gameForm.ShowDialog(this);
 

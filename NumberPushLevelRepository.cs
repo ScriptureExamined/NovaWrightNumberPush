@@ -6,9 +6,17 @@
 
         public NumberPushLevelRepository()
         {
+            string projectDirectory =
+                Directory.GetParent(
+                    AppContext.BaseDirectory)!
+                .Parent!
+                .Parent!
+                .Parent!
+                .FullName;
+
             levelsFolder =
                 Path.Combine(
-                    AppContext.BaseDirectory,
+                    projectDirectory,
                     "Game",
                     "Levels");
 
