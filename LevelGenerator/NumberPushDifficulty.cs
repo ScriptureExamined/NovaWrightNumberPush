@@ -4,6 +4,8 @@
     {
         public int LevelNumber { get; }
 
+        public int Complexity { get; }
+
         public int MinimumCrates { get; }
 
         public int MaximumCrates { get; }
@@ -43,36 +45,41 @@
             LevelNumber =
                 levelNumber;
 
-            int progression =
-                levelNumber - 1;
+            Complexity =
+                1 +
+                (levelNumber - 1) / 10;
 
             MinimumCrates =
                 Math.Min(
-                    1 + progression / 12,
+                    1 + Complexity / 3,
                     6);
 
             MaximumCrates =
                 Math.Min(
-                    2 + progression / 10,
+                    MinimumCrates + 1,
                     8);
 
             MinimumCrateDistance =
-                1 + progression / 10;
+                Math.Max(
+                    1,
+                    Complexity / 2);
 
             MaximumCrateDistance =
-                2 + progression / 8;
+                Math.Max(
+                    MinimumCrateDistance,
+                    Complexity);
 
             MinimumInteriorWalls =
-                progression / 3;
+                Complexity * 2;
 
             MaximumInteriorWalls =
-                5 + progression / 2;
+                Complexity * 4 + 4;
 
             MinimumSolutionPushes =
-                1 + progression;
+                Complexity * 4;
 
             MaximumSolutionPushes =
-                6 + progression * 2;
+                Complexity * 7 + 6;
 
             StartingRows =
                 10;
@@ -81,10 +88,12 @@
                 12;
 
             MaximumRows =
-                18 + progression / 15 * 2;
+                18 +
+                Complexity / 5 * 2;
 
             MaximumColumns =
-                20 + progression / 15 * 2;
+                20 +
+                Complexity / 5 * 2;
 
             MaximumAttempts =
                 1500;
