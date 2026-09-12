@@ -43,6 +43,9 @@ namespace NovaWright.NumberPush.LevelGenerator
                     Level =
                         level,
 
+                    Difficulty =
+    difficulty,
+
                     GenerationMilliseconds =
                         generationTimer.ElapsedMilliseconds
                 };

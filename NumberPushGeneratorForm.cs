@@ -756,8 +756,7 @@ namespace NovaWrightNumberPush
                     NumberPushMarkdownExporter.Export(
                         result.Level!,
                         result.Solution!,
-                        result.Profile!,
-                        result.Settings!,
+                        result.Difficulty!,
                         seed,
                         outputDirectory);
 
