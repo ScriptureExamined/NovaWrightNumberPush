@@ -29,6 +29,12 @@
         public string CrateBorderColor { get; set; } =
             "#DCA04B";
 
+        public string CrateNumberColor { get; set; } =
+    "#FFFFFF";
+
+        public string CrateDistanceColor { get; set; } =
+            "#FFFFFF";
+
         public string PlayerColor { get; set; } =
             "#46AAFF";
 

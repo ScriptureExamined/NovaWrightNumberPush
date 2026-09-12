@@ -3,7 +3,10 @@ namespace NovaWrightNumberPush
     public partial class NumberPushForm : Form
     {
         private readonly NumberPushGame game;
+        private readonly NumberPushGameSession gameSession;
         private readonly NumberPushProgressRepository progressRepository;
+
+        private readonly bool showCrateNumbers;
 
         private NumberPushProgress progress = null!;
         private NumberPushGameConfiguration configuration = null!;
@@ -23,10 +26,18 @@ namespace NovaWrightNumberPush
 
         public NumberPushForm(
     NumberPushGame game,
-    NumberPushLevel level)
+    NumberPushGameSession gameSession,
+    NumberPushLevel level,
+    bool showCrateNumbers)
         {
             this.game =
                 game;
+
+            this.gameSession =
+                gameSession;
+
+            this.showCrateNumbers =
+    showCrateNumbers;
 
             Text =
                 game.Info.GameName;
@@ -231,21 +242,25 @@ namespace NovaWrightNumberPush
     currentLevel.LevelNumber,
     pushCount);
 
-            NumberPushLevelRepository levelRepository =
-    new NumberPushLevelRepository();
-
             int? nextLevel =
-                levelRepository.GetNextLevelNumber(
-                    currentLevel.LevelNumber);
+    gameSession.GetNextLevelNumber(
+        currentLevel.LevelNumber);
 
             if (nextLevel.HasValue)
             {
-                NumberPushLevel nextLevelData =
-                    levelRepository.LoadLevel(
+                NumberPushLevel? nextLevelData =
+                    gameSession.GetLevel(
                         nextLevel.Value);
 
-                LoadLevel(
-                    nextLevelData);
+                if (nextLevelData != null)
+                {
+                    LoadLevel(
+                        nextLevelData);
+                }
+                else
+                {
+                    Close();
+                }
             }
             else
             {
@@ -472,10 +487,21 @@ namespace NovaWrightNumberPush
                     18,
                     FontStyle.Bold);
 
-            using Brush numberBrush =
+            using Brush distanceBrush =
+    new SolidBrush(
+        NumberPushColorHelper.FromHex(
+            configuration.CrateDistanceColor));
+
+            using Brush crateNumberBrush =
                 new SolidBrush(
                     NumberPushColorHelper.FromHex(
-                        configuration.PrimaryTextColor));
+                        configuration.CrateNumberColor));
+
+            using Font crateNumberFont =
+    new Font(
+        "Segoe UI",
+        9,
+        FontStyle.Bold);
 
             foreach (NumberPushCrate crate in crates)
             {
@@ -515,13 +541,26 @@ namespace NovaWrightNumberPush
                 g.DrawString(
                     number,
                     numberFont,
-                    numberBrush,
+                    distanceBrush,
                     x +
                         (configuration.CellSize -
                          textSize.Width) / 2,
                     y +
                         (configuration.CellSize -
                          textSize.Height) / 2);
+
+                if (showCrateNumbers)
+                {
+                    string crateNumber =
+                        (crates.IndexOf(crate) + 1).ToString();
+
+                    g.DrawString(
+                        crateNumber,
+                        crateNumberFont,
+                        crateNumberBrush,
+                        rectangle.X + 4,
+                        rectangle.Y + 2);
+                }
             }
         }
 

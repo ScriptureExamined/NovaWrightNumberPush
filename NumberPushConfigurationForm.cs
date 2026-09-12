@@ -25,6 +25,8 @@ namespace NovaWrightNumberPush
         private readonly TextBox goalColorTextBox;
         private readonly TextBox crateColorTextBox;
         private readonly TextBox crateBorderColorTextBox;
+        private readonly TextBox crateNumberColorTextBox;
+        private readonly TextBox crateDistanceColorTextBox;
         private readonly TextBox playerColorTextBox;
         private readonly TextBox primaryTextColorTextBox;
         private readonly TextBox secondaryTextColorTextBox;
@@ -122,6 +124,11 @@ namespace NovaWrightNumberPush
                 new TextBox();
 
             crateBorderColorTextBox =
+                new TextBox();
+            crateNumberColorTextBox =
+                new TextBox();
+
+            crateDistanceColorTextBox =
                 new TextBox();
 
             playerColorTextBox =
@@ -503,7 +510,7 @@ namespace NovaWrightNumberPush
                     15,
                     355,
                     490,
-                    345);
+                    385);
 
             parent.Controls.Add(
                 group);
@@ -558,32 +565,46 @@ namespace NovaWrightNumberPush
                 150);
 
             AddColorControl(
+    group,
+    "Crate Number:",
+    crateNumberColorTextBox,
+    255,
+    150);
+
+            AddColorControl(
+                group,
+                "Crate Distance:",
+                crateDistanceColorTextBox,
+                15,
+                190);
+
+            AddColorControl(
                 group,
                 "Player:",
                 playerColorTextBox,
                 255,
-                150);
+                190);
 
             AddColorControl(
                 group,
                 "Primary Text:",
                 primaryTextColorTextBox,
                 15,
-                190);
+                230);
 
             AddColorControl(
                 group,
                 "Secondary Text:",
                 secondaryTextColorTextBox,
                 255,
-                190);
+                230);
 
             AddColorControl(
                 group,
                 "Title:",
                 titleColorTextBox,
                 15,
-                230);
+                270);
 
             Label helpLabel =
                 new Label
@@ -611,6 +632,8 @@ namespace NovaWrightNumberPush
                 goalColorTextBox,
                 crateColorTextBox,
                 crateBorderColorTextBox,
+                crateNumberColorTextBox,
+                crateDistanceColorTextBox,
                 playerColorTextBox,
                 primaryTextColorTextBox,
                 secondaryTextColorTextBox,
@@ -837,8 +860,14 @@ namespace NovaWrightNumberPush
             crateBorderColorTextBox.Text =
                 configuration.CrateBorderColor;
 
+            crateNumberColorTextBox.Text =
+    configuration.CrateNumberColor;
+
+            crateDistanceColorTextBox.Text =
+                configuration.CrateDistanceColor;
+
             playerColorTextBox.Text =
-                configuration.PlayerColor;
+    configuration.PlayerColor;
 
             primaryTextColorTextBox.Text =
                 configuration.PrimaryTextColor;
@@ -933,6 +962,16 @@ namespace NovaWrightNumberPush
                         220,
                         160,
                         75));
+
+            Color crateNumberColor =
+    GetPreviewColor(
+        crateNumberColorTextBox.Text,
+        Color.White);
+
+            Color crateDistanceColor =
+                GetPreviewColor(
+                    crateDistanceColorTextBox.Text,
+                    Color.White);
 
             Color playerColor =
                 GetPreviewColor(
@@ -1162,16 +1201,18 @@ namespace NovaWrightNumberPush
                 3);
 
             DrawPreviewCrate(
-                graphics,
-                crateColor,
-                crateBorderColor,
-                primaryTextColor,
-                boardX,
-                boardY,
-                cellSize,
-                4,
-                3,
-                "3");
+    graphics,
+    crateColor,
+    crateBorderColor,
+    crateNumberColor,
+    crateDistanceColor,
+    boardX,
+    boardY,
+    cellSize,
+    4,
+    3,
+    "1",
+    "3");
 
             DrawPreviewPlayer(
                 graphics,
@@ -1270,16 +1311,18 @@ namespace NovaWrightNumberPush
         }
 
         private static void DrawPreviewCrate(
-            Graphics graphics,
-            Color crateColor,
-            Color borderColor,
-            Color textColor,
-            int boardX,
-            int boardY,
-            int cellSize,
-            int column,
-            int row,
-            string text)
+    Graphics graphics,
+    Color crateColor,
+    Color borderColor,
+    Color crateNumberColor,
+    Color crateDistanceColor,
+    int boardX,
+    int boardY,
+    int cellSize,
+    int column,
+    int row,
+    string crateNumber,
+    string distance)
         {
             int padding =
                 Math.Max(
@@ -1316,11 +1359,11 @@ namespace NovaWrightNumberPush
                 borderPen,
                 rectangle);
 
-            using SolidBrush textBrush =
+            using SolidBrush distanceBrush =
                 new SolidBrush(
-                    textColor);
+                    crateDistanceColor);
 
-            using Font font =
+            using Font distanceFont =
                 new Font(
                     "Segoe UI",
                     Math.Max(
@@ -1328,7 +1371,7 @@ namespace NovaWrightNumberPush
                         cellSize / 2.5F),
                     FontStyle.Bold);
 
-            StringFormat format =
+            StringFormat centerFormat =
                 new StringFormat
                 {
                     Alignment =
@@ -1338,11 +1381,30 @@ namespace NovaWrightNumberPush
                 };
 
             graphics.DrawString(
-                text,
-                font,
-                textBrush,
+                distance,
+                distanceFont,
+                distanceBrush,
                 rectangle,
-                format);
+                centerFormat);
+
+            using SolidBrush crateNumberBrush =
+                new SolidBrush(
+                    crateNumberColor);
+
+            using Font crateNumberFont =
+                new Font(
+                    "Segoe UI",
+                    Math.Max(
+                        7,
+                        cellSize / 5F),
+                    FontStyle.Bold);
+
+            graphics.DrawString(
+                crateNumber,
+                crateNumberFont,
+                crateNumberBrush,
+                rectangle.X + 4,
+                rectangle.Y + 2);
         }
 
         private static void DrawPreviewPlayer(
@@ -1431,6 +1493,14 @@ namespace NovaWrightNumberPush
                     "Crate Border");
 
                 ValidateColor(
+    crateNumberColorTextBox.Text,
+    "Crate Number");
+
+                ValidateColor(
+                    crateDistanceColorTextBox.Text,
+                    "Crate Distance");
+
+                ValidateColor(
                     playerColorTextBox.Text,
                     "Player");
 
@@ -1484,6 +1554,12 @@ namespace NovaWrightNumberPush
 
                 configuration.CrateBorderColor =
                     crateBorderColorTextBox.Text.Trim();
+
+                configuration.CrateNumberColor =
+                    crateNumberColorTextBox.Text.Trim();
+
+                configuration.CrateDistanceColor =
+                    crateDistanceColorTextBox.Text.Trim();
 
                 configuration.PlayerColor =
                     playerColorTextBox.Text.Trim();

@@ -1,0 +1,777 @@
+﻿using NovaWrightNumberPush;
+
+namespace NovaWright.NumberPush.LevelGenerator
+{
+    public class NumberPushSolver
+    {
+        private readonly NumberPushLevel level;
+
+        private readonly int rows;
+        private readonly int columns;
+
+        private readonly HashSet<Point> wallPositions;
+        private readonly HashSet<Point> goalPositions;
+
+        // Reusable arrays for player reachability.
+        private readonly int[] reachableVisit;
+        private readonly int[] reachableQueue;
+
+        // Reusable array for crate occupancy.
+        private readonly int[] crateOccupancyVisit;
+
+        private int crateOccupancyVisitId;
+
+        private int reachableVisitId;
+
+        public NumberPushSolver(NumberPushLevel level)
+        {
+            this.level = level;
+
+            rows = level.Rows;
+            columns = level.Columns;
+
+            wallPositions =
+                level.Walls
+                    .Select(
+                        wall =>
+                            new Point(
+                                wall.X,
+                                wall.Y))
+                    .ToHashSet();
+
+            goalPositions =
+                level.Goals.ToHashSet();
+
+            int cellCount =
+                rows * columns;
+
+            reachableVisit =
+                new int[cellCount];
+
+            reachableQueue =
+                new int[cellCount];
+
+            crateOccupancyVisit =
+    new int[cellCount];
+
+            reachableVisitId = 0;
+
+            crateOccupancyVisitId = 0;
+        }
+
+        /// <summary>
+        /// Finds the minimum-push solution for the level.
+        ///
+        /// Returns:
+        ///     A NumberPushSolution with IsSolved = true
+        ///     when the level is solvable.
+        ///
+        ///     A NumberPushSolution with IsSolved = false
+        ///     when the level is unsolvable.
+        /// </summary>
+        public NumberPushSolution FindSolution()
+        {
+            List<Point> crateStartPositions =
+                level.Crates
+                    .Select(crate => crate.Position)
+                    .ToList();
+
+            List<int> crateDistances =
+                level.Crates
+                    .Select(crate => crate.Distance)
+                    .ToList();
+
+            Queue<SolverState> queue = new();
+
+            HashSet<string> visited = new();
+
+            SolverState startState =
+                new SolverState(
+                    level.PlayerStart,
+                    crateStartPositions,
+                    0,
+                    null,
+                    null);
+
+            queue.Enqueue(startState);
+
+            visited.Add(
+                CreateStateKey(
+                    level.PlayerStart,
+                    crateStartPositions));
+
+            while (queue.Count > 0)
+            {
+                SolverState state =
+                    queue.Dequeue();
+
+                if (IsComplete(state.CratePositions))
+                {
+                    return BuildSolution(state);
+                }
+
+                // Build the reusable crate occupancy map for this state.
+                BuildCrateOccupancy(
+                    state.CratePositions);
+
+                // Mark every position the player can reach without
+                // moving any crates.
+                int currentReachableVisitId =
+                    MarkReachableCells(
+                        state.PlayerPosition);
+
+                for (int crateIndex = 0;
+                     crateIndex < state.CratePositions.Count;
+                     crateIndex++)
+                {
+                    int distance =
+                        crateDistances[crateIndex];
+
+                    TryPush(
+                        state,
+                        crateIndex,
+                        distance,
+                        new Point(0, -1),
+                        currentReachableVisitId,
+                        queue,
+                        visited);
+
+                    TryPush(
+                        state,
+                        crateIndex,
+                        distance,
+                        new Point(0, 1),
+                        currentReachableVisitId,
+                        queue,
+                        visited);
+
+                    TryPush(
+                        state,
+                        crateIndex,
+                        distance,
+                        new Point(-1, 0),
+                        currentReachableVisitId,
+                        queue,
+                        visited);
+
+                    TryPush(
+                        state,
+                        crateIndex,
+                        distance,
+                        new Point(1, 0),
+                        currentReachableVisitId,
+                        queue,
+                        visited);
+                }
+            }
+
+            return new NumberPushSolution
+            {
+                IsSolved = false,
+                MinimumPushes = -1
+            };
+        }
+
+        /// <summary>
+        /// Maintains compatibility with the original solver API.
+        /// </summary>
+        public int FindMinimumPushes()
+        {
+            NumberPushSolution solution =
+                FindSolution();
+
+            return solution.MinimumPushes;
+        }
+
+        private void TryPush(
+            SolverState state,
+            int crateIndex,
+            int distance,
+            Point direction,
+            int currentReachableVisitId,
+            Queue<SolverState> queue,
+            HashSet<string> visited)
+        {
+            Point cratePosition =
+                state.CratePositions[crateIndex];
+
+            Point playerRequiredPosition =
+                new Point(
+                    cratePosition.X - direction.X,
+                    cratePosition.Y - direction.Y);
+
+            if (!IsReachable(
+                    playerRequiredPosition,
+                    currentReachableVisitId))
+            {
+                return;
+            }
+
+            Point finalPosition =
+                cratePosition;
+
+            for (int step = 1;
+                 step <= distance;
+                 step++)
+            {
+                Point testPosition =
+                    new Point(
+                        cratePosition.X +
+                            direction.X * step,
+                        cratePosition.Y +
+                            direction.Y * step);
+
+                if (IsWall(testPosition))
+                {
+                    return;
+                }
+
+                if (IsOccupiedByAnotherCrate(
+                        testPosition,
+                        state.CratePositions,
+                        crateIndex))
+                {
+                    return;
+                }
+
+                finalPosition = testPosition;
+            }
+
+            List<Point> newCratePositions =
+                new List<Point>(
+                    state.CratePositions);
+
+            newCratePositions[crateIndex] =
+                finalPosition;
+
+            Point newPlayerPosition =
+                cratePosition;
+
+            string newStateKey =
+                CreateStateKey(
+                    newPlayerPosition,
+                    newCratePositions);
+
+            if (!visited.Add(newStateKey))
+            {
+                return;
+            }
+
+            NumberPushSolutionStep stepData =
+                new NumberPushSolutionStep
+                {
+                    CrateIndex = crateIndex,
+
+                    PlayerStart =
+                        state.PlayerPosition,
+
+                    PlayerPushPosition =
+                        playerRequiredPosition,
+
+                    CrateStart =
+                        cratePosition,
+
+                    CrateEnd =
+                        finalPosition,
+
+                    Direction =
+                        direction,
+
+                    Distance =
+                        distance,
+
+                    PlayerPath =
+                        new List<Point>()
+                };
+
+            SolverState newState =
+                new SolverState(
+                    newPlayerPosition,
+                    newCratePositions,
+                    state.Pushes + 1,
+                    state,
+                    stepData);
+
+            queue.Enqueue(newState);
+        }
+
+        private NumberPushSolution BuildSolution(
+            SolverState finalState)
+        {
+            List<NumberPushSolutionStep> steps =
+                new();
+
+            SolverState? current =
+                finalState;
+
+            while (current != null &&
+                   current.Parent != null)
+            {
+                if (current.Step != null)
+                {
+                    NumberPushSolutionStep step =
+                        current.Step;
+
+                    step.PlayerPath =
+                        FindPlayerPath(
+                            step.PlayerStart,
+                            step.PlayerPushPosition,
+                            current.Parent.CratePositions);
+
+                    steps.Add(step);
+                }
+
+                current = current.Parent;
+            }
+
+            steps.Reverse();
+
+            for (int i = 0;
+                 i < steps.Count;
+                 i++)
+            {
+                steps[i].PushNumber =
+                    i + 1;
+            }
+
+            return new NumberPushSolution
+            {
+                IsSolved = true,
+
+                MinimumPushes =
+                    finalState.Pushes,
+
+                Steps = steps
+            };
+        }
+
+        private List<Point> FindPlayerPath(
+            Point startPosition,
+            Point targetPosition,
+            List<Point> cratePositions)
+        {
+            if (startPosition == targetPosition)
+            {
+                return new List<Point>
+                {
+                    startPosition
+                };
+            }
+
+            Queue<Point> queue = new();
+
+            HashSet<Point> visited = new();
+
+            Dictionary<Point, Point> parents =
+                new();
+
+            queue.Enqueue(startPosition);
+            visited.Add(startPosition);
+
+            Point[] directions =
+            {
+                new Point(0, -1),
+                new Point(0, 1),
+                new Point(-1, 0),
+                new Point(1, 0)
+            };
+
+            while (queue.Count > 0)
+            {
+                Point current =
+                    queue.Dequeue();
+
+                foreach (Point direction in directions)
+                {
+                    Point next =
+                        new Point(
+                            current.X + direction.X,
+                            current.Y + direction.Y);
+
+                    if (IsWall(next))
+                    {
+                        continue;
+                    }
+
+                    if (IsOccupiedByAnyCrate(
+                        next,
+                        cratePositions))
+                    {
+                        continue;
+                    }
+
+                    if (!visited.Add(next))
+                    {
+                        continue;
+                    }
+
+                    parents[next] =
+                        current;
+
+                    if (next == targetPosition)
+                    {
+                        return ReconstructPlayerPath(
+                            startPosition,
+                            targetPosition,
+                            parents);
+                    }
+
+                    queue.Enqueue(next);
+                }
+            }
+
+            return new List<Point>();
+        }
+
+        private List<Point> ReconstructPlayerPath(
+            Point startPosition,
+            Point targetPosition,
+            Dictionary<Point, Point> parents)
+        {
+            List<Point> path =
+                new();
+
+            Point current =
+                targetPosition;
+
+            path.Add(current);
+
+            while (current != startPosition)
+            {
+                if (!parents.TryGetValue(
+                        current,
+                        out Point parent))
+                {
+                    return new List<Point>();
+                }
+
+                current = parent;
+                path.Add(current);
+            }
+
+            path.Reverse();
+
+            return path;
+        }
+
+        /// <summary>
+        /// Builds a reusable occupancy map for the current crate
+        /// configuration.
+        /// </summary>
+        private void BuildCrateOccupancy(
+    List<Point> cratePositions)
+        {
+            crateOccupancyVisitId++;
+
+            if (crateOccupancyVisitId == int.MaxValue)
+            {
+                Array.Clear(
+                    crateOccupancyVisit,
+                    0,
+                    crateOccupancyVisit.Length);
+
+                crateOccupancyVisitId = 1;
+            }
+
+            foreach (Point cratePosition in cratePositions)
+            {
+                if (cratePosition.X < 0 ||
+                    cratePosition.X >= columns ||
+                    cratePosition.Y < 0 ||
+                    cratePosition.Y >= rows)
+                {
+                    continue;
+                }
+
+                int index =
+                    GetCellIndex(cratePosition);
+
+                crateOccupancyVisit[index] =
+                    crateOccupancyVisitId;
+            }
+        }
+
+        /// <summary>
+        /// Marks every cell the player can currently reach without
+        /// moving any crates.
+        ///
+        /// The visitation array and queue are reused between calls.
+        /// </summary>
+        private int MarkReachableCells(
+            Point startPosition)
+        {
+            reachableVisitId++;
+
+            if (reachableVisitId == int.MaxValue)
+            {
+                Array.Clear(
+                    reachableVisit,
+                    0,
+                    reachableVisit.Length);
+
+                reachableVisitId = 1;
+            }
+
+            if (IsWall(startPosition) ||
+                IsOccupiedByAnyCrate(
+                    startPosition))
+            {
+                return reachableVisitId;
+            }
+
+            int startIndex =
+                GetCellIndex(startPosition);
+
+            int head = 0;
+            int tail = 0;
+
+            reachableQueue[tail++] =
+                startIndex;
+
+            reachableVisit[startIndex] =
+                reachableVisitId;
+
+            while (head < tail)
+            {
+                int currentIndex =
+                    reachableQueue[head++];
+
+                int currentX =
+                    currentIndex % columns;
+
+                int currentY =
+                    currentIndex / columns;
+
+                MarkReachableNeighbor(
+                    currentX,
+                    currentY - 1,
+                    ref tail);
+
+                MarkReachableNeighbor(
+                    currentX,
+                    currentY + 1,
+                    ref tail);
+
+                MarkReachableNeighbor(
+                    currentX - 1,
+                    currentY,
+                    ref tail);
+
+                MarkReachableNeighbor(
+                    currentX + 1,
+                    currentY,
+                    ref tail);
+            }
+
+            return reachableVisitId;
+        }
+
+        private void MarkReachableNeighbor(
+            int x,
+            int y,
+            ref int tail)
+        {
+            if (x < 0 ||
+                x >= columns ||
+                y < 0 ||
+                y >= rows)
+            {
+                return;
+            }
+
+            int index =
+                y * columns + x;
+
+            if (reachableVisit[index] ==
+                reachableVisitId)
+            {
+                return;
+            }
+
+            Point position =
+                new Point(x, y);
+
+            if (IsWall(position))
+            {
+                return;
+            }
+
+            if (crateOccupancyVisit[index] ==
+    crateOccupancyVisitId)
+            {
+                return;
+            }
+
+            reachableVisit[index] =
+                reachableVisitId;
+
+            reachableQueue[tail++] =
+                index;
+        }
+
+        private bool IsReachable(
+            Point position,
+            int currentReachableVisitId)
+        {
+            if (position.X < 0 ||
+                position.X >= columns ||
+                position.Y < 0 ||
+                position.Y >= rows)
+            {
+                return false;
+            }
+
+            int index =
+                GetCellIndex(position);
+
+            return
+                reachableVisit[index] ==
+                currentReachableVisitId;
+        }
+
+        private int GetCellIndex(
+            Point position)
+        {
+            return
+                position.Y * columns +
+                position.X;
+        }
+
+        private bool IsComplete(
+            List<Point> cratePositions)
+        {
+            foreach (Point cratePosition in cratePositions)
+            {
+                if (!goalPositions.Contains(cratePosition))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private bool IsWall(Point position)
+        {
+            if (position.X < 0 ||
+                position.X >= columns ||
+                position.Y < 0 ||
+                position.Y >= rows)
+            {
+                return true;
+            }
+
+            return wallPositions.Contains(position);
+        }
+
+        /// <summary>
+        /// Checks the reusable occupancy map.
+        /// Used during player reachability calculations.
+        /// </summary>
+        private bool IsOccupiedByAnyCrate(
+            Point position)
+        {
+            if (position.X < 0 ||
+                position.X >= columns ||
+                position.Y < 0 ||
+                position.Y >= rows)
+            {
+                return false;
+            }
+
+            int index =
+                GetCellIndex(position);
+
+            return
+    crateOccupancyVisit[index] ==
+    crateOccupancyVisitId;
+
+        }
+
+        /// <summary>
+        /// Checks the supplied crate configuration directly.
+        /// Used when reconstructing player paths for a solution.
+        /// </summary>
+        private bool IsOccupiedByAnyCrate(
+            Point position,
+            List<Point> cratePositions)
+        {
+            return cratePositions.Contains(position);
+        }
+
+        private bool IsOccupiedByAnotherCrate(
+            Point position,
+            List<Point> cratePositions,
+            int movingCrateIndex)
+        {
+            for (int i = 0;
+                 i < cratePositions.Count;
+                 i++)
+            {
+                if (i == movingCrateIndex)
+                {
+                    continue;
+                }
+
+                if (cratePositions[i] == position)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private string CreateStateKey(
+            Point playerPosition,
+            List<Point> cratePositions)
+        {
+            IEnumerable<string> crates =
+                cratePositions
+                    .Select(
+                        position =>
+                            $"{position.X},{position.Y}")
+                    .OrderBy(value => value);
+
+            return
+                $"{playerPosition.X},{playerPosition.Y}|" +
+                string.Join("|", crates);
+        }
+
+        private class SolverState
+        {
+            public Point PlayerPosition { get; }
+
+            public List<Point> CratePositions { get; }
+
+            public int Pushes { get; }
+
+            public SolverState? Parent { get; }
+
+            public NumberPushSolutionStep? Step { get; }
+
+            public SolverState(
+                Point playerPosition,
+                List<Point> cratePositions,
+                int pushes,
+                SolverState? parent,
+                NumberPushSolutionStep? step)
+            {
+                PlayerPosition =
+                    playerPosition;
+
+                CratePositions =
+                    cratePositions;
+
+                Pushes =
+                    pushes;
+
+                Parent =
+                    parent;
+
+                Step =
+                    step;
+            }
+        }
+    }
+}

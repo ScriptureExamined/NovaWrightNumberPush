@@ -17,6 +17,8 @@
         private readonly Button continueButton;
         private readonly Button startButton;
         private readonly Button configurationButton;
+        private readonly Button generatorButton;
+        private readonly CheckBox showCrateNumbersCheckBox;
 
         public int SelectedLevelNumber { get; private set; }
 
@@ -24,7 +26,16 @@
         {
             Text = "NovaWright Number Push";
             StartPosition = FormStartPosition.CenterScreen;
-            ClientSize = new Size(700, 600);
+            ClientSize = new Size(700, 650);
+            MinimumSize =
+    new Size(
+        700,
+        650);
+
+            MaximumSize =
+                new Size(
+                    700,
+                    650);
             BackColor = Color.FromArgb(12, 15, 22);
 
             progressRepository =
@@ -160,15 +171,114 @@
                 "Configuration";
 
             configurationButton.Size =
-                new Size(
-                    120,
-                    35);
+                new Size(180, 45);
+
+            configurationButton.Font =
+    new Font(
+        "Segoe UI",
+        11,
+        FontStyle.Bold);
+
+            configurationButton.ForeColor =
+                Color.White;
+
+            configurationButton.BackColor =
+                Color.FromArgb(24, 29, 41);
+
+            configurationButton.FlatStyle =
+                FlatStyle.Flat;
+
+            configurationButton.FlatAppearance.BorderColor =
+                Color.FromArgb(70, 170, 255);
+
+            configurationButton.FlatAppearance.BorderSize =
+                1;
+
+            configurationButton.Cursor =
+                Cursors.Hand;
+
+            configurationButton.Location =
+    new Point(
+        260,
+        530);
 
             configurationButton.Click +=
                 ConfigurationButton_Click;
 
             Controls.Add(
                 configurationButton);
+
+            generatorButton =
+    new Button();
+
+            generatorButton.Text =
+                "Level Generator";
+
+            generatorButton.Size =
+                new Size(180, 45);
+
+            generatorButton.Font =
+    new Font(
+        "Segoe UI",
+        11,
+        FontStyle.Bold);
+
+            generatorButton.ForeColor =
+                Color.White;
+
+            generatorButton.BackColor =
+                Color.FromArgb(24, 29, 41);
+
+            generatorButton.FlatStyle =
+                FlatStyle.Flat;
+
+            generatorButton.FlatAppearance.BorderColor =
+                Color.FromArgb(70, 170, 255);
+
+            generatorButton.FlatAppearance.BorderSize =
+                1;
+
+            generatorButton.Cursor =
+                Cursors.Hand;
+
+            generatorButton.Location =
+    new Point(
+        470,
+        530);
+
+            generatorButton.Click +=
+                GeneratorButton_Click;
+
+            Controls.Add(
+                generatorButton);
+
+            showCrateNumbersCheckBox =
+    new CheckBox();
+
+            showCrateNumbersCheckBox.Text =
+                "Show crate numbers";
+
+            showCrateNumbersCheckBox.Font =
+                new Font(
+                    "Segoe UI",
+                    9);
+
+            showCrateNumbersCheckBox.ForeColor =
+                Color.LightGray;
+
+            showCrateNumbersCheckBox.AutoSize =
+                true;
+
+            showCrateNumbersCheckBox.Location =
+                new Point(
+                    30,
+                    585);
+
+            showCrateNumbersCheckBox.Checked =
+                false;
+
+            Controls.Add(
+                showCrateNumbersCheckBox);
 
             levelListBox =
                 new ListBox();
@@ -228,7 +338,7 @@
                 new Size(180, 45);
 
             startButton.Location =
-                new Point(30, 530);
+                new Point(50, 530);
 
             startButton.Enabled = false;
 
@@ -330,13 +440,31 @@
         }
 
         private void ConfigurationButton_Click(
-            object? sender,
-            EventArgs e)
+    object? sender,
+    EventArgs e)
         {
             using NumberPushConfigurationForm configurationForm =
                 new NumberPushConfigurationForm();
 
             configurationForm.ShowDialog(this);
+
+            game.Configuration =
+                new NumberPushGameConfigurationRepository()
+                    .Load();
+        }
+
+        private void GeneratorButton_Click(
+    object? sender,
+    EventArgs e)
+        {
+            using NumberPushGeneratorForm generatorForm =
+    new NumberPushGeneratorForm(
+        game,
+        gameSession);
+
+            generatorForm.ShowDialog(this);
+
+            LoadLevels();
         }
 
         private void LevelListBox_SelectedIndexChanged(
@@ -377,7 +505,7 @@
         }
 
         private void StartLevel(
-            int levelNumber)
+    int levelNumber)
         {
             NumberPushLevel? level =
                 gameSession.GetLevel(
@@ -399,7 +527,9 @@
             using NumberPushForm gameForm =
                 new NumberPushForm(
                     game,
-                    level);
+                    gameSession,
+                    level,
+                    showCrateNumbersCheckBox.Checked);
 
             gameForm.ShowDialog(this);
 

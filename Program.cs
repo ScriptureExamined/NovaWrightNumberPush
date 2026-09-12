@@ -9,6 +9,9 @@ namespace NovaWrightNumberPush
 
             Application.Run(
                 new NumberPushLevelSelectForm());
+
+            //        Application.Run(
+            //new NumberPushGeneratorForm());
         }
     }
 }

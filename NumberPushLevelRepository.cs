@@ -51,12 +51,9 @@
         public bool LevelExists(
             int levelNumber)
         {
-            string filePath =
-                GetLevelFilePath(
-                    levelNumber);
-
             return File.Exists(
-                filePath);
+                GetLevelFilePath(
+                    levelNumber));
         }
 
         public NumberPushLevel LoadLevel(
@@ -76,6 +73,46 @@
 
             return NumberPushLevelSerializer.LoadFromFile(
                 filePath);
+        }
+
+        public void SaveLevel(
+            NumberPushLevel level)
+        {
+            if (level == null)
+            {
+                throw new ArgumentNullException(
+                    nameof(level));
+            }
+
+            if (level.LevelNumber <= 0)
+            {
+                throw new ArgumentException(
+                    "The level must have a valid level number.",
+                    nameof(level));
+            }
+
+            string filePath =
+                GetLevelFilePath(
+                    level.LevelNumber);
+
+            NumberPushLevelSerializer.SaveToFile(
+                level,
+                filePath);
+        }
+
+        public void DeleteLevel(
+            int levelNumber)
+        {
+            string filePath =
+                GetLevelFilePath(
+                    levelNumber);
+
+            if (File.Exists(
+                    filePath))
+            {
+                File.Delete(
+                    filePath);
+            }
         }
 
         public int? GetNextLevelNumber(
