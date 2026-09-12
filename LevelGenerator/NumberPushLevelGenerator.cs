@@ -253,34 +253,19 @@ namespace NovaWright.NumberPush.LevelGenerator
     NumberPushDifficulty difficulty,
     int crateIndex)
         {
-            int maximumDistance =
-                difficulty.MaximumCrateDistance;
-
-            if (maximumDistance <=
-                difficulty.MinimumCrateDistance)
-            {
-                return
-                    difficulty.MinimumCrateDistance;
-            }
-
             int requiredDistance =
+                1 +
+                difficulty.Complexity / 3;
+
+            int distance =
+                requiredDistance -
+                crateIndex;
+
+            return Math.Max(
+                difficulty.MinimumCrateDistance,
                 Math.Min(
-                    maximumDistance,
-                    1 + difficulty.Complexity / 3);
-
-            if (crateIndex == 0)
-            {
-                return requiredDistance;
-            }
-
-            int minimumDistance =
-                Math.Max(
-                    difficulty.MinimumCrateDistance,
-                    requiredDistance - 1);
-
-            return random.Next(
-                minimumDistance,
-                maximumDistance + 1);
+                    difficulty.MaximumCrateDistance,
+                    distance));
         }
 
         private bool CreateInteriorWalls(
