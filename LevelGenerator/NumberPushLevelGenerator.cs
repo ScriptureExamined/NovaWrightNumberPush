@@ -191,9 +191,10 @@ namespace NovaWright.NumberPush.LevelGenerator
             foreach (Point cratePosition in cratePositions)
             {
                 int distance =
-                    random.Next(
-                        difficulty.MinimumCrateDistance,
-                        difficulty.MaximumCrateDistance + 1);
+    GetCrateDistance(
+        difficulty,
+        cratePositions.IndexOf(
+            cratePosition));
 
                 level.Crates.Add(
                     new NumberPushCrate(
@@ -246,6 +247,40 @@ namespace NovaWright.NumberPush.LevelGenerator
                         playerCandidates.Count)];
 
             return level;
+        }
+
+        private int GetCrateDistance(
+    NumberPushDifficulty difficulty,
+    int crateIndex)
+        {
+            int maximumDistance =
+                difficulty.MaximumCrateDistance;
+
+            if (maximumDistance <=
+                difficulty.MinimumCrateDistance)
+            {
+                return
+                    difficulty.MinimumCrateDistance;
+            }
+
+            int requiredDistance =
+                Math.Min(
+                    maximumDistance,
+                    1 + difficulty.Complexity / 3);
+
+            if (crateIndex == 0)
+            {
+                return requiredDistance;
+            }
+
+            int minimumDistance =
+                Math.Max(
+                    difficulty.MinimumCrateDistance,
+                    requiredDistance - 1);
+
+            return random.Next(
+                minimumDistance,
+                maximumDistance + 1);
         }
 
         private bool CreateInteriorWalls(
