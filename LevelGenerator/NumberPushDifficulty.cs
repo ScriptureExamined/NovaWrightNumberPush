@@ -46,8 +46,7 @@
                 levelNumber;
 
             Complexity =
-                1 +
-                (levelNumber - 1) / 10;
+    levelNumber;
 
             MinimumCrates =
     1 +
