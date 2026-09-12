@@ -20,8 +20,8 @@ namespace NovaWrightNumberPush
 
         private bool levelComplete;
 
-        private const int BoardColumns = 12;
-        private const int BoardRows = 10;
+        //private const int BoardColumns = 12;
+        //private const int BoardRows = 10;
         private const int CellSize = 50;
 
         public NumberPushForm(
@@ -271,9 +271,9 @@ namespace NovaWrightNumberPush
         private bool IsWall(Point position)
         {
             if (position.X < 0 ||
-                position.X >= BoardColumns ||
-                position.Y < 0 ||
-                position.Y >= BoardRows)
+    position.X >= currentLevel.Columns ||
+    position.Y < 0 ||
+    position.Y >= currentLevel.Rows)
             {
                 return true;
             }
@@ -299,10 +299,12 @@ namespace NovaWrightNumberPush
             Graphics g = e.Graphics;
 
             int boardWidth =
-                BoardColumns * configuration.CellSize;
+    currentLevel.Columns *
+    configuration.CellSize;
 
             int boardHeight =
-                BoardRows * configuration.CellSize;
+                currentLevel.Rows *
+                configuration.CellSize;
 
             int startX =
                 (ClientSize.Width - boardWidth) / 2;
@@ -323,11 +325,11 @@ namespace NovaWrightNumberPush
                     1);
 
             for (int row = 0;
-                 row < BoardRows;
+                 row < currentLevel.Rows;
                  row++)
             {
                 for (int column = 0;
-                     column < BoardColumns;
+                     column < currentLevel.Columns;
                      column++)
                 {
                     int x =
