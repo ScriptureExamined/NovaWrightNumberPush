@@ -56,13 +56,11 @@
                 MinimumCrates + 1;
 
             MinimumCrateDistance =
-                Math.Max(
-                    1,
-                    Complexity / 2);
+    1;
 
             MaximumCrateDistance =
                 Math.Max(
-                    MinimumCrateDistance,
+                    1,
                     Complexity);
 
             MinimumInteriorWalls =
