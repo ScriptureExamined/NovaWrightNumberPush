@@ -25,9 +25,14 @@ namespace NovaWright.NumberPush.LevelGenerator
         }
 
         public NumberPushLevel? Generate(
-            int levelNumber,
-            DifficultySettings settings)
+    int levelNumber,
+    NumberPushDifficulty difficulty)
         {
+            if (difficulty == null)
+            {
+                throw new ArgumentNullException(
+                    nameof(difficulty));
+            }
             if (settings.StartingRows <= 0 ||
                 settings.StartingColumns <= 0)
             {
