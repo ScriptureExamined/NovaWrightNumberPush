@@ -6,10 +6,11 @@ namespace NovaWright.NumberPush.LevelGenerator
     public class NumberPushGenerationService
     {
         private readonly NumberPushLevelGenerator generator;
+
         public int Seed { get; }
 
         public NumberPushGenerationService(
-    int seed)
+            int seed)
         {
             Seed =
                 seed;
@@ -22,12 +23,8 @@ namespace NovaWright.NumberPush.LevelGenerator
         public NumberPushGenerationResult Generate(
             int levelNumber)
         {
-            DifficultyProfile profile =
-                DifficultyProgression.GetProfile(
-                    levelNumber);
-
-            DifficultySettings settings =
-                DifficultyProgression.GetSettings(
+            NumberPushDifficulty difficulty =
+                new NumberPushDifficulty(
                     levelNumber);
 
             Stopwatch generationTimer =
@@ -36,16 +33,16 @@ namespace NovaWright.NumberPush.LevelGenerator
             NumberPushLevel? level =
                 generator.Generate(
                     levelNumber,
-                    settings);
+                    difficulty);
 
             generationTimer.Stop();
 
             NumberPushGenerationResult result =
                 new NumberPushGenerationResult
                 {
-                    Level = level,
-                    Profile = profile,
-                    Settings = settings,
+                    Level =
+                        level,
+
                     GenerationMilliseconds =
                         generationTimer.ElapsedMilliseconds
                 };
@@ -77,8 +74,8 @@ namespace NovaWright.NumberPush.LevelGenerator
         }
 
         public List<NumberPushGenerationResult> GenerateRange(
-    int firstLevel,
-    int lastLevel)
+            int firstLevel,
+            int lastLevel)
         {
             if (firstLevel <= 0)
             {
