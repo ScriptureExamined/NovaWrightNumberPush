@@ -95,6 +95,19 @@ namespace NovaWright.NumberPush.LevelGenerator
                     if (diagnostics != null)
                     {
                         diagnostics.TotalAttempts++;
+
+                        string boardSize =
+    $"{rows}x{columns}";
+
+                        if (diagnostics.BoardSizeAttempts.ContainsKey(
+                            boardSize))
+                        {
+                            diagnostics.BoardSizeAttempts[boardSize]++;
+                        }
+                        else
+                        {
+                            diagnostics.BoardSizeAttempts[boardSize] = 1;
+                        }
                     }
 
                     Stopwatch candidateTimer =
@@ -501,8 +514,8 @@ namespace NovaWright.NumberPush.LevelGenerator
     int crateIndex)
         {
             int requiredDistance =
-                1 +
-                difficulty.Complexity / 3;
+    1 +
+    difficulty.Complexity / 5;
 
             int distance =
                 requiredDistance -

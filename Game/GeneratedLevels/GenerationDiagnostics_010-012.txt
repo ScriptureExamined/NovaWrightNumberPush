@@ -1,0 +1,80 @@
+NUMBER PUSH GENERATION DIAGNOSTICS
+Levels: 10-12
+Seed: 12345
+
+========================================
+LEVEL 10 DIAGNOSTICS
+Target pushes: 9-20
+Final board: 10x12
+
+BOARD SIZE ATTEMPTS
+  10x12: 371
+
+CANDIDATES
+Total attempts: 371
+Wall generation failures: 0
+Geometric failures: 0
+Wall reachability failures: 211
+Solver calls: 160
+Unsolvable: 159
+Below target: 0
+Above target: 0
+Accepted: 1
+
+TIMING
+Candidate generation: 385 ms
+Solver: 808 ms
+Average solver call: 5.05 ms
+Total: 1543 ms
+
+========================================
+LEVEL 11 DIAGNOSTICS
+Target pushes: 9-21
+Final board: 12x14
+
+BOARD SIZE ATTEMPTS
+  10x12: 1500
+  12x14: 59
+
+CANDIDATES
+Total attempts: 1559
+Wall generation failures: 47
+Geometric failures: 0
+Wall reachability failures: 877
+Solver calls: 635
+Unsolvable: 633
+Below target: 0
+Above target: 1
+Accepted: 1
+
+TIMING
+Candidate generation: 353 ms
+Solver: 20204 ms
+Average solver call: 31.82 ms
+Total: 23352 ms
+
+========================================
+LEVEL 12 DIAGNOSTICS
+Target pushes: 10-22
+Final board: 12x14
+
+BOARD SIZE ATTEMPTS
+  12x14: 34
+
+CANDIDATES
+Total attempts: 34
+Wall generation failures: 0
+Geometric failures: 0
+Wall reachability failures: 17
+Solver calls: 17
+Unsolvable: 16
+Below target: 0
+Above target: 0
+Accepted: 1
+
+TIMING
+Candidate generation: 46 ms
+Solver: 16169 ms
+Average solver call: 951.12 ms
+Total: 23049 ms
+

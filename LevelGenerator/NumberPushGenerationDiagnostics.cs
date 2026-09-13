@@ -12,6 +12,9 @@
 
         public int FinalColumns { get; set; }
 
+        public Dictionary<string, int> BoardSizeAttempts { get; } =
+    new Dictionary<string, int>();
+
         public int TotalAttempts { get; set; }
 
         public int WallGenerationFailures { get; set; }
@@ -56,11 +59,19 @@
                 $"Target pushes: {TargetMinimumPushes}-{TargetMaximumPushes}\r\n" +
                 $"Final board: {FinalRows}x{FinalColumns}\r\n" +
                 "\r\n" +
+                "BOARD SIZE ATTEMPTS\r\n" +
+                string.Join(
+                    "\r\n",
+                    BoardSizeAttempts.Select(
+                        entry =>
+                            $"  {entry.Key}: {entry.Value}")) +
+                "\r\n" +
+                "\r\n" +
                 "CANDIDATES\r\n" +
                 $"Total attempts: {TotalAttempts}\r\n" +
                 $"Wall generation failures: {WallGenerationFailures}\r\n" +
                 $"Geometric failures: {GeometricFailures}\r\n" +
-                $"Wall reachability failures: {WallReachabilityFailures}" + Environment.NewLine +
+                $"Wall reachability failures: {WallReachabilityFailures}\r\n" +
                 $"Solver calls: {TotalSolverCalls}\r\n" +
                 $"Unsolvable: {UnsolvableCandidates}\r\n" +
                 $"Below target: {BelowTargetCandidates}\r\n" +
@@ -93,6 +104,9 @@
             Console.WriteLine(
                 $"Final board: " +
                 $"{FinalRows}x{FinalColumns}");
+
+            Console.WriteLine(
+    "Attempts by board size:");
 
             Console.WriteLine();
 

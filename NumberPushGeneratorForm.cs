@@ -802,14 +802,17 @@ namespace NovaWrightNumberPush
         }
 
         private async void GenerateButton_Click(
-            object? sender,
-            EventArgs e)
+    object? sender,
+    EventArgs e)
         {
             int levelNumber =
                 (int)levelNumberInput.Value;
 
             int seed =
                 (int)seedInput.Value;
+
+            bool reportDiagnostics =
+                reportDiagnosticsCheckBox.Checked;
 
             statusLabel.Text =
                 $"Generating Level {levelNumber}...";
@@ -830,9 +833,9 @@ namespace NovaWrightNumberPush
                         () =>
                         {
                             NumberPushGenerationService service =
-    new NumberPushGenerationService(
-        seed,
-        false);
+                                new NumberPushGenerationService(
+                                    seed,
+                                    reportDiagnostics);
 
                             return service.Generate(
                                 levelNumber);
@@ -880,6 +883,43 @@ namespace NovaWrightNumberPush
                         seed,
                         outputDirectory);
 
+                if (reportDiagnostics &&
+                    result.Diagnostics != null)
+                {
+                    string diagnosticsFile =
+                        Path.Combine(
+                            outputDirectory,
+                            $"GenerationDiagnostics_{levelNumber:D3}-{levelNumber:D3}.txt");
+
+                    List<string> reportLines =
+                        new List<string>();
+
+                    reportLines.Add(
+                        "NUMBER PUSH GENERATION DIAGNOSTICS");
+
+                    reportLines.Add(
+                        $"Levels: {levelNumber}-{levelNumber}");
+
+                    reportLines.Add(
+                        $"Seed: {seed}");
+
+                    reportLines.Add(
+                        "");
+
+                    reportLines.Add(
+                        "========================================");
+
+                    reportLines.Add(
+                        result.Diagnostics.GetReportText());
+
+                    reportLines.Add(
+                        "");
+
+                    File.WriteAllLines(
+                        diagnosticsFile,
+                        reportLines);
+                }
+
                 if (openMarkdownCheckBox.Checked)
                 {
                     System.Diagnostics.Process.Start(
@@ -902,7 +942,14 @@ namespace NovaWrightNumberPush
                     $"Seed: {seed}\r\n" +
                     $"Markdown: {markdownFile}";
 
-                Hide();
+                MessageBox.Show(
+                    $"Successfully generated level {levelNumber}." +
+                    (reportDiagnostics
+                        ? "\r\n\r\nDiagnostics report generated."
+                        : ""),
+                    "Number Push Generator",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
 
                 if (openLevelCheckBox.Checked)
                 {

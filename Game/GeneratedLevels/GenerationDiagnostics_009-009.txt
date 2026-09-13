@@ -8,19 +8,19 @@ Target pushes: 8-19
 Final board: 10x12
 
 CANDIDATES
-Total attempts: 537
+Total attempts: 355
 Wall generation failures: 0
 Geometric failures: 0
-Wall reachability failures: 446
-Solver calls: 91
-Unsolvable: 90
+Wall reachability failures: 65
+Solver calls: 290
+Unsolvable: 289
 Below target: 0
 Above target: 0
 Accepted: 1
 
 TIMING
-Candidate generation: 311 ms
-Solver: 459 ms
-Average solver call: 5.04 ms
-Total: 1210 ms
+Candidate generation: 252 ms
+Solver: 23997 ms
+Average solver call: 82.75 ms
+Total: 24857 ms
 

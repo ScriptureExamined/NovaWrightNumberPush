@@ -236,11 +236,17 @@ namespace NovaWright.NumberPush.LevelGenerator
             }
 
             List<Point> newCratePositions =
-                new List<Point>(
-                    state.CratePositions);
+    new List<Point>(
+        state.CratePositions);
 
             newCratePositions[crateIndex] =
                 finalPosition;
+
+            if (IsStaticCornerDeadlock(
+                finalPosition))
+            {
+                return;
+            }
 
             Point newPlayerPosition =
                 cratePosition;
@@ -291,6 +297,45 @@ namespace NovaWright.NumberPush.LevelGenerator
                     stepData);
 
             queue.Enqueue(newState);
+        }
+
+        private bool IsStaticCornerDeadlock(
+    Point position)
+        {
+            if (goalPositions.Contains(position))
+            {
+                return false;
+            }
+
+            bool wallUp =
+                IsWall(
+                    new Point(
+                        position.X,
+                        position.Y - 1));
+
+            bool wallDown =
+                IsWall(
+                    new Point(
+                        position.X,
+                        position.Y + 1));
+
+            bool wallLeft =
+                IsWall(
+                    new Point(
+                        position.X - 1,
+                        position.Y));
+
+            bool wallRight =
+                IsWall(
+                    new Point(
+                        position.X + 1,
+                        position.Y));
+
+            return
+                (wallUp && wallLeft) ||
+                (wallUp && wallRight) ||
+                (wallDown && wallLeft) ||
+                (wallDown && wallRight);
         }
 
         private NumberPushSolution BuildSolution(
@@ -721,19 +766,24 @@ namespace NovaWright.NumberPush.LevelGenerator
         }
 
         private string CreateStateKey(
-            Point playerPosition,
-            List<Point> cratePositions)
+    Point playerPosition,
+    List<Point> cratePositions)
         {
-            IEnumerable<string> crates =
+            List<int> crateIndexes =
                 cratePositions
                     .Select(
                         position =>
-                            $"{position.X},{position.Y}")
-                    .OrderBy(value => value);
+                            position.Y * columns +
+                            position.X)
+                    .OrderBy(
+                        value => value)
+                    .ToList();
 
             return
-                $"{playerPosition.X},{playerPosition.Y}|" +
-                string.Join("|", crates);
+                $"{playerPosition.Y * columns + playerPosition.X}|" +
+                string.Join(
+                    ",",
+                    crateIndexes);
         }
 
         private class SolverState
