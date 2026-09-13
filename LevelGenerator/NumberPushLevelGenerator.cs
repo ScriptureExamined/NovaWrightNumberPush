@@ -213,10 +213,10 @@ namespace NovaWright.NumberPush.LevelGenerator
         }
 
         private NumberPushLevel? CreateCandidate(
-            int levelNumber,
-            NumberPushDifficulty difficulty,
-            int rows,
-            int columns)
+    int levelNumber,
+    NumberPushDifficulty difficulty,
+    int rows,
+    int columns)
         {
             NumberPushLevel level =
                 new NumberPushLevel
@@ -241,7 +241,7 @@ namespace NovaWright.NumberPush.LevelGenerator
                     level);
 
             int crateCount =
-    difficulty.MinimumCrates;
+                difficulty.MinimumCrates;
 
             if (availableCells.Count <
                 crateCount * 2 + 1)
@@ -260,10 +260,10 @@ namespace NovaWright.NumberPush.LevelGenerator
             foreach (Point cratePosition in cratePositions)
             {
                 int distance =
-    GetCrateDistance(
-        difficulty,
-        cratePositions.IndexOf(
-            cratePosition));
+                    GetCrateDistance(
+                        difficulty,
+                        cratePositions.IndexOf(
+                            cratePosition));
 
                 level.Crates.Add(
                     new NumberPushCrate(
@@ -271,28 +271,53 @@ namespace NovaWright.NumberPush.LevelGenerator
                         distance));
             }
 
-            List<Point> goalCandidates =
-                availableCells
-                    .Where(
-                        cell =>
-                            !cratePositions.Contains(
-                                cell))
-                    .ToList();
+            HashSet<Point> usedGoals =
+                new HashSet<Point>();
 
-            Shuffle(
-                goalCandidates);
+            List<int> crateOrder =
+                Enumerable.Range(
+                    0,
+                    level.Crates.Count)
+                .OrderBy(
+                    index =>
+                        level.Crates[index].Distance)
+                .ToList();
 
-            if (goalCandidates.Count < crateCount)
+            foreach (int crateIndex in crateOrder)
             {
-                return null;
-            }
+                NumberPushCrate crate =
+                    level.Crates[crateIndex];
 
-            for (int i = 0;
-                 i < crateCount;
-                 i++)
-            {
+                List<Point> compatibleGoals =
+                    availableCells
+                        .Where(
+                            cell =>
+                                !cratePositions.Contains(
+                                    cell) &&
+                                !usedGoals.Contains(
+                                    cell) &&
+                                IsGeometricallyCompatibleGoal(
+                                    crate.Position,
+                                    crate.Distance,
+                                    cell))
+                        .ToList();
+
+                if (compatibleGoals.Count == 0)
+                {
+                    return null;
+                }
+
+                Shuffle(
+                    compatibleGoals);
+
+                Point selectedGoal =
+                    compatibleGoals[0];
+
                 level.Goals.Add(
-                    goalCandidates[i]);
+                    selectedGoal);
+
+                usedGoals.Add(
+                    selectedGoal);
             }
 
             List<Point> playerCandidates =
@@ -316,6 +341,48 @@ namespace NovaWright.NumberPush.LevelGenerator
                         playerCandidates.Count)];
 
             return level;
+        }
+
+        private bool IsGeometricallyCompatibleGoal(
+    Point cratePosition,
+    int distance,
+    Point goalPosition)
+        {
+            if (distance <= 0)
+            {
+                return false;
+            }
+
+            int deltaX =
+                Math.Abs(
+                    goalPosition.X -
+                    cratePosition.X);
+
+            int deltaY =
+                Math.Abs(
+                    goalPosition.Y -
+                    cratePosition.Y);
+
+            bool sameRow =
+                deltaY == 0;
+
+            bool sameColumn =
+                deltaX == 0;
+
+            if (!sameRow &&
+                !sameColumn)
+            {
+                return false;
+            }
+
+            int displacement =
+                Math.Max(
+                    deltaX,
+                    deltaY);
+
+            return
+                displacement > 0 &&
+                displacement % distance == 0;
         }
 
         private int GetCrateDistance(

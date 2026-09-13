@@ -15,6 +15,7 @@
         public int TotalAttempts { get; set; }
 
         public int WallGenerationFailures { get; set; }
+        public int GeometricFailures { get; set; }
 
         public int TotalSolverCalls { get; set; }
 
@@ -57,6 +58,7 @@
                 "CANDIDATES\r\n" +
                 $"Total attempts: {TotalAttempts}\r\n" +
                 $"Wall generation failures: {WallGenerationFailures}\r\n" +
+                $"Geometric failures: {GeometricFailures}\r\n" +
                 $"Solver calls: {TotalSolverCalls}\r\n" +
                 $"Unsolvable: {UnsolvableCandidates}\r\n" +
                 $"Below target: {BelowTargetCandidates}\r\n" +
@@ -101,6 +103,10 @@
             Console.WriteLine(
                 $"Wall generation failures: " +
                 $"{WallGenerationFailures}");
+
+            Console.WriteLine(
+                $"Geometric failures: " +
+                $"{GeometricFailures}");
 
             Console.WriteLine(
                 $"Solver calls: {TotalSolverCalls}");
