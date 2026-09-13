@@ -4,8 +4,6 @@
     {
         public int LevelNumber { get; set; }
 
-        public string ProfileName { get; set; } = string.Empty;
-
         public int TargetMinimumPushes { get; set; }
 
         public int TargetMaximumPushes { get; set; }
@@ -15,6 +13,8 @@
         public int FinalColumns { get; set; }
 
         public int TotalAttempts { get; set; }
+
+        public int WallGenerationFailures { get; set; }
 
         public int TotalSolverCalls { get; set; }
 
@@ -47,6 +47,29 @@
             }
         }
 
+        public string GetReportText()
+        {
+            return
+                $"LEVEL {LevelNumber} DIAGNOSTICS\r\n" +
+                $"Target pushes: {TargetMinimumPushes}-{TargetMaximumPushes}\r\n" +
+                $"Final board: {FinalRows}x{FinalColumns}\r\n" +
+                "\r\n" +
+                "CANDIDATES\r\n" +
+                $"Total attempts: {TotalAttempts}\r\n" +
+                $"Wall generation failures: {WallGenerationFailures}\r\n" +
+                $"Solver calls: {TotalSolverCalls}\r\n" +
+                $"Unsolvable: {UnsolvableCandidates}\r\n" +
+                $"Below target: {BelowTargetCandidates}\r\n" +
+                $"Above target: {AboveTargetCandidates}\r\n" +
+                $"Accepted: {AcceptedCandidates}\r\n" +
+                "\r\n" +
+                "TIMING\r\n" +
+                $"Candidate generation: {CandidateGenerationMilliseconds} ms\r\n" +
+                $"Solver: {SolverMilliseconds} ms\r\n" +
+                $"Average solver call: {AverageSolverMilliseconds:F2} ms\r\n" +
+                $"Total: {TotalMilliseconds} ms";
+        }
+
         public void PrintReport()
         {
             Console.WriteLine();
@@ -58,9 +81,6 @@
 
             Console.WriteLine(
                 "========================================");
-
-            Console.WriteLine(
-                $"Profile: {ProfileName}");
 
             Console.WriteLine(
                 $"Target pushes: " +
@@ -77,6 +97,10 @@
 
             Console.WriteLine(
                 $"Total attempts: {TotalAttempts}");
+
+            Console.WriteLine(
+                $"Wall generation failures: " +
+                $"{WallGenerationFailures}");
 
             Console.WriteLine(
                 $"Solver calls: {TotalSolverCalls}");

@@ -1,0 +1,124 @@
+NUMBER PUSH GENERATION DIAGNOSTICS
+Levels: 1-6
+Seed: 12345
+
+========================================
+LEVEL 1 DIAGNOSTICS
+Target pushes: 4-11
+Final board: 10x12
+
+CANDIDATES
+Total attempts: 1
+Wall generation failures: 0
+Solver calls: 1
+Unsolvable: 0
+Below target: 0
+Above target: 0
+Accepted: 1
+
+TIMING
+Candidate generation: 7 ms
+Solver: 10 ms
+Average solver call: 10.00 ms
+Total: 19 ms
+
+========================================
+LEVEL 2 DIAGNOSTICS
+Target pushes: 5-12
+Final board: 10x12
+
+CANDIDATES
+Total attempts: 7
+Wall generation failures: 0
+Solver calls: 7
+Unsolvable: 4
+Below target: 2
+Above target: 0
+Accepted: 1
+
+TIMING
+Candidate generation: 46 ms
+Solver: 1 ms
+Average solver call: 0.14 ms
+Total: 58 ms
+
+========================================
+LEVEL 3 DIAGNOSTICS
+Target pushes: 5-13
+Final board: 10x12
+
+CANDIDATES
+Total attempts: 8
+Wall generation failures: 0
+Solver calls: 8
+Unsolvable: 7
+Below target: 0
+Above target: 0
+Accepted: 1
+
+TIMING
+Candidate generation: 67 ms
+Solver: 80 ms
+Average solver call: 10.00 ms
+Total: 215 ms
+
+========================================
+LEVEL 4 DIAGNOSTICS
+Target pushes: 6-14
+Final board: 10x12
+
+CANDIDATES
+Total attempts: 13
+Wall generation failures: 0
+Solver calls: 13
+Unsolvable: 12
+Below target: 0
+Above target: 0
+Accepted: 1
+
+TIMING
+Candidate generation: 139 ms
+Solver: 115 ms
+Average solver call: 8.85 ms
+Total: 276 ms
+
+========================================
+LEVEL 5 DIAGNOSTICS
+Target pushes: 6-15
+Final board: 10x12
+
+CANDIDATES
+Total attempts: 35
+Wall generation failures: 0
+Solver calls: 35
+Unsolvable: 32
+Below target: 2
+Above target: 0
+Accepted: 1
+
+TIMING
+Candidate generation: 72 ms
+Solver: 121 ms
+Average solver call: 3.46 ms
+Total: 225 ms
+
+========================================
+LEVEL 6 DIAGNOSTICS
+Target pushes: 7-16
+Final board: 10x12
+
+CANDIDATES
+Total attempts: 554
+Wall generation failures: 0
+Solver calls: 554
+Unsolvable: 553
+Below target: 0
+Above target: 0
+Accepted: 1
+
+TIMING
+Candidate generation: 1221 ms
+Solver: 5887 ms
+Average solver call: 10.63 ms
+Total: 7694 ms
+

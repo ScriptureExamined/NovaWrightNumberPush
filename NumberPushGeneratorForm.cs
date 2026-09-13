@@ -23,6 +23,8 @@ namespace NovaWrightNumberPush
         private readonly CheckBox openMarkdownCheckBox;
         private readonly CheckBox showCrateNumbersCheckBox;
 
+        private CheckBox reportDiagnosticsCheckBox = null!;
+
         public NumberPushGeneratorForm(
             NumberPushGame game,
             NumberPushGameSession gameSession)
@@ -508,6 +510,26 @@ namespace NovaWrightNumberPush
             Controls.Add(
                 showCrateNumbersCheckBox);
 
+            reportDiagnosticsCheckBox =
+    new CheckBox();
+
+            reportDiagnosticsCheckBox.Text =
+                "Report diagnostic data";
+
+            reportDiagnosticsCheckBox.AutoSize =
+                true;
+
+            reportDiagnosticsCheckBox.Location =
+                new Point(
+                    230,
+                    525);
+
+            reportDiagnosticsCheckBox.ForeColor =
+                Color.White;
+
+            Controls.Add(
+                reportDiagnosticsCheckBox);
+
             // --------------------------------------------------------
             // Close
             // --------------------------------------------------------
@@ -577,6 +599,9 @@ namespace NovaWrightNumberPush
             int seed =
                 (int)seedInput.Value;
 
+            bool reportDiagnostics =
+    reportDiagnosticsCheckBox.Checked;
+
             if (lastLevel < firstLevel)
             {
                 MessageBox.Show(
@@ -635,8 +660,9 @@ namespace NovaWrightNumberPush
                         () =>
                         {
                             NumberPushGenerationService service =
-                                new NumberPushGenerationService(
-                                    seed);
+    new NumberPushGenerationService(
+        seed,
+        reportDiagnostics);
 
                             return service.GenerateRange(
                                 firstLevel,
@@ -645,12 +671,73 @@ namespace NovaWrightNumberPush
                         });
 
                 NumberPushLevelRepository levelRepository =
-                    new NumberPushLevelRepository();
+    new NumberPushLevelRepository();
 
                 string outputDirectory =
                     Path.Combine(
                         AppContext.BaseDirectory,
                         "GeneratedLevels");
+
+                if (reportDiagnostics)
+                {
+                    string projectDirectory =
+                        Directory.GetParent(
+                            AppContext.BaseDirectory)!
+                        .Parent!
+                        .Parent!
+                        .Parent!
+                        .FullName;
+
+                    string diagnosticsDirectory =
+                        Path.Combine(
+                            projectDirectory,
+                            "Game",
+                            "GeneratedLevels");
+
+                    Directory.CreateDirectory(
+                        diagnosticsDirectory);
+
+                    string diagnosticsFile =
+                        Path.Combine(
+                            diagnosticsDirectory,
+                            $"GenerationDiagnostics_{firstLevel:D3}-{lastLevel:D3}.txt");
+
+                    List<string> reportLines =
+                        new List<string>();
+
+                    reportLines.Add(
+                        $"NUMBER PUSH GENERATION DIAGNOSTICS");
+
+                    reportLines.Add(
+                        $"Levels: {firstLevel}-{lastLevel}");
+
+                    reportLines.Add(
+                        $"Seed: {seed}");
+
+                    reportLines.Add(
+                        "");
+
+                    foreach (NumberPushGenerationResult result in results)
+                    {
+                        if (result.Diagnostics == null)
+                        {
+                            continue;
+                        }
+
+                        reportLines.Add(
+                            "========================================");
+
+                        reportLines.Add(
+                            result.Diagnostics.GetReportText());
+
+                        reportLines.Add(
+                            "");
+                    }
+
+                    File.WriteAllLines(
+                        diagnosticsFile,
+                        reportLines);
+                }
 
                 int successfulLevels = 0;
 
@@ -743,8 +830,9 @@ namespace NovaWrightNumberPush
                         () =>
                         {
                             NumberPushGenerationService service =
-                                new NumberPushGenerationService(
-                                    seed);
+    new NumberPushGenerationService(
+        seed,
+        false);
 
                             return service.Generate(
                                 levelNumber);

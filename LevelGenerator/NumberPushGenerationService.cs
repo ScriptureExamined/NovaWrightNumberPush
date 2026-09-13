@@ -7,13 +7,19 @@ namespace NovaWright.NumberPush.LevelGenerator
     {
         private readonly NumberPushLevelGenerator generator;
 
+        private readonly bool reportDiagnostics;
+
         public int Seed { get; }
 
         public NumberPushGenerationService(
-            int seed)
+    int seed,
+    bool reportDiagnostics)
         {
             Seed =
                 seed;
+
+            this.reportDiagnostics =
+                reportDiagnostics;
 
             generator =
                 new NumberPushLevelGenerator(
@@ -27,15 +33,31 @@ namespace NovaWright.NumberPush.LevelGenerator
                 new NumberPushDifficulty(
                     levelNumber);
 
+            NumberPushGenerationDiagnostics? diagnostics =
+    reportDiagnostics
+        ? new NumberPushGenerationDiagnostics()
+        : null;
+
             Stopwatch generationTimer =
                 Stopwatch.StartNew();
 
             NumberPushLevel? level =
                 generator.Generate(
                     levelNumber,
-                    difficulty);
+                    difficulty,
+                    diagnostics);
 
             generationTimer.Stop();
+
+            if (diagnostics != null &&
+    level != null)
+            {
+                diagnostics.FinalRows =
+                    level.Rows;
+
+                diagnostics.FinalColumns =
+                    level.Columns;
+            }
 
             NumberPushGenerationResult result =
                 new NumberPushGenerationResult
@@ -45,6 +67,9 @@ namespace NovaWright.NumberPush.LevelGenerator
 
                     Difficulty =
     difficulty,
+
+                    Diagnostics =
+    diagnostics,
 
                     GenerationMilliseconds =
                         generationTimer.ElapsedMilliseconds
@@ -72,6 +97,13 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             result.SolutionMilliseconds =
                 solutionTimer.ElapsedMilliseconds;
+
+            if (diagnostics != null)
+            {
+                diagnostics.TotalMilliseconds =
+                    generationTimer.ElapsedMilliseconds +
+                    solutionTimer.ElapsedMilliseconds;
+            }
 
             return result;
         }

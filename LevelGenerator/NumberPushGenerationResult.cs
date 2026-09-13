@@ -10,6 +10,8 @@ namespace NovaWright.NumberPush.LevelGenerator
 
         public NumberPushDifficulty? Difficulty { get; set; }
 
+        public NumberPushGenerationDiagnostics? Diagnostics { get; set; }
+
         public long GenerationMilliseconds { get; set; }
 
         public long SolutionMilliseconds { get; set; }

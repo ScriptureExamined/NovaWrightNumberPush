@@ -1,4 +1,5 @@
 ﻿using NovaWrightNumberPush;
+using System.Diagnostics;
 
 namespace NovaWright.NumberPush.LevelGenerator
 {
@@ -16,13 +17,26 @@ namespace NovaWright.NumberPush.LevelGenerator
         }
 
         public NumberPushLevel? Generate(
-            int levelNumber,
-            NumberPushDifficulty difficulty)
+    int levelNumber,
+    NumberPushDifficulty difficulty,
+    NumberPushGenerationDiagnostics? diagnostics = null)
         {
             if (difficulty == null)
             {
                 throw new ArgumentNullException(
                     nameof(difficulty));
+            }
+
+            if (diagnostics != null)
+            {
+                diagnostics.LevelNumber =
+                    levelNumber;
+
+                diagnostics.TargetMinimumPushes =
+                    difficulty.MinimumSolutionPushes;
+
+                diagnostics.TargetMaximumPushes =
+                    difficulty.MaximumSolutionPushes;
             }
 
             if (difficulty.StartingRows <= 0 ||
@@ -78,6 +92,14 @@ namespace NovaWright.NumberPush.LevelGenerator
                      attempt < difficulty.MaximumAttempts;
                      attempt++)
                 {
+                    if (diagnostics != null)
+                    {
+                        diagnostics.TotalAttempts++;
+                    }
+
+                    Stopwatch candidateTimer =
+    Stopwatch.StartNew();
+
                     NumberPushLevel? candidate =
                         CreateCandidate(
                             levelNumber,
@@ -85,10 +107,31 @@ namespace NovaWright.NumberPush.LevelGenerator
                             rows,
                             columns);
 
+                    candidateTimer.Stop();
+
+                    if (diagnostics != null)
+                    {
+                        diagnostics.CandidateGenerationMilliseconds +=
+                            candidateTimer.ElapsedMilliseconds;
+                    }
+
                     if (candidate == null)
                     {
+                        if (diagnostics != null)
+                        {
+                            diagnostics.WallGenerationFailures++;
+                        }
+
                         continue;
                     }
+
+                    if (diagnostics != null)
+                    {
+                        diagnostics.TotalSolverCalls++;
+                    }
+
+                    Stopwatch solverTimer =
+                        Stopwatch.StartNew();
 
                     NumberPushSolver solver =
                         new NumberPushSolver(
@@ -97,21 +140,49 @@ namespace NovaWright.NumberPush.LevelGenerator
                     int minimumSolution =
                         solver.FindMinimumPushes();
 
+                    solverTimer.Stop();
+
+                    if (diagnostics != null)
+                    {
+                        diagnostics.SolverMilliseconds +=
+                            solverTimer.ElapsedMilliseconds;
+                    }
+
                     if (minimumSolution < 0)
                     {
+                        if (diagnostics != null)
+                        {
+                            diagnostics.UnsolvableCandidates++;
+                        }
+
                         continue;
                     }
 
                     if (minimumSolution <
                         difficulty.MinimumSolutionPushes)
                     {
+                        if (diagnostics != null)
+                        {
+                            diagnostics.BelowTargetCandidates++;
+                        }
+
                         continue;
                     }
 
                     if (minimumSolution >
                         difficulty.MaximumSolutionPushes)
                     {
+                        if (diagnostics != null)
+                        {
+                            diagnostics.AboveTargetCandidates++;
+                        }
+
                         continue;
+                    }
+
+                    if (diagnostics != null)
+                    {
+                        diagnostics.AcceptedCandidates++;
                     }
 
                     currentRows =

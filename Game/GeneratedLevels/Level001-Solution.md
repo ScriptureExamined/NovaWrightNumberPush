@@ -85,7 +85,7 @@ complexity: 1
 
 ## Generation Settings
 
-- **Target Pushes:** 4–13
+- **Target Pushes:** 4–11
 - **Crate Count Range:** 1–2
 - **Crate Distance Range:** 1–1
 - **Interior Wall Range:** 2–8
