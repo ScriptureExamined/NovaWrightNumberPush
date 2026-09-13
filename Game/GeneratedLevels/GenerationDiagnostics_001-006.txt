@@ -18,10 +18,10 @@ Above target: 0
 Accepted: 1
 
 TIMING
-Candidate generation: 8 ms
-Solver: 10 ms
-Average solver call: 10.00 ms
-Total: 20 ms
+Candidate generation: 9 ms
+Solver: 8 ms
+Average solver call: 8.00 ms
+Total: 21 ms
 
 ========================================
 LEVEL 2 DIAGNOSTICS
@@ -39,10 +39,10 @@ Above target: 0
 Accepted: 1
 
 TIMING
-Candidate generation: 33 ms
-Solver: 0 ms
-Average solver call: 0.00 ms
-Total: 34 ms
+Candidate generation: 28 ms
+Solver: 2 ms
+Average solver call: 2.00 ms
+Total: 31 ms
 
 ========================================
 LEVEL 3 DIAGNOSTICS
@@ -60,10 +60,10 @@ Above target: 0
 Accepted: 1
 
 TIMING
-Candidate generation: 26 ms
-Solver: 60 ms
-Average solver call: 15.00 ms
-Total: 134 ms
+Candidate generation: 0 ms
+Solver: 64 ms
+Average solver call: 16.00 ms
+Total: 112 ms
 
 ========================================
 LEVEL 4 DIAGNOSTICS
@@ -81,10 +81,10 @@ Above target: 0
 Accepted: 1
 
 TIMING
-Candidate generation: 42 ms
+Candidate generation: 1 ms
 Solver: 7 ms
 Average solver call: 1.75 ms
-Total: 55 ms
+Total: 15 ms
 
 ========================================
 LEVEL 5 DIAGNOSTICS
@@ -102,10 +102,10 @@ Above target: 0
 Accepted: 1
 
 TIMING
-Candidate generation: 312 ms
-Solver: 30 ms
-Average solver call: 1.43 ms
-Total: 368 ms
+Candidate generation: 4 ms
+Solver: 32 ms
+Average solver call: 1.52 ms
+Total: 67 ms
 
 ========================================
 LEVEL 6 DIAGNOSTICS
@@ -123,8 +123,8 @@ Above target: 0
 Accepted: 1
 
 TIMING
-Candidate generation: 428 ms
-Solver: 696 ms
-Average solver call: 4.64 ms
-Total: 1432 ms
+Candidate generation: 23 ms
+Solver: 835 ms
+Average solver call: 5.57 ms
+Total: 1159 ms
 
