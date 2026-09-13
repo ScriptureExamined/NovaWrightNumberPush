@@ -717,6 +717,11 @@ namespace NovaWrightNumberPush
                     reportLines.Add(
                         "");
 
+                    long totalCreationMilliseconds =
+    results.Sum(
+        result =>
+            result.GenerationMilliseconds);
+
                     foreach (NumberPushGenerationResult result in results)
                     {
                         if (result.Diagnostics == null)
@@ -733,6 +738,15 @@ namespace NovaWrightNumberPush
                         reportLines.Add(
                             "");
                     }
+
+                    reportLines.Add(
+                        "========================================");
+
+                    reportLines.Add(
+                        $"TOTAL CREATION TIME: {totalCreationMilliseconds} ms");
+
+                    reportLines.Add(
+                        "========================================");
 
                     File.WriteAllLines(
                         diagnosticsFile,

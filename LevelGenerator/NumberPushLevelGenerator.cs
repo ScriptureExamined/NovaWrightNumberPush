@@ -137,6 +137,19 @@ namespace NovaWright.NumberPush.LevelGenerator
                     if (diagnostics != null)
                     {
                         diagnostics.TotalSolverCalls++;
+
+                        string boardSize =
+                            $"{rows}x{columns}";
+
+                        if (diagnostics.BoardSizeSolverCalls.ContainsKey(
+                            boardSize))
+                        {
+                            diagnostics.BoardSizeSolverCalls[boardSize]++;
+                        }
+                        else
+                        {
+                            diagnostics.BoardSizeSolverCalls[boardSize] = 1;
+                        }
                     }
 
                     Stopwatch solverTimer =
@@ -153,8 +166,34 @@ namespace NovaWright.NumberPush.LevelGenerator
 
                     if (diagnostics != null)
                     {
-                        diagnostics.SolverMilliseconds +=
+                        long solverMilliseconds =
                             solverTimer.ElapsedMilliseconds;
+
+                        diagnostics.SolverMilliseconds +=
+                            solverMilliseconds;
+
+                        if (minimumSolution < 0)
+                        {
+                            diagnostics.UnsolvableSolverMilliseconds +=
+                                solverMilliseconds;
+                        }
+                        else if (minimumSolution <
+                                 difficulty.MinimumSolutionPushes)
+                        {
+                            diagnostics.BelowTargetSolverMilliseconds +=
+                                solverMilliseconds;
+                        }
+                        else if (minimumSolution >
+                                 difficulty.MaximumSolutionPushes)
+                        {
+                            diagnostics.AboveTargetSolverMilliseconds +=
+                                solverMilliseconds;
+                        }
+                        else
+                        {
+                            diagnostics.AcceptedSolverMilliseconds +=
+                                solverMilliseconds;
+                        }
                     }
 
                     if (minimumSolution < 0)

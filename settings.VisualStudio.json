@@ -1,4 +1,5 @@
 /* Visual Studio Settings File */
 {
-  "textEditor.advanced.adaptiveFormatting": false
+  "textEditor.advanced.adaptiveFormatting": false,
+  "textEditor.codeCleanup.profile": "profile1"
 }

@@ -15,6 +15,9 @@
         public Dictionary<string, int> BoardSizeAttempts { get; } =
     new Dictionary<string, int>();
 
+        public Dictionary<string, int> BoardSizeSolverCalls { get; } =
+            new Dictionary<string, int>();
+
         public int TotalAttempts { get; set; }
 
         public int WallGenerationFailures { get; set; }
@@ -34,6 +37,14 @@
         public long CandidateGenerationMilliseconds { get; set; }
 
         public long SolverMilliseconds { get; set; }
+
+        public long UnsolvableSolverMilliseconds { get; set; }
+
+        public long BelowTargetSolverMilliseconds { get; set; }
+
+        public long AboveTargetSolverMilliseconds { get; set; }
+
+        public long AcceptedSolverMilliseconds { get; set; }
 
         public long TotalMilliseconds { get; set; }
 
@@ -60,14 +71,22 @@
                 $"Final board: {FinalRows}x{FinalColumns}\r\n" +
                 "\r\n" +
                 "BOARD SIZE ATTEMPTS\r\n" +
-                string.Join(
-                    "\r\n",
-                    BoardSizeAttempts.Select(
-                        entry =>
-                            $"  {entry.Key}: {entry.Value}")) +
-                "\r\n" +
-                "\r\n" +
-                "CANDIDATES\r\n" +
+string.Join(
+    "\r\n",
+    BoardSizeAttempts.Select(
+        entry =>
+            $"  {entry.Key}: {entry.Value}")) +
+"\r\n" +
+"\r\n" +
+"BOARD SIZE SOLVER CALLS\r\n" +
+string.Join(
+    "\r\n",
+    BoardSizeSolverCalls.Select(
+        entry =>
+            $"  {entry.Key}: {entry.Value}")) +
+"\r\n" +
+"\r\n" +
+"CANDIDATES\r\n" +
                 $"Total attempts: {TotalAttempts}\r\n" +
                 $"Wall generation failures: {WallGenerationFailures}\r\n" +
                 $"Geometric failures: {GeometricFailures}\r\n" +
@@ -79,10 +98,14 @@
                 $"Accepted: {AcceptedCandidates}\r\n" +
                 "\r\n" +
                 "TIMING\r\n" +
-                $"Candidate generation: {CandidateGenerationMilliseconds} ms\r\n" +
-                $"Solver: {SolverMilliseconds} ms\r\n" +
-                $"Average solver call: {AverageSolverMilliseconds:F2} ms\r\n" +
-                $"Total: {TotalMilliseconds} ms";
+$"Candidate generation: {CandidateGenerationMilliseconds} ms\r\n" +
+$"Solver: {SolverMilliseconds} ms\r\n" +
+$"Average solver call: {AverageSolverMilliseconds:F2} ms\r\n" +
+$"Unsolvable solver time: {UnsolvableSolverMilliseconds} ms\r\n" +
+$"Below target solver time: {BelowTargetSolverMilliseconds} ms\r\n" +
+$"Above target solver time: {AboveTargetSolverMilliseconds} ms\r\n" +
+$"Accepted solver time: {AcceptedSolverMilliseconds} ms\r\n" +
+$"Total: {TotalMilliseconds} ms";
         }
 
         public void PrintReport()

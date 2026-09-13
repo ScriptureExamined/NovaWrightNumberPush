@@ -10,6 +10,9 @@ Final board: 10x12
 BOARD SIZE ATTEMPTS
   10x12: 371
 
+BOARD SIZE SOLVER CALLS
+  10x12: 160
+
 CANDIDATES
 Total attempts: 371
 Wall generation failures: 0
@@ -22,10 +25,14 @@ Above target: 0
 Accepted: 1
 
 TIMING
-Candidate generation: 385 ms
-Solver: 808 ms
-Average solver call: 5.05 ms
-Total: 1543 ms
+Candidate generation: 404 ms
+Solver: 830 ms
+Average solver call: 5.19 ms
+Unsolvable solver time: 750 ms
+Below target solver time: 0 ms
+Above target solver time: 0 ms
+Accepted solver time: 80 ms
+Total: 1575 ms
 
 ========================================
 LEVEL 11 DIAGNOSTICS
@@ -35,6 +42,10 @@ Final board: 12x14
 BOARD SIZE ATTEMPTS
   10x12: 1500
   12x14: 59
+
+BOARD SIZE SOLVER CALLS
+  10x12: 597
+  12x14: 38
 
 CANDIDATES
 Total attempts: 1559
@@ -48,10 +59,14 @@ Above target: 1
 Accepted: 1
 
 TIMING
-Candidate generation: 353 ms
-Solver: 20204 ms
-Average solver call: 31.82 ms
-Total: 23352 ms
+Candidate generation: 362 ms
+Solver: 19248 ms
+Average solver call: 30.31 ms
+Unsolvable solver time: 3062 ms
+Below target solver time: 0 ms
+Above target solver time: 14606 ms
+Accepted solver time: 1580 ms
+Total: 22312 ms
 
 ========================================
 LEVEL 12 DIAGNOSTICS
@@ -60,6 +75,9 @@ Final board: 12x14
 
 BOARD SIZE ATTEMPTS
   12x14: 34
+
+BOARD SIZE SOLVER CALLS
+  12x14: 17
 
 CANDIDATES
 Total attempts: 34
@@ -73,8 +91,12 @@ Above target: 0
 Accepted: 1
 
 TIMING
-Candidate generation: 46 ms
-Solver: 16169 ms
-Average solver call: 951.12 ms
-Total: 23049 ms
+Candidate generation: 41 ms
+Solver: 15280 ms
+Average solver call: 898.82 ms
+Unsolvable solver time: 9026 ms
+Below target solver time: 0 ms
+Above target solver time: 0 ms
+Accepted solver time: 6254 ms
+Total: 21623 ms
 
