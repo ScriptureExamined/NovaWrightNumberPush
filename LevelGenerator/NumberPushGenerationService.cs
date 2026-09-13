@@ -77,8 +77,9 @@ namespace NovaWright.NumberPush.LevelGenerator
         }
 
         public List<NumberPushGenerationResult> GenerateRange(
-            int firstLevel,
-            int lastLevel)
+    int firstLevel,
+    int lastLevel,
+    IProgress<int>? progress = null)
         {
             if (firstLevel <= 0)
             {
@@ -97,6 +98,11 @@ namespace NovaWright.NumberPush.LevelGenerator
             List<NumberPushGenerationResult> results =
                 new List<NumberPushGenerationResult>();
 
+            int levelCount =
+                lastLevel - firstLevel + 1;
+
+            int completedLevels = 0;
+
             for (int levelNumber = firstLevel;
                  levelNumber <= lastLevel;
                  levelNumber++)
@@ -104,6 +110,11 @@ namespace NovaWright.NumberPush.LevelGenerator
                 results.Add(
                     Generate(
                         levelNumber));
+
+                completedLevels++;
+
+                progress?.Report(
+                    completedLevels);
             }
 
             return results;

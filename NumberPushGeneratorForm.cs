@@ -592,7 +592,7 @@ namespace NovaWrightNumberPush
                 lastLevel - firstLevel + 1;
 
             statusLabel.Text =
-                $"Generating Levels {firstLevel}-{lastLevel}...";
+                $"Generating level 0 of {levelCount}...";
 
             generateButton.Enabled =
                 false;
@@ -600,8 +600,33 @@ namespace NovaWrightNumberPush
             generateRangeButton.Enabled =
                 false;
 
+            progressBar.Style =
+                ProgressBarStyle.Continuous;
+
+            progressBar.Minimum =
+                0;
+
+            progressBar.Maximum =
+                levelCount;
+
+            progressBar.Value =
+                0;
+
             progressBar.Visible =
                 true;
+
+            Progress<int> generationProgress =
+                new Progress<int>(
+                    completed =>
+                    {
+                        statusLabel.Text =
+                            $"Generating level {completed} of {levelCount}...";
+
+                        progressBar.Value =
+                            Math.Min(
+                                completed,
+                                progressBar.Maximum);
+                    });
 
             try
             {
@@ -615,7 +640,8 @@ namespace NovaWrightNumberPush
 
                             return service.GenerateRange(
                                 firstLevel,
-                                lastLevel);
+                                lastLevel,
+                                generationProgress);
                         });
 
                 NumberPushLevelRepository levelRepository =
@@ -682,6 +708,9 @@ namespace NovaWrightNumberPush
 
                 generateRangeButton.Enabled =
                     true;
+
+                progressBar.Style =
+                    ProgressBarStyle.Marquee;
             }
         }
 
@@ -700,6 +729,9 @@ namespace NovaWrightNumberPush
 
             generateButton.Enabled =
                 false;
+
+            progressBar.Style =
+                ProgressBarStyle.Marquee;
 
             progressBar.Visible =
                 true;
