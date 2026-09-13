@@ -16,6 +16,7 @@
 
         public int WallGenerationFailures { get; set; }
         public int GeometricFailures { get; set; }
+        public int WallReachabilityFailures { get; set; }
 
         public int TotalSolverCalls { get; set; }
 
@@ -59,6 +60,7 @@
                 $"Total attempts: {TotalAttempts}\r\n" +
                 $"Wall generation failures: {WallGenerationFailures}\r\n" +
                 $"Geometric failures: {GeometricFailures}\r\n" +
+                $"Wall reachability failures: {WallReachabilityFailures}" + Environment.NewLine +
                 $"Solver calls: {TotalSolverCalls}\r\n" +
                 $"Unsolvable: {UnsolvableCandidates}\r\n" +
                 $"Below target: {BelowTargetCandidates}\r\n" +

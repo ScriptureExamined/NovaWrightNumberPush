@@ -101,11 +101,12 @@ namespace NovaWright.NumberPush.LevelGenerator
     Stopwatch.StartNew();
 
                     NumberPushLevel? candidate =
-                        CreateCandidate(
-                            levelNumber,
-                            difficulty,
-                            rows,
-                            columns);
+    CreateCandidate(
+        levelNumber,
+        difficulty,
+        rows,
+        columns,
+        diagnostics);
 
                     candidateTimer.Stop();
 
@@ -216,7 +217,8 @@ namespace NovaWright.NumberPush.LevelGenerator
     int levelNumber,
     NumberPushDifficulty difficulty,
     int rows,
-    int columns)
+    int columns,
+    NumberPushGenerationDiagnostics? diagnostics)
         {
             NumberPushLevel level =
                 new NumberPushLevel
@@ -275,35 +277,42 @@ namespace NovaWright.NumberPush.LevelGenerator
                 new HashSet<Point>();
 
             List<int> crateOrder =
-                Enumerable.Range(
-                    0,
-                    level.Crates.Count)
-                .OrderBy(
-                    index =>
-                        level.Crates[index].Distance)
-                .ToList();
+    Enumerable.Range(
+        0,
+        level.Crates.Count)
+    .OrderBy(
+        index =>
+            level.Crates[index].Distance)
+    .ToList();
 
             foreach (int crateIndex in crateOrder)
             {
                 NumberPushCrate crate =
                     level.Crates[crateIndex];
 
+                List<Point> reachableGoals =
+                    GetWallReachablePositions(
+                        level,
+                        crate.Position,
+                        crate.Distance);
+
                 List<Point> compatibleGoals =
-                    availableCells
+                    reachableGoals
                         .Where(
                             cell =>
                                 !cratePositions.Contains(
                                     cell) &&
                                 !usedGoals.Contains(
-                                    cell) &&
-                                IsGeometricallyCompatibleGoal(
-                                    crate.Position,
-                                    crate.Distance,
                                     cell))
                         .ToList();
 
                 if (compatibleGoals.Count == 0)
                 {
+                    if (diagnostics != null)
+                    {
+                        diagnostics.WallReachabilityFailures++;
+                    }
+
                     return null;
                 }
 
@@ -343,46 +352,85 @@ namespace NovaWright.NumberPush.LevelGenerator
             return level;
         }
 
-        private bool IsGeometricallyCompatibleGoal(
-    Point cratePosition,
-    int distance,
-    Point goalPosition)
+        private List<Point> GetWallReachablePositions(
+    NumberPushLevel level,
+    Point startPosition,
+    int distance)
         {
-            if (distance <= 0)
+            HashSet<Point> visited =
+                new HashSet<Point>();
+
+            Queue<Point> queue =
+                new Queue<Point>();
+
+            visited.Add(
+                startPosition);
+
+            queue.Enqueue(
+                startPosition);
+
+            Point[] directions =
             {
-                return false;
+        new Point(0, -1),
+        new Point(0, 1),
+        new Point(-1, 0),
+        new Point(1, 0)
+    };
+
+            while (queue.Count > 0)
+            {
+                Point current =
+                    queue.Dequeue();
+
+                foreach (Point direction in directions)
+                {
+                    Point finalPosition =
+                        current;
+
+                    bool valid =
+                        true;
+
+                    for (int step = 1;
+                         step <= distance;
+                         step++)
+                    {
+                        Point next =
+                            new Point(
+                                current.X +
+                                    direction.X * step,
+                                current.Y +
+                                    direction.Y * step);
+
+                        if (IsWall(
+                            level,
+                            next))
+                        {
+                            valid = false;
+                            break;
+                        }
+
+                        finalPosition =
+                            next;
+                    }
+
+                    if (!valid)
+                    {
+                        continue;
+                    }
+
+                    if (visited.Add(
+                        finalPosition))
+                    {
+                        queue.Enqueue(
+                            finalPosition);
+                    }
+                }
             }
 
-            int deltaX =
-                Math.Abs(
-                    goalPosition.X -
-                    cratePosition.X);
+            visited.Remove(
+                startPosition);
 
-            int deltaY =
-                Math.Abs(
-                    goalPosition.Y -
-                    cratePosition.Y);
-
-            bool sameRow =
-                deltaY == 0;
-
-            bool sameColumn =
-                deltaX == 0;
-
-            if (!sameRow &&
-                !sameColumn)
-            {
-                return false;
-            }
-
-            int displacement =
-                Math.Max(
-                    deltaX,
-                    deltaY);
-
-            return
-                displacement > 0 &&
-                displacement % distance == 0;
+            return visited.ToList();
         }
 
         private int GetCrateDistance(
