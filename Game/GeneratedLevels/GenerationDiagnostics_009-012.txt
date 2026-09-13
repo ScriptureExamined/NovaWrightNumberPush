@@ -1,0 +1,92 @@
+NUMBER PUSH GENERATION DIAGNOSTICS
+Levels: 9-12
+Seed: 12345
+
+========================================
+LEVEL 9 DIAGNOSTICS
+Target pushes: 8-19
+Final board: 10x12
+
+CANDIDATES
+Total attempts: 537
+Wall generation failures: 0
+Geometric failures: 0
+Wall reachability failures: 446
+Solver calls: 91
+Unsolvable: 90
+Below target: 0
+Above target: 0
+Accepted: 1
+
+TIMING
+Candidate generation: 6 ms
+Solver: 427 ms
+Average solver call: 4.69 ms
+Total: 856 ms
+
+========================================
+LEVEL 10 DIAGNOSTICS
+Target pushes: 9-20
+Final board: 12x14
+
+CANDIDATES
+Total attempts: 1538
+Wall generation failures: 3
+Geometric failures: 0
+Wall reachability failures: 1297
+Solver calls: 238
+Unsolvable: 236
+Below target: 1
+Above target: 0
+Accepted: 1
+
+TIMING
+Candidate generation: 50 ms
+Solver: 3521 ms
+Average solver call: 14.79 ms
+Total: 5125 ms
+
+========================================
+LEVEL 11 DIAGNOSTICS
+Target pushes: 9-21
+Final board: 12x14
+
+CANDIDATES
+Total attempts: 171
+Wall generation failures: 0
+Geometric failures: 0
+Wall reachability failures: 124
+Solver calls: 47
+Unsolvable: 46
+Below target: 0
+Above target: 0
+Accepted: 1
+
+TIMING
+Candidate generation: 128 ms
+Solver: 2657 ms
+Average solver call: 56.53 ms
+Total: 3390 ms
+
+========================================
+LEVEL 12 DIAGNOSTICS
+Target pushes: 10-22
+Final board: 12x14
+
+CANDIDATES
+Total attempts: 451
+Wall generation failures: 0
+Geometric failures: 0
+Wall reachability failures: 413
+Solver calls: 38
+Unsolvable: 37
+Below target: 0
+Above target: 0
+Accepted: 1
+
+TIMING
+Candidate generation: 327 ms
+Solver: 936 ms
+Average solver call: 24.63 ms
+Total: 1560 ms
+

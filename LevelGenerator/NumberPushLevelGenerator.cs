@@ -118,11 +118,6 @@ namespace NovaWright.NumberPush.LevelGenerator
 
                     if (candidate == null)
                     {
-                        if (diagnostics != null)
-                        {
-                            diagnostics.WallGenerationFailures++;
-                        }
-
                         continue;
                     }
 
@@ -232,9 +227,14 @@ namespace NovaWright.NumberPush.LevelGenerator
                 level);
 
             if (!CreateInteriorWalls(
-                level,
-                difficulty))
+    level,
+    difficulty))
             {
+                if (diagnostics != null)
+                {
+                    diagnostics.WallGenerationFailures++;
+                }
+
                 return null;
             }
 
@@ -274,39 +274,47 @@ namespace NovaWright.NumberPush.LevelGenerator
             }
 
             HashSet<Point> usedGoals =
-                new HashSet<Point>();
+    new HashSet<Point>();
 
             List<int> crateOrder =
-    Enumerable.Range(
-        0,
-        level.Crates.Count)
-    .OrderBy(
-        index =>
-            level.Crates[index].Distance)
-    .ToList();
+                Enumerable.Range(
+                    0,
+                    level.Crates.Count)
+                .OrderBy(
+                    index =>
+                    {
+                        List<Point> reachable =
+                            GetWallReachablePositions(
+                                level,
+                                level.Crates[index].Position,
+                                level.Crates[index].Distance);
+
+                        return reachable.Count;
+                    })
+                .ToList();
+
+            Dictionary<int, List<Point>> reachableGoals =
+                new Dictionary<int, List<Point>>();
 
             foreach (int crateIndex in crateOrder)
             {
                 NumberPushCrate crate =
                     level.Crates[crateIndex];
 
-                List<Point> reachableGoals =
+                List<Point> reachable =
                     GetWallReachablePositions(
                         level,
                         crate.Position,
-                        crate.Distance);
+                        crate.Distance)
+                    .Where(
+                        cell =>
+                            !cratePositions.Contains(cell))
+                    .ToList();
 
-                List<Point> compatibleGoals =
-                    reachableGoals
-                        .Where(
-                            cell =>
-                                !cratePositions.Contains(
-                                    cell) &&
-                                !usedGoals.Contains(
-                                    cell))
-                        .ToList();
+                Shuffle(
+                    reachable);
 
-                if (compatibleGoals.Count == 0)
+                if (reachable.Count == 0)
                 {
                     if (diagnostics != null)
                     {
@@ -316,17 +324,23 @@ namespace NovaWright.NumberPush.LevelGenerator
                     return null;
                 }
 
-                Shuffle(
-                    compatibleGoals);
+                reachableGoals[crateIndex] =
+                    reachable;
+            }
 
-                Point selectedGoal =
-                    compatibleGoals[0];
+            if (!TryAssignGoals(
+                crateOrder,
+                reachableGoals,
+                0,
+                usedGoals,
+                level))
+            {
+                if (diagnostics != null)
+                {
+                    diagnostics.WallReachabilityFailures++;
+                }
 
-                level.Goals.Add(
-                    selectedGoal);
-
-                usedGoals.Add(
-                    selectedGoal);
+                return null;
             }
 
             List<Point> playerCandidates =
@@ -350,6 +364,55 @@ namespace NovaWright.NumberPush.LevelGenerator
                         playerCandidates.Count)];
 
             return level;
+        }
+
+        private bool TryAssignGoals(
+    List<int> crateOrder,
+    Dictionary<int, List<Point>> reachableGoals,
+    int crateOrderIndex,
+    HashSet<Point> usedGoals,
+    NumberPushLevel level)
+        {
+            if (crateOrderIndex >= crateOrder.Count)
+            {
+                return true;
+            }
+
+            int crateIndex =
+                crateOrder[crateOrderIndex];
+
+            List<Point> goals =
+                reachableGoals[crateIndex];
+
+            foreach (Point goal in goals)
+            {
+                if (usedGoals.Contains(goal))
+                {
+                    continue;
+                }
+
+                usedGoals.Add(goal);
+
+                level.Goals.Add(
+                    goal);
+
+                if (TryAssignGoals(
+                    crateOrder,
+                    reachableGoals,
+                    crateOrderIndex + 1,
+                    usedGoals,
+                    level))
+                {
+                    return true;
+                }
+
+                level.Goals.RemoveAt(
+                    level.Goals.Count - 1);
+
+                usedGoals.Remove(goal);
+            }
+
+            return false;
         }
 
         private List<Point> GetWallReachablePositions(

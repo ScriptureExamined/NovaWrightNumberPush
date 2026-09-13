@@ -915,7 +915,7 @@ namespace NovaWrightNumberPush
                             result.Level!,
                             showCrateNumbersCheckBox.Checked);
 
-                    gameForm.ShowDialog(this);
+                    gameForm.ShowDialog();
 
                     Show();
                 }

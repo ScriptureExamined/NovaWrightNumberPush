@@ -1,0 +1,26 @@
+NUMBER PUSH GENERATION DIAGNOSTICS
+Levels: 9-9
+Seed: 12345
+
+========================================
+LEVEL 9 DIAGNOSTICS
+Target pushes: 8-19
+Final board: 10x12
+
+CANDIDATES
+Total attempts: 537
+Wall generation failures: 0
+Geometric failures: 0
+Wall reachability failures: 446
+Solver calls: 91
+Unsolvable: 90
+Below target: 0
+Above target: 0
+Accepted: 1
+
+TIMING
+Candidate generation: 311 ms
+Solver: 459 ms
+Average solver call: 5.04 ms
+Total: 1210 ms
+

@@ -226,10 +226,8 @@ namespace NovaWright.NumberPush.LevelGenerator
                     return;
                 }
 
-                if (IsOccupiedByAnotherCrate(
-                        testPosition,
-                        state.CratePositions,
-                        crateIndex))
+                if (IsOccupiedByAnyCrate(
+    testPosition))
                 {
                     return;
                 }

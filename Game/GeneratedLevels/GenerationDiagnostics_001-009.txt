@@ -1,5 +1,5 @@
 NUMBER PUSH GENERATION DIAGNOSTICS
-Levels: 1-8
+Levels: 1-9
 Seed: 12345
 
 ========================================
@@ -19,10 +19,10 @@ Above target: 0
 Accepted: 1
 
 TIMING
-Candidate generation: 10 ms
-Solver: 7 ms
-Average solver call: 7.00 ms
-Total: 19 ms
+Candidate generation: 0 ms
+Solver: 0 ms
+Average solver call: 0.00 ms
+Total: 1 ms
 
 ========================================
 LEVEL 2 DIAGNOSTICS
@@ -41,10 +41,10 @@ Above target: 0
 Accepted: 1
 
 TIMING
-Candidate generation: 28 ms
-Solver: 2 ms
-Average solver call: 0.50 ms
-Total: 34 ms
+Candidate generation: 0 ms
+Solver: 0 ms
+Average solver call: 0.00 ms
+Total: 2 ms
 
 ========================================
 LEVEL 3 DIAGNOSTICS
@@ -63,10 +63,10 @@ Above target: 0
 Accepted: 1
 
 TIMING
-Candidate generation: 2 ms
-Solver: 11 ms
-Average solver call: 5.50 ms
-Total: 27 ms
+Candidate generation: 0 ms
+Solver: 7 ms
+Average solver call: 3.50 ms
+Total: 12 ms
 
 ========================================
 LEVEL 4 DIAGNOSTICS
@@ -85,10 +85,10 @@ Above target: 0
 Accepted: 1
 
 TIMING
-Candidate generation: 10 ms
-Solver: 43 ms
-Average solver call: 4.30 ms
-Total: 67 ms
+Candidate generation: 1 ms
+Solver: 23 ms
+Average solver call: 2.30 ms
+Total: 35 ms
 
 ========================================
 LEVEL 5 DIAGNOSTICS
@@ -107,10 +107,10 @@ Above target: 0
 Accepted: 1
 
 TIMING
-Candidate generation: 23 ms
-Solver: 69 ms
-Average solver call: 3.29 ms
-Total: 119 ms
+Candidate generation: 0 ms
+Solver: 41 ms
+Average solver call: 1.95 ms
+Total: 59 ms
 
 ========================================
 LEVEL 6 DIAGNOSTICS
@@ -129,10 +129,10 @@ Above target: 0
 Accepted: 1
 
 TIMING
-Candidate generation: 23 ms
-Solver: 273 ms
-Average solver call: 16.06 ms
-Total: 396 ms
+Candidate generation: 0 ms
+Solver: 220 ms
+Average solver call: 12.94 ms
+Total: 325 ms
 
 ========================================
 LEVEL 7 DIAGNOSTICS
@@ -151,10 +151,10 @@ Above target: 0
 Accepted: 1
 
 TIMING
-Candidate generation: 48 ms
-Solver: 104 ms
-Average solver call: 3.35 ms
-Total: 186 ms
+Candidate generation: 4 ms
+Solver: 116 ms
+Average solver call: 3.74 ms
+Total: 167 ms
 
 ========================================
 LEVEL 8 DIAGNOSTICS
@@ -173,8 +173,30 @@ Above target: 0
 Accepted: 1
 
 TIMING
-Candidate generation: 2 ms
-Solver: 164 ms
-Average solver call: 1.26 ms
-Total: 363 ms
+Candidate generation: 13 ms
+Solver: 220 ms
+Average solver call: 1.69 ms
+Total: 431 ms
+
+========================================
+LEVEL 9 DIAGNOSTICS
+Target pushes: 8-19
+Final board: 12x14
+
+CANDIDATES
+Total attempts: 1526
+Wall generation failures: 0
+Geometric failures: 0
+Wall reachability failures: 1255
+Solver calls: 271
+Unsolvable: 270
+Below target: 0
+Above target: 0
+Accepted: 1
+
+TIMING
+Candidate generation: 165 ms
+Solver: 20835 ms
+Average solver call: 76.88 ms
+Total: 32606 ms
 
