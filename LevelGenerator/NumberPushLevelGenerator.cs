@@ -194,6 +194,9 @@ namespace NovaWright.NumberPush.LevelGenerator
                         diagnostics.ZeroLegalPushStates +=
                             solver.ZeroLegalPushStates;
 
+                        diagnostics.DuplicateStates +=
+    solver.DuplicateStates;
+
                         diagnostics.GoalProgressIncreases +=
     solver.GoalProgressIncreases;
 

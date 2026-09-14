@@ -16,7 +16,7 @@ BOARD SIZE SOLVER CALLS
   12x14: 262
 BOARD SIZE TIME
   10x12: 00:00:02
-  12x14: 00:07:59
+  12x14: 00:08:20
 
 BOARD SIZE STATES EXPLORED
   10x12: 52,563
@@ -46,6 +46,7 @@ Total legal pushes: 220,717,397
 Average legal pushes per state: 7.49
 Maximum legal pushes in a state: 17
 States with zero legal pushes: 35,081
+Duplicate states: 190,197,855
 
 GOAL PROGRESS STATES
   0 crates on goals: 16,560,226
@@ -65,16 +66,12 @@ SOLVABLE PUSH DISTRIBUTION
   15 pushes: 1
 
 TIMING
-Candidate generation: 1946 ms
-Solver: 479283 ms
-Average solver call: 685.67 ms
-Unsolvable solver time: 392270 ms
+Candidate generation: 1919 ms
+Solver: 499458 ms
+Average solver call: 714.53 ms
+Unsolvable solver time: 406093 ms
 Below target solver time: 0 ms
 Above target solver time: 0 ms
-Accepted solver time: 87013 ms
-Total time: 00:09:29
+Accepted solver time: 93365 ms
+Total time: 00:09:57
 
-========================================
-TOTAL CREATION TIME: 00:08:02
-START TIME:          2026-09-14 11:22:57
-========================================

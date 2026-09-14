@@ -33,6 +33,8 @@ namespace NovaWright.NumberPush.LevelGenerator
 
         public int ZeroLegalPushStates { get; private set; }
 
+        public long DuplicateStates { get; private set; }
+
         public Dictionary<int, long> GoalProgressStates { get; } =
     new Dictionary<int, long>();
 
@@ -119,6 +121,8 @@ namespace NovaWright.NumberPush.LevelGenerator
             GoalProgressDecreases = 0;
 
             GoalProgressUnchanged = 0;
+
+            DuplicateStates = 0;
 
             SolverState startState =
                 new SolverState(
@@ -343,6 +347,7 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             if (!visited.Add(newStateKey))
             {
+                DuplicateStates++;
                 return;
             }
 

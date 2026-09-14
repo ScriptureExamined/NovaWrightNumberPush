@@ -64,6 +64,8 @@
 
         public long ZeroLegalPushStates { get; set; }
 
+        public long DuplicateStates { get; set; }
+
         public double AverageLegalPushes
         {
             get
@@ -216,6 +218,7 @@ string.Join(
                 $"Average legal pushes per state: {AverageLegalPushes:F2}\r\n" +
                 $"Maximum legal pushes in a state: {MaximumLegalPushes:N0}\r\n" +
                 $"States with zero legal pushes: {ZeroLegalPushStates:N0}\r\n" +
+                $"Duplicate states: {DuplicateStates:N0}\r\n" +
                 "\r\n" +
 "GOAL PROGRESS STATES\r\n" +
 string.Join(
