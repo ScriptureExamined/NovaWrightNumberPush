@@ -16,7 +16,7 @@ BOARD SIZE SOLVER CALLS
   12x14: 262
 BOARD SIZE TIME
   10x12: 00:00:02
-  12x14: 00:07:50
+  12x14: 00:07:59
 
 BOARD SIZE STATES EXPLORED
   10x12: 52,563
@@ -42,6 +42,21 @@ Unsolvable states: 24,570,801
 Average unsolvable states: 35,202
 Maximum unsolvable states: 13,238,836
 Accepted states: 4,905,572
+Total legal pushes: 220,717,397
+Average legal pushes per state: 7.49
+Maximum legal pushes in a state: 17
+States with zero legal pushes: 35,081
+
+GOAL PROGRESS STATES
+  0 crates on goals: 16,560,226
+  1 crates on goals: 10,962,819
+  2 crates on goals: 1,850,948
+  3 crates on goals: 100,875
+  4 crates on goals: 1,504
+  5 crates on goals: 1
+Goal progress increases: 2,686,753
+Goal progress decreases: 2,198,018
+Goal progress unchanged: 25,634,771
 Below target: 0
 Above target: 0
 Accepted: 1
@@ -50,15 +65,16 @@ SOLVABLE PUSH DISTRIBUTION
   15 pushes: 1
 
 TIMING
-Candidate generation: 2120 ms
-Solver: 469766 ms
-Average solver call: 672.05 ms
-Unsolvable solver time: 383739 ms
+Candidate generation: 1946 ms
+Solver: 479283 ms
+Average solver call: 685.67 ms
+Unsolvable solver time: 392270 ms
 Below target solver time: 0 ms
 Above target solver time: 0 ms
-Accepted solver time: 86027 ms
-Total time: 00:09:20
+Accepted solver time: 87013 ms
+Total time: 00:09:29
 
 ========================================
-TOTAL CREATION TIME: 00:07:53
+TOTAL CREATION TIME: 00:08:02
+START TIME:          2026-09-14 11:22:57
 ========================================

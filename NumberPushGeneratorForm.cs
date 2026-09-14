@@ -748,10 +748,10 @@ namespace NovaWrightNumberPush
                         "========================================");
 
                     reportLines.Add(
-                        $"START TIME:          {startTime:yyyy-MM-dd HH:mm:ss}");
+                        $"TOTAL CREATION TIME: {totalCreationTime:hh\\:mm\\:ss}");
 
                     reportLines.Add(
-                        $"TOTAL CREATION TIME: {totalCreationTime:hh\\:mm\\:ss}");
+                        $"START TIME:          {startTime:yyyy-MM-dd HH:mm:ss}");
 
                     reportLines.Add(
                         "========================================");

@@ -194,6 +194,31 @@ namespace NovaWright.NumberPush.LevelGenerator
                         diagnostics.ZeroLegalPushStates +=
                             solver.ZeroLegalPushStates;
 
+                        diagnostics.GoalProgressIncreases +=
+    solver.GoalProgressIncreases;
+
+                        diagnostics.GoalProgressDecreases +=
+                            solver.GoalProgressDecreases;
+
+                        diagnostics.GoalProgressUnchanged +=
+                            solver.GoalProgressUnchanged;
+
+                        foreach (KeyValuePair<int, long> entry in
+         solver.GoalProgressStates)
+                        {
+                            if (diagnostics.GoalProgressStates.ContainsKey(
+                                entry.Key))
+                            {
+                                diagnostics.GoalProgressStates[entry.Key] +=
+                                    entry.Value;
+                            }
+                            else
+                            {
+                                diagnostics.GoalProgressStates[entry.Key] =
+                                    entry.Value;
+                            }
+                        }
+
                         string boardSize =
                             $"{rows}x{columns}";
 

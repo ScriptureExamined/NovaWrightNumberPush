@@ -49,6 +49,15 @@
 
         public long AcceptedStates { get; set; }
 
+        public Dictionary<int, long> GoalProgressStates { get; } =
+    new Dictionary<int, long>();
+
+        public long GoalProgressIncreases { get; set; }
+
+        public long GoalProgressDecreases { get; set; }
+
+        public long GoalProgressUnchanged { get; set; }
+
         public long TotalLegalPushes { get; set; }
 
         public long MaximumLegalPushes { get; set; }
@@ -207,7 +216,22 @@ string.Join(
                 $"Average legal pushes per state: {AverageLegalPushes:F2}\r\n" +
                 $"Maximum legal pushes in a state: {MaximumLegalPushes:N0}\r\n" +
                 $"States with zero legal pushes: {ZeroLegalPushStates:N0}\r\n" +
-                $"Below target: {BelowTargetCandidates}\r\n" +
+                "\r\n" +
+"GOAL PROGRESS STATES\r\n" +
+string.Join(
+    "\r\n",
+    GoalProgressStates
+        .OrderBy(
+            entry =>
+                entry.Key)
+        .Select(
+            entry =>
+                $"  {entry.Key} crates on goals: {entry.Value:N0}")) +
+"\r\n" +
+$"Goal progress increases: {GoalProgressIncreases:N0}\r\n" +
+$"Goal progress decreases: {GoalProgressDecreases:N0}\r\n" +
+$"Goal progress unchanged: {GoalProgressUnchanged:N0}\r\n" +
+$"Below target: {BelowTargetCandidates}\r\n" +
                 $"Above target: {AboveTargetCandidates}\r\n" +
                 $"Accepted: {AcceptedCandidates}\r\n" +
                 "\r\n" +

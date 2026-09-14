@@ -33,6 +33,15 @@ namespace NovaWright.NumberPush.LevelGenerator
 
         public int ZeroLegalPushStates { get; private set; }
 
+        public Dictionary<int, long> GoalProgressStates { get; } =
+    new Dictionary<int, long>();
+
+        public long GoalProgressIncreases { get; private set; }
+
+        public long GoalProgressDecreases { get; private set; }
+
+        public long GoalProgressUnchanged { get; private set; }
+
         public NumberPushSolver(NumberPushLevel level)
         {
             this.level = level;
@@ -103,6 +112,14 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             ZeroLegalPushStates = 0;
 
+            GoalProgressStates.Clear();
+
+            GoalProgressIncreases = 0;
+
+            GoalProgressDecreases = 0;
+
+            GoalProgressUnchanged = 0;
+
             SolverState startState =
                 new SolverState(
                     level.PlayerStart,
@@ -124,6 +141,20 @@ namespace NovaWright.NumberPush.LevelGenerator
                     queue.Dequeue();
 
                 StatesExplored++;
+
+                int cratesOnGoals =
+    CountCratesOnGoals(
+        state.CratePositions);
+
+                if (GoalProgressStates.ContainsKey(
+    cratesOnGoals))
+                {
+                    GoalProgressStates[cratesOnGoals]++;
+                }
+                else
+                {
+                    GoalProgressStates[cratesOnGoals] = 1;
+                }
 
                 legalPushesForState = 0;
 
@@ -218,6 +249,23 @@ namespace NovaWright.NumberPush.LevelGenerator
             return solution.MinimumPushes;
         }
 
+        private int CountCratesOnGoals(
+    List<Point> cratePositions)
+        {
+            int count = 0;
+
+            foreach (Point cratePosition in cratePositions)
+            {
+                if (level.Goals.Contains(
+                    cratePosition))
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
         private void TryPush(
             SolverState state,
             int crateIndex,
@@ -296,6 +344,27 @@ namespace NovaWright.NumberPush.LevelGenerator
             if (!visited.Add(newStateKey))
             {
                 return;
+            }
+
+            int newCratesOnGoals =
+    CountCratesOnGoals(
+        newCratePositions);
+
+            if (newCratesOnGoals >
+                CountCratesOnGoals(
+                    state.CratePositions))
+            {
+                GoalProgressIncreases++;
+            }
+            else if (newCratesOnGoals <
+                     CountCratesOnGoals(
+                         state.CratePositions))
+            {
+                GoalProgressDecreases++;
+            }
+            else
+            {
+                GoalProgressUnchanged++;
             }
 
             NumberPushSolutionStep stepData =
