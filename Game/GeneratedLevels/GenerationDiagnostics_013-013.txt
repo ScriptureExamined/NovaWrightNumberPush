@@ -1,0 +1,64 @@
+NUMBER PUSH GENERATION DIAGNOSTICS
+Levels: 13-13
+Seed: 12345
+
+========================================
+LEVEL 13 DIAGNOSTICS
+Target pushes: 10-23
+Final board: 12x14
+
+BOARD SIZE ATTEMPTS
+  10x12: 1500
+  12x14: 503
+
+BOARD SIZE SOLVER CALLS
+  10x12: 437
+  12x14: 262
+BOARD SIZE TIME
+  10x12: 00:00:02
+  12x14: 00:07:50
+
+BOARD SIZE STATES EXPLORED
+  10x12: 52,563
+  12x14: 29,423,810
+
+BOARD SIZE UNSOLVABLE STATES
+  10x12: 52,563
+  12x14: 24,518,238
+
+CANDIDATES
+Total attempts: 2003
+Wall generation failures: 346
+Geometric failures: 0
+Wall reachability failures: 958
+Crate reachability passes: 699
+Crate reachability failures: 0
+Solver calls: 699
+States explored: 29,476,373
+Average states per solver call: 42,169
+Maximum states in a solver call: 13,238,836
+Unsolvable: 698
+Unsolvable states: 24,570,801
+Average unsolvable states: 35,202
+Maximum unsolvable states: 13,238,836
+Accepted states: 4,905,572
+Below target: 0
+Above target: 0
+Accepted: 1
+
+SOLVABLE PUSH DISTRIBUTION
+  15 pushes: 1
+
+TIMING
+Candidate generation: 2120 ms
+Solver: 469766 ms
+Average solver call: 672.05 ms
+Unsolvable solver time: 383739 ms
+Below target solver time: 0 ms
+Above target solver time: 0 ms
+Accepted solver time: 86027 ms
+Total time: 00:09:20
+
+========================================
+TOTAL CREATION TIME: 00:07:53
+========================================

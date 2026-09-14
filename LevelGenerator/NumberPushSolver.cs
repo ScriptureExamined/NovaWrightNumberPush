@@ -23,6 +23,16 @@ namespace NovaWright.NumberPush.LevelGenerator
 
         private int reachableVisitId;
 
+        private int legalPushesForState;
+
+        public int StatesExplored { get; private set; }
+
+        public long TotalLegalPushes { get; private set; }
+
+        public int MaximumLegalPushes { get; private set; }
+
+        public int ZeroLegalPushStates { get; private set; }
+
         public NumberPushSolver(NumberPushLevel level)
         {
             this.level = level;
@@ -85,6 +95,14 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             HashSet<string> visited = new();
 
+            StatesExplored = 0;
+
+            TotalLegalPushes = 0;
+
+            MaximumLegalPushes = 0;
+
+            ZeroLegalPushStates = 0;
+
             SolverState startState =
                 new SolverState(
                     level.PlayerStart,
@@ -104,6 +122,10 @@ namespace NovaWright.NumberPush.LevelGenerator
             {
                 SolverState state =
                     queue.Dequeue();
+
+                StatesExplored++;
+
+                legalPushesForState = 0;
 
                 if (IsComplete(state.CratePositions))
                 {
@@ -162,6 +184,19 @@ namespace NovaWright.NumberPush.LevelGenerator
                         currentReachableVisitId,
                         queue,
                         visited);
+                }
+
+                TotalLegalPushes +=
+    legalPushesForState;
+
+                MaximumLegalPushes =
+                    Math.Max(
+                        MaximumLegalPushes,
+                        legalPushesForState);
+
+                if (legalPushesForState == 0)
+                {
+                    ZeroLegalPushStates++;
                 }
             }
 
@@ -247,6 +282,8 @@ namespace NovaWright.NumberPush.LevelGenerator
             {
                 return;
             }
+
+            legalPushesForState++;
 
             Point newPlayerPosition =
                 cratePosition;

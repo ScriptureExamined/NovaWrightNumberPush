@@ -86,10 +86,13 @@ namespace NovaWright.NumberPush.LevelGenerator
                 currentColumns.Value;
 
             while (rows <= difficulty.MaximumRows &&
-                   columns <= difficulty.MaximumColumns)
+       columns <= difficulty.MaximumColumns)
             {
+                Stopwatch boardSizeTimer =
+                    Stopwatch.StartNew();
+
                 for (int attempt = 0;
-                     attempt < difficulty.MaximumAttempts;
+                                 attempt < difficulty.MaximumAttempts;
                      attempt++)
                 {
                     if (diagnostics != null)
@@ -170,12 +173,66 @@ namespace NovaWright.NumberPush.LevelGenerator
                             solverTimer.ElapsedMilliseconds;
 
                         diagnostics.SolverMilliseconds +=
-                            solverMilliseconds;
+    solverMilliseconds;
+
+                        diagnostics.StatesExplored +=
+    solver.StatesExplored;
+
+                        diagnostics.MaximumStatesExplored =
+                            Math.Max(
+                                diagnostics.MaximumStatesExplored,
+                                solver.StatesExplored);
+
+                        diagnostics.TotalLegalPushes +=
+    solver.TotalLegalPushes;
+
+                        diagnostics.MaximumLegalPushes =
+                            Math.Max(
+                                diagnostics.MaximumLegalPushes,
+                                solver.MaximumLegalPushes);
+
+                        diagnostics.ZeroLegalPushStates +=
+                            solver.ZeroLegalPushStates;
+
+                        string boardSize =
+                            $"{rows}x{columns}";
+
+                        if (diagnostics.BoardSizeStatesExplored.ContainsKey(
+                            boardSize))
+                        {
+                            diagnostics.BoardSizeStatesExplored[boardSize] +=
+                                solver.StatesExplored;
+                        }
+                        else
+                        {
+                            diagnostics.BoardSizeStatesExplored[boardSize] =
+                                solver.StatesExplored;
+                        }
 
                         if (minimumSolution < 0)
                         {
                             diagnostics.UnsolvableSolverMilliseconds +=
                                 solverMilliseconds;
+
+                            diagnostics.UnsolvableStates +=
+                                solver.StatesExplored;
+
+                            diagnostics.MaximumUnsolvableStates =
+                                Math.Max(
+                                    diagnostics.MaximumUnsolvableStates,
+                                    solver.StatesExplored);
+
+                            if (diagnostics.BoardSizeUnsolvableStates.ContainsKey(
+    boardSize))
+                            {
+                                diagnostics.BoardSizeUnsolvableStates[boardSize] +=
+                                    solver.StatesExplored;
+                            }
+                            else
+                            {
+                                diagnostics.BoardSizeUnsolvableStates[boardSize] =
+                                    solver.StatesExplored;
+                            }
                         }
                         else if (minimumSolution <
                                  difficulty.MinimumSolutionPushes)
@@ -193,6 +250,9 @@ namespace NovaWright.NumberPush.LevelGenerator
                         {
                             diagnostics.AcceptedSolverMilliseconds +=
                                 solverMilliseconds;
+
+                            diagnostics.AcceptedStates =
+                                solver.StatesExplored;
                         }
                     }
 
@@ -204,6 +264,19 @@ namespace NovaWright.NumberPush.LevelGenerator
                         }
 
                         continue;
+                    }
+
+                    if (diagnostics != null)
+                    {
+                        if (diagnostics.SolvablePushCounts.ContainsKey(
+                            minimumSolution))
+                        {
+                            diagnostics.SolvablePushCounts[minimumSolution]++;
+                        }
+                        else
+                        {
+                            diagnostics.SolvablePushCounts[minimumSolution] = 1;
+                        }
                     }
 
                     if (minimumSolution <
@@ -231,6 +304,23 @@ namespace NovaWright.NumberPush.LevelGenerator
                     if (diagnostics != null)
                     {
                         diagnostics.AcceptedCandidates++;
+
+                        boardSizeTimer.Stop();
+
+                        string boardSize =
+                            $"{rows}x{columns}";
+
+                        if (diagnostics.BoardSizeMilliseconds.ContainsKey(
+                            boardSize))
+                        {
+                            diagnostics.BoardSizeMilliseconds[boardSize] +=
+                                boardSizeTimer.ElapsedMilliseconds;
+                        }
+                        else
+                        {
+                            diagnostics.BoardSizeMilliseconds[boardSize] =
+                                boardSizeTimer.ElapsedMilliseconds;
+                        }
                     }
 
                     currentRows =
@@ -240,6 +330,26 @@ namespace NovaWright.NumberPush.LevelGenerator
                         columns;
 
                     return candidate;
+                }
+
+                boardSizeTimer.Stop();
+
+                if (diagnostics != null)
+                {
+                    string boardSize =
+                        $"{rows}x{columns}";
+
+                    if (diagnostics.BoardSizeMilliseconds.ContainsKey(
+                        boardSize))
+                    {
+                        diagnostics.BoardSizeMilliseconds[boardSize] +=
+                            boardSizeTimer.ElapsedMilliseconds;
+                    }
+                    else
+                    {
+                        diagnostics.BoardSizeMilliseconds[boardSize] =
+                            boardSizeTimer.ElapsedMilliseconds;
+                    }
                 }
 
                 Console.WriteLine(
@@ -395,6 +505,23 @@ namespace NovaWright.NumberPush.LevelGenerator
                 return null;
             }
 
+            bool cratesCanReachGoals =
+    CanCratesReachAssignedGoals(
+        level,
+        crateOrder);
+
+            if (diagnostics != null)
+            {
+                if (cratesCanReachGoals)
+                {
+                    diagnostics.CrateReachabilityPasses++;
+                }
+                else
+                {
+                    diagnostics.CrateReachabilityFailures++;
+                }
+            }
+
             List<Point> playerCandidates =
                 availableCells
                     .Where(
@@ -465,6 +592,144 @@ namespace NovaWright.NumberPush.LevelGenerator
             }
 
             return false;
+        }
+
+        private bool CanCratesReachAssignedGoals(
+    NumberPushLevel level,
+    List<int> crateOrder)
+        {
+            for (int orderIndex = 0;
+                 orderIndex < crateOrder.Count;
+                 orderIndex++)
+            {
+                int crateIndex =
+                    crateOrder[orderIndex];
+
+                NumberPushCrate crate =
+                    level.Crates[crateIndex];
+
+                Point goal =
+                    level.Goals[orderIndex];
+
+                if (!CanCrateReachGoal(
+                    level,
+                    crate.Position,
+                    crate.Distance,
+                    goal))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private bool CanCrateReachGoal(
+            NumberPushLevel level,
+            Point start,
+            int distance,
+            Point goal)
+        {
+            if (start == goal)
+            {
+                return true;
+            }
+
+            Queue<Point> queue =
+                new Queue<Point>();
+
+            HashSet<Point> visited =
+                new HashSet<Point>();
+
+            queue.Enqueue(
+                start);
+
+            visited.Add(
+                start);
+
+            while (queue.Count > 0)
+            {
+                Point position =
+                    queue.Dequeue();
+
+                Point[] directions =
+                {
+            new Point(0, -1),
+            new Point(1, 0),
+            new Point(0, 1),
+            new Point(-1, 0)
+        };
+
+                foreach (Point direction in directions)
+                {
+                    Point destination =
+                        new Point(
+                            position.X +
+                                direction.X * distance,
+                            position.Y +
+                                direction.Y * distance);
+
+                    if (!CanMoveCrate(
+                        level,
+                        position,
+                        direction,
+                        distance))
+                    {
+                        continue;
+                    }
+
+                    if (destination == goal)
+                    {
+                        return true;
+                    }
+
+                    if (visited.Add(
+                        destination))
+                    {
+                        queue.Enqueue(
+                            destination);
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private bool CanMoveCrate(
+            NumberPushLevel level,
+            Point position,
+            Point direction,
+            int distance)
+        {
+            for (int step = 1;
+                 step <= distance;
+                 step++)
+            {
+                Point cell =
+                    new Point(
+                        position.X +
+                            direction.X * step,
+                        position.Y +
+                            direction.Y * step);
+
+                if (cell.X < 0 ||
+                    cell.X >= level.Columns ||
+                    cell.Y < 0 ||
+                    cell.Y >= level.Rows)
+                {
+                    return false;
+                }
+
+                if (level.Walls.Any(
+     wall =>
+         wall.Contains(
+             cell)))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         private List<Point> GetWallReachablePositions(

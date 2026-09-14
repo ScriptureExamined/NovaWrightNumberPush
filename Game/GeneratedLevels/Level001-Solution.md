@@ -13,7 +13,7 @@ complexity: 1
 - **Board:** 10 × 12
 - **Crates:** 1
 - **Interior Walls:** 2
-- **Minimum Solution:** 5 pushes
+- **Minimum Solution:** 4 pushes
 - **Generator Seed:** 12345
 
 ## Crates
@@ -22,66 +22,55 @@ complexity: 1
 
 ## Goals
 
-- **Goal 1:** (4, 4)
+- **Goal 1:** (10, 3)
 
 ## Solution
 
-**Minimum pushes:** 5
+**Minimum pushes:** 4
 
 ### Push 1
 
 - **Crate:** 1
 - **Direction:** Up
 - **Distance:** 1
-- **Player Start:** (2, 8)
+- **Player Start:** (8, 4)
 - **Player Push Position:** (8, 6)
 - **Crate Start:** (8, 5)
 - **Crate End:** (8, 4)
-- **Player Walk:** (2, 8) → (3, 8) → (4, 8) → (5, 8) → (5, 7) → (5, 6) → (6, 6) → (7, 6) → (8, 6)
+- **Player Walk:** (8, 4) → (7, 4) → (7, 5) → (7, 6) → (8, 6)
 
 ### Push 2
 
 - **Crate:** 1
-- **Direction:** Left
+- **Direction:** Up
 - **Distance:** 1
 - **Player Start:** (8, 5)
-- **Player Push Position:** (9, 4)
+- **Player Push Position:** (8, 5)
 - **Crate Start:** (8, 4)
-- **Crate End:** (7, 4)
-- **Player Walk:** (8, 5) → (9, 5) → (9, 4)
+- **Crate End:** (8, 3)
+- **Player Walk:** (8, 5)
 
 ### Push 3
 
 - **Crate:** 1
-- **Direction:** Left
+- **Direction:** Right
 - **Distance:** 1
 - **Player Start:** (8, 4)
-- **Player Push Position:** (8, 4)
-- **Crate Start:** (7, 4)
-- **Crate End:** (6, 4)
-- **Player Walk:** (8, 4)
+- **Player Push Position:** (7, 3)
+- **Crate Start:** (8, 3)
+- **Crate End:** (9, 3)
+- **Player Walk:** (8, 4) → (7, 4) → (7, 3)
 
 ### Push 4
 
 - **Crate:** 1
-- **Direction:** Left
+- **Direction:** Right
 - **Distance:** 1
-- **Player Start:** (7, 4)
-- **Player Push Position:** (7, 4)
-- **Crate Start:** (6, 4)
-- **Crate End:** (5, 4)
-- **Player Walk:** (7, 4)
-
-### Push 5
-
-- **Crate:** 1
-- **Direction:** Left
-- **Distance:** 1
-- **Player Start:** (6, 4)
-- **Player Push Position:** (6, 4)
-- **Crate Start:** (5, 4)
-- **Crate End:** (4, 4)
-- **Player Walk:** (6, 4)
+- **Player Start:** (8, 3)
+- **Player Push Position:** (8, 3)
+- **Crate Start:** (9, 3)
+- **Crate End:** (10, 3)
+- **Player Walk:** (8, 3)
 
 ## Generation Settings
 

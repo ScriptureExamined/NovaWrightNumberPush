@@ -1,0 +1,37 @@
+NUMBER PUSH GENERATION DIAGNOSTICS
+Levels: 1-1
+Seed: 12345
+
+========================================
+LEVEL 1 DIAGNOSTICS
+Target pushes: 4-11
+Final board: 10x12
+
+BOARD SIZE ATTEMPTS
+  10x12: 1
+
+BOARD SIZE SOLVER CALLS
+  10x12: 1
+
+CANDIDATES
+Total attempts: 1
+Wall generation failures: 0
+Geometric failures: 0
+Wall reachability failures: 0
+Solver calls: 1
+States explored: 62
+Unsolvable: 0
+Below target: 0
+Above target: 0
+Accepted: 1
+
+TIMING
+Candidate generation: 13 ms
+Solver: 8 ms
+Average solver call: 8.00 ms
+Unsolvable solver time: 0 ms
+Below target solver time: 0 ms
+Above target solver time: 0 ms
+Accepted solver time: 8 ms
+Total: 00:00:00
+

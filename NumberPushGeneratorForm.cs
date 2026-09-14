@@ -448,7 +448,7 @@ namespace NovaWrightNumberPush
                 "Open generated level after creation";
 
             openLevelCheckBox.Checked =
-                true;
+                false;
 
             openLevelCheckBox.AutoSize =
                 true;
@@ -471,7 +471,7 @@ namespace NovaWrightNumberPush
                 "Open Markdown solution after creation";
 
             openMarkdownCheckBox.Checked =
-                true;
+                false;
 
             openMarkdownCheckBox.AutoSize =
                 true;
@@ -494,7 +494,7 @@ namespace NovaWrightNumberPush
                 "Show crate numbers";
 
             showCrateNumbersCheckBox.Checked =
-                true;
+                false;
 
             showCrateNumbersCheckBox.ForeColor =
                 Color.White;
@@ -526,6 +526,8 @@ namespace NovaWrightNumberPush
 
             reportDiagnosticsCheckBox.ForeColor =
                 Color.White;
+
+            reportDiagnosticsCheckBox.Checked = false;
 
             Controls.Add(
                 reportDiagnosticsCheckBox);
@@ -655,6 +657,8 @@ namespace NovaWrightNumberPush
 
             try
             {
+                DateTime startTime = DateTime.Now;
+
                 List<NumberPushGenerationResult> results =
                     await Task.Run(
                         () =>
@@ -717,10 +721,11 @@ namespace NovaWrightNumberPush
                     reportLines.Add(
                         "");
 
-                    long totalCreationMilliseconds =
-    results.Sum(
-        result =>
-            result.GenerationMilliseconds);
+                    TimeSpan totalCreationTime =
+    TimeSpan.FromMilliseconds(
+        results.Sum(
+            result =>
+                result.GenerationMilliseconds));
 
                     foreach (NumberPushGenerationResult result in results)
                     {
@@ -743,7 +748,10 @@ namespace NovaWrightNumberPush
                         "========================================");
 
                     reportLines.Add(
-                        $"TOTAL CREATION TIME: {totalCreationMilliseconds} ms");
+                        $"START TIME:          {startTime:yyyy-MM-dd HH:mm:ss}");
+
+                    reportLines.Add(
+                        $"TOTAL CREATION TIME: {totalCreationTime:hh\\:mm\\:ss}");
 
                     reportLines.Add(
                         "========================================");
@@ -846,6 +854,8 @@ namespace NovaWrightNumberPush
                     await Task.Run(
                         () =>
                         {
+                            DateTime startTime = DateTime.Now;
+
                             NumberPushGenerationService service =
                                 new NumberPushGenerationService(
                                     seed,
