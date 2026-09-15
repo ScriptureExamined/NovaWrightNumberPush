@@ -125,6 +125,13 @@ namespace NovaWright.NumberPush.LevelGenerator
                         continue;
                     }
 
+                    if (diagnostics != null)
+                    {
+                        CalculateCrateInteractions(
+                            candidate,
+                            diagnostics);
+                    }
+
                     bool noReachableGoals;
                     int failedCrateDistance;
 
@@ -181,8 +188,11 @@ namespace NovaWright.NumberPush.LevelGenerator
                         new NumberPushSolver(
                             candidate);
 
+                    NumberPushSolution solution =
+    solver.FindSolution();
+
                     int minimumSolution =
-                        solver.FindMinimumPushes();
+                        solution.MinimumPushes;
 
                     solverTimer.Stop();
 
@@ -197,6 +207,20 @@ namespace NovaWright.NumberPush.LevelGenerator
                         if (diagnostics != null)
                         {
                             diagnostics.UnsolvableCandidates++;
+
+                            diagnostics.UnsolvableStatesExplored +=
+                                solver.StatesExplored;
+
+                            diagnostics.UnsolvableZeroLegalPushStates +=
+                                solver.ZeroLegalPushStates;
+
+                            diagnostics.UnsolvableMaximumLegalPushes =
+                                Math.Max(
+                                    diagnostics.UnsolvableMaximumLegalPushes,
+                                    solver.MaximumLegalPushes);
+
+                            diagnostics.UnsolvableDuplicateStates +=
+                                solver.DuplicateStates;
                         }
 
                         continue;
@@ -227,6 +251,105 @@ namespace NovaWright.NumberPush.LevelGenerator
                     if (diagnostics != null)
                     {
                         diagnostics.AcceptedCandidates++;
+
+                        diagnostics.MinimumPushes =
+                            solution.MinimumPushes;
+
+                        for (int crateIndex = 0;
+     crateIndex < candidate.Crates.Count;
+     crateIndex++)
+                        {
+                            NumberPushCrate crate =
+                                candidate.Crates[crateIndex];
+
+                            diagnostics.CrateStartPositions[crateIndex] =
+                                crate.Position;
+
+                            diagnostics.CrateDistances[crateIndex] =
+                                crate.Distance;
+
+                            diagnostics.CrateReachableGoals[crateIndex] =
+                                GetReachableGoals(
+                                    candidate,
+                                    crate.Position,
+                                    crate.Distance);
+
+                            diagnostics.CrateReachablePositions[crateIndex] =
+                                GetReachablePositions(
+                                    candidate,
+                                    crate.Position,
+                                    crate.Distance);
+
+                            diagnostics.CrateGoalPushDistances[crateIndex] =
+                                GetCrateGoalPushDistances(
+                                    candidate,
+                                    crate.Position,
+                                    crate.Distance);
+                        }
+
+                        diagnostics.CratesMoved =
+                            solution.CratesMoved;
+
+                        int previousCrateIndex =
+    -1;
+
+                        int currentConsecutivePushes =
+                            0;
+
+                        int maximumConsecutivePushes =
+                            0;
+
+                        int cratePushOrderChanges =
+                            0;
+
+                        foreach (NumberPushSolutionStep step in
+                                 solution.Steps)
+                        {
+                            if (step.CrateIndex !=
+                                previousCrateIndex)
+                            {
+                                if (previousCrateIndex != -1)
+                                {
+                                    cratePushOrderChanges++;
+                                }
+
+                                currentConsecutivePushes = 1;
+
+                                previousCrateIndex =
+                                    step.CrateIndex;
+                            }
+                            else
+                            {
+                                currentConsecutivePushes++;
+                            }
+
+                            maximumConsecutivePushes =
+                                Math.Max(
+                                    maximumConsecutivePushes,
+                                    currentConsecutivePushes);
+                        }
+
+                        diagnostics.CratePushOrderChanges =
+                            cratePushOrderChanges;
+
+                        diagnostics.MaximumConsecutivePushes =
+                            maximumConsecutivePushes;
+
+                        diagnostics.CratePushCounts =
+                            new Dictionary<int, int>(
+                                solution.CratePushCounts);
+
+                        diagnostics.CrateFirstPushNumbers =
+                            new Dictionary<int, int>(
+                                solution.CrateFirstPushNumbers);
+
+                        diagnostics.CrateLastPushNumbers =
+                            new Dictionary<int, int>(
+                                solution.CrateLastPushNumbers);
+
+                        diagnostics.CrateGoalPositions =
+    new Dictionary<int, Point>(
+        solution.CrateGoalPositions);
                     }
 
                     currentRows =
@@ -254,6 +377,88 @@ namespace NovaWright.NumberPush.LevelGenerator
             }
 
             return null;
+        }
+
+        private Dictionary<Point, int> GetCrateGoalPushDistances(
+    NumberPushLevel level,
+    Point startPosition,
+    int distance)
+        {
+            Dictionary<Point, int> goalDistances =
+                new Dictionary<Point, int>();
+
+            Dictionary<Point, int> distances =
+                new Dictionary<Point, int>();
+
+            Queue<Point> queue =
+                new Queue<Point>();
+
+            distances[startPosition] =
+                0;
+
+            queue.Enqueue(
+                startPosition);
+
+            Point[] directions =
+            {
+        new Point(0, -1),
+        new Point(0, 1),
+        new Point(-1, 0),
+        new Point(1, 0)
+    };
+
+            while (queue.Count > 0)
+            {
+                Point current =
+                    queue.Dequeue();
+
+                int currentDistance =
+                    distances[current];
+
+                foreach (Point direction in directions)
+                {
+                    Point destination =
+                        new Point(
+                            current.X +
+                                direction.X * distance,
+                            current.Y +
+                                direction.Y * distance);
+
+                    if (!CanMoveCrateDistance(
+                            level,
+                            current,
+                            direction,
+                            distance))
+                    {
+                        continue;
+                    }
+
+                    if (distances.ContainsKey(
+                            destination))
+                    {
+                        continue;
+                    }
+
+                    distances[destination] =
+                        currentDistance + 1;
+
+                    queue.Enqueue(
+                        destination);
+                }
+            }
+
+            foreach (Point goal in level.Goals)
+            {
+                if (distances.TryGetValue(
+                        goal,
+                        out int pushDistance))
+                {
+                    goalDistances[goal] =
+                        pushDistance;
+                }
+            }
+
+            return goalDistances;
         }
 
         private bool CanCratesReachDistinctGoals(
@@ -300,6 +505,60 @@ namespace NovaWright.NumberPush.LevelGenerator
                 reachableGoals,
                 0,
                 assignedGoals);
+        }
+
+        private HashSet<Point> GetReachablePositions(
+    NumberPushLevel level,
+    Point startPosition,
+    int distance)
+        {
+            HashSet<Point> reachable =
+                new();
+
+            Queue<Point> queue =
+                new();
+
+            reachable.Add(startPosition);
+            queue.Enqueue(startPosition);
+
+            while (queue.Count > 0)
+            {
+                Point current =
+                    queue.Dequeue();
+
+                foreach (Point direction in
+                         new[]
+                         {
+                     new Point(1, 0),
+                     new Point(-1, 0),
+                     new Point(0, 1),
+                     new Point(0, -1)
+                         })
+                {
+                    Point destination =
+                        new Point(
+                            current.X + direction.X * distance,
+                            current.Y + direction.Y * distance);
+
+                    if (!CanMoveCrateDistance(
+                            level,
+                            current,
+                            direction,
+                            distance))
+                    {
+                        continue;
+                    }
+
+                    if (reachable.Add(destination))
+                    {
+                        queue.Enqueue(destination);
+                    }
+                }
+            }
+
+            reachable.Remove(startPosition);
+
+            return reachable;
         }
 
         private HashSet<Point> GetReachableGoals(
@@ -433,6 +692,113 @@ namespace NovaWright.NumberPush.LevelGenerator
             return false;
         }
 
+        private void CalculateCrateInteractions(
+    NumberPushLevel level,
+    NumberPushGenerationDiagnostics diagnostics)
+        {
+            diagnostics.CrateInteractionPairs = 0;
+            diagnostics.CrateInteractionBlocks = 0;
+
+            HashSet<string> interactionPairs =
+                new HashSet<string>();
+
+            Point[] directions =
+            {
+        new Point(0, -1),
+        new Point(0, 1),
+        new Point(-1, 0),
+        new Point(1, 0)
+    };
+
+            for (int firstIndex = 0;
+                 firstIndex < level.Crates.Count;
+                 firstIndex++)
+            {
+                NumberPushCrate firstCrate =
+                    level.Crates[firstIndex];
+
+                foreach (Point direction in directions)
+                {
+                    bool wallClear =
+                        true;
+
+                    for (int step = 1;
+                         step <= firstCrate.Distance;
+                         step++)
+                    {
+                        Point position =
+                            new Point(
+                                firstCrate.Position.X +
+                                    direction.X * step,
+                                firstCrate.Position.Y +
+                                    direction.Y * step);
+
+                        if (IsWall(
+                                level,
+                                position))
+                        {
+                            wallClear = false;
+                            break;
+                        }
+                    }
+
+                    if (!wallClear)
+                    {
+                        continue;
+                    }
+
+                    for (int secondIndex = 0;
+                         secondIndex < level.Crates.Count;
+                         secondIndex++)
+                    {
+                        if (firstIndex == secondIndex)
+                        {
+                            continue;
+                        }
+
+                        NumberPushCrate secondCrate =
+                            level.Crates[secondIndex];
+
+                        for (int step = 1;
+                             step <= firstCrate.Distance;
+                             step++)
+                        {
+                            Point position =
+                                new Point(
+                                    firstCrate.Position.X +
+                                        direction.X * step,
+                                    firstCrate.Position.Y +
+                                        direction.Y * step);
+
+                            if (position ==
+                                secondCrate.Position)
+                            {
+                                diagnostics.CrateInteractionBlocks++;
+
+                                int lowerIndex =
+                                    Math.Min(
+                                        firstIndex,
+                                        secondIndex);
+
+                                int higherIndex =
+                                    Math.Max(
+                                        firstIndex,
+                                        secondIndex);
+
+                                interactionPairs.Add(
+                                    $"{lowerIndex}:{higherIndex}");
+
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            diagnostics.CrateInteractionPairs =
+                interactionPairs.Count;
+        }
+
         private NumberPushLevel? CreateCandidate(
             int levelNumber,
             NumberPushDifficulty difficulty,
@@ -470,21 +836,82 @@ namespace NovaWright.NumberPush.LevelGenerator
                 return null;
             }
 
-            Shuffle(
-                availableCells);
-
             List<Point> cratePositions =
-                availableCells
-                    .Take(crateCount)
-                    .ToList();
+    new List<Point>();
 
-            foreach (Point cratePosition in cratePositions)
+            for (int crateIndex = 0;
+                 crateIndex < crateCount;
+                 crateIndex++)
             {
                 int distance =
-    GetCrateDistance(
-        difficulty,
-        cratePositions.IndexOf(
-            cratePosition));
+                    GetCrateDistance(
+                        difficulty,
+                        crateIndex);
+
+                List<Point> viablePositions =
+                    new List<Point>();
+
+                int bestMoveCount =
+                    -1;
+
+                foreach (Point candidatePosition in availableCells)
+                {
+                    int moveCount =
+                        0;
+
+                    Point[] directions =
+                    {
+            new Point(0, -1),
+            new Point(0, 1),
+            new Point(-1, 0),
+            new Point(1, 0)
+        };
+
+                    foreach (Point direction in directions)
+                    {
+                        if (CanMoveCrateDistance(
+                                level,
+                                candidatePosition,
+                                direction,
+                                distance))
+                        {
+                            moveCount++;
+                        }
+                    }
+
+                    if (moveCount > bestMoveCount)
+                    {
+                        bestMoveCount =
+                            moveCount;
+
+                        viablePositions.Clear();
+
+                        viablePositions.Add(
+                            candidatePosition);
+                    }
+                    else if (moveCount == bestMoveCount)
+                    {
+                        viablePositions.Add(
+                            candidatePosition);
+                    }
+                }
+
+                if (viablePositions.Count == 0 ||
+                    bestMoveCount == 0)
+                {
+                    return null;
+                }
+
+                Point cratePosition =
+                    viablePositions[
+                        random.Next(
+                            viablePositions.Count)];
+
+                cratePositions.Add(
+                    cratePosition);
+
+                availableCells.Remove(
+                    cratePosition);
 
                 level.Crates.Add(
                     new NumberPushCrate(
@@ -492,28 +919,119 @@ namespace NovaWright.NumberPush.LevelGenerator
                         distance));
             }
 
-            List<Point> goalCandidates =
-                availableCells
-                    .Where(
-                        cell =>
-                            !cratePositions.Contains(
-                                cell))
-                    .ToList();
+            HashSet<Point> assignedGoals =
+    new HashSet<Point>();
 
-            Shuffle(
-                goalCandidates);
+            Dictionary<int, HashSet<Point>> crateReachableGoals =
+                new Dictionary<int, HashSet<Point>>();
 
-            if (goalCandidates.Count < crateCount)
+            foreach (Point candidateGoal in availableCells)
             {
-                return null;
+                for (int crateIndex = 0;
+                     crateIndex < crateCount;
+                     crateIndex++)
+                {
+                    NumberPushCrate crate =
+                        level.Crates[crateIndex];
+
+                    HashSet<Point> reachablePositions =
+                        GetReachablePositions(
+                            level,
+                            crate.Position,
+                            crate.Distance);
+
+                    if (reachablePositions.Contains(
+                            candidateGoal))
+                    {
+                        if (!crateReachableGoals.ContainsKey(
+                                crateIndex))
+                        {
+                            crateReachableGoals[crateIndex] =
+                                new HashSet<Point>();
+                        }
+
+                        crateReachableGoals[crateIndex].Add(
+                            candidateGoal);
+                    }
+                }
             }
 
-            for (int i = 0;
-                 i < crateCount;
-                 i++)
+            for (int crateIndex = 0;
+                 crateIndex < crateCount;
+                 crateIndex++)
             {
+                if (!crateReachableGoals.ContainsKey(
+                        crateIndex) ||
+                    crateReachableGoals[crateIndex].Count == 0)
+                {
+                    return null;
+                }
+            }
+
+            while (level.Goals.Count < crateCount)
+            {
+                List<Point> goalCandidates =
+                    availableCells
+                        .Where(
+                            position =>
+                                !assignedGoals.Contains(
+                                    position))
+                        .Where(
+                            position =>
+                                crateReachableGoals.Any(
+                                    pair =>
+                                        pair.Value.Contains(
+                                            position)))
+                        .ToList();
+
+                if (goalCandidates.Count == 0)
+                {
+                    return null;
+                }
+
+                int bestCompatibility =
+                    int.MaxValue;
+
+                List<Point> bestGoals =
+                    new List<Point>();
+
+                foreach (Point goal in goalCandidates)
+                {
+                    int compatibility =
+                        crateReachableGoals.Count(
+                            pair =>
+                                pair.Value.Contains(
+                                    goal));
+
+                    if (compatibility <
+                        bestCompatibility)
+                    {
+                        bestCompatibility =
+                            compatibility;
+
+                        bestGoals.Clear();
+
+                        bestGoals.Add(
+                            goal);
+                    }
+                    else if (compatibility ==
+                             bestCompatibility)
+                    {
+                        bestGoals.Add(
+                            goal);
+                    }
+                }
+
+                Point selectedGoal =
+                    bestGoals[
+                        random.Next(
+                            bestGoals.Count)];
+
+                assignedGoals.Add(
+                    selectedGoal);
+
                 level.Goals.Add(
-                    goalCandidates[i]);
+                    selectedGoal);
             }
 
             List<Point> playerCandidates =
@@ -532,9 +1050,9 @@ namespace NovaWright.NumberPush.LevelGenerator
             }
 
             level.PlayerStart =
-                playerCandidates[
-                    random.Next(
-                        playerCandidates.Count)];
+    playerCandidates[
+        random.Next(
+            playerCandidates.Count)];
 
             return level;
         }
@@ -543,19 +1061,7 @@ namespace NovaWright.NumberPush.LevelGenerator
     NumberPushDifficulty difficulty,
     int crateIndex)
         {
-            int requiredDistance =
-                1 +
-                difficulty.Complexity / 3;
-
-            int distance =
-                requiredDistance -
-                crateIndex;
-
-            return Math.Max(
-                difficulty.MinimumCrateDistance,
-                Math.Min(
-                    difficulty.MaximumCrateDistance,
-                    distance));
+            return difficulty.MinimumCrateDistance;
         }
 
         private bool CreateInteriorWalls(

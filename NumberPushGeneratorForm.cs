@@ -202,7 +202,7 @@ namespace NovaWrightNumberPush
                 1000;
 
             lastLevelInput.Value =
-                20;
+                10;
 
             lastLevelInput.Font =
                 new Font(
@@ -510,7 +510,7 @@ namespace NovaWrightNumberPush
                 true;
 
             reportDiagnosticsCheckBox.Checked =
-                false;
+                true;
 
             reportDiagnosticsCheckBox.Location =
                 new Point(

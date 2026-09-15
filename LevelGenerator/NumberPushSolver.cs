@@ -494,7 +494,7 @@ HashSet<string> visitedCrateConfigurations)
         }
 
         private NumberPushSolution BuildSolution(
-            SolverState finalState)
+    SolverState finalState)
         {
             List<NumberPushSolutionStep> steps =
                 new();
@@ -532,15 +532,43 @@ HashSet<string> visitedCrateConfigurations)
                     i + 1;
             }
 
-            return new NumberPushSolution
+            NumberPushSolution solution =
+                new NumberPushSolution
+                {
+                    IsSolved = true,
+                    MinimumPushes =
+                        finalState.Pushes,
+                    Steps = steps
+                };
+
+            foreach (NumberPushSolutionStep step in steps)
             {
-                IsSolved = true,
+                if (solution.CratePushCounts.ContainsKey(
+                        step.CrateIndex))
+                {
+                    solution.CratePushCounts[step.CrateIndex]++;
+                }
+                else
+                {
+                    solution.CratePushCounts[step.CrateIndex] =
+                        1;
+                }
 
-                MinimumPushes =
-                    finalState.Pushes,
+                if (!solution.CrateFirstPushNumbers.ContainsKey(
+                        step.CrateIndex))
+                {
+                    solution.CrateFirstPushNumbers[step.CrateIndex] =
+                        step.PushNumber;
+                }
 
-                Steps = steps
-            };
+                solution.CrateLastPushNumbers[step.CrateIndex] =
+                    step.PushNumber;
+
+                solution.CrateGoalPositions[step.CrateIndex] =
+                    step.CrateEnd;
+            }
+
+            return solution;
         }
 
         private List<Point> FindPlayerPath(

@@ -8,22 +8,156 @@ Target pushes: 7-16
 Final board: 10x12
 
 CANDIDATES
-Total attempts: 622
+Total attempts: 81
 Wall generation failures: 0
-Solver calls: 19
-Pre-solver rejected: 603
-Unsolvable: 18
+Solver calls: 13
+Pre-solver rejected: 68
+Pre-solver no reachable goals: 65
+Pre-solver failed crate distance 1: 0
+Pre-solver failed crate distance 2: 8
+Pre-solver failed crate distance 3: 57
+Pre-solver failed crate distance 4+: 0
+Pre-solver no distinct goal matching: 3
+Unsolvable: 12
 Below target: 0
 Above target: 0
 Accepted: 1
 
+SOLUTION
+Minimum pushes: 14
+Crates moved: 3
+
+Crate 1:
+  Pushes: 1
+  First push: 1
+  Last push: 1
+
+Crate 2:
+  Pushes: 3
+  First push: 3
+  Last push: 5
+
+Crate 3:
+  Pushes: 10
+  First push: 2
+  Last push: 14
+
+CRATE GEOMETRY
+Crate 1: start (7,1), distance 3, reachable goals 1
+  Reachable positions: 8
+    (4,1)
+    (10,1)
+    (4,4)
+    (7,4)
+    (1,7)
+    (4,7)
+    (7,7)
+    (10,7)
+  Goal: (4,1)
+Crate 2: start (5,3), distance 2, reachable goals 1
+  Reachable positions: 16
+    (3,1)
+    (5,1)
+    (7,1)
+    (9,1)
+    (3,3)
+    (7,3)
+    (9,3)
+    (3,5)
+    (5,5)
+    (7,5)
+    (9,5)
+    (1,7)
+    (3,7)
+    (5,7)
+    (7,7)
+    (9,7)
+  Goal: (9,1)
+Crate 3: start (4,3), distance 1, reachable goals 3
+  Reachable positions: 67
+    (1,1)
+    (3,1)
+    (4,1)
+    (5,1)
+    (6,1)
+    (7,1)
+    (8,1)
+    (9,1)
+    (10,1)
+    (1,2)
+    (2,2)
+    (3,2)
+    (4,2)
+    (5,2)
+    (7,2)
+    (8,2)
+    (9,2)
+    (10,2)
+    (1,3)
+    (3,3)
+    (5,3)
+    (6,3)
+    (7,3)
+    (8,3)
+    (9,3)
+    (10,3)
+    (1,4)
+    (3,4)
+    (4,4)
+    (5,4)
+    (6,4)
+    (7,4)
+    (9,4)
+    (2,5)
+    (3,5)
+    (4,5)
+    (5,5)
+    (6,5)
+    (7,5)
+    (9,5)
+    (10,5)
+    (1,6)
+    (3,6)
+    (4,6)
+    (5,6)
+    (7,6)
+    (8,6)
+    (9,6)
+    (10,6)
+    (1,7)
+    (2,7)
+    (3,7)
+    (4,7)
+    (5,7)
+    (6,7)
+    (7,7)
+    (8,7)
+    (9,7)
+    (10,7)
+    (1,8)
+    (2,8)
+    (3,8)
+    (5,8)
+    (7,8)
+    (8,8)
+    (9,8)
+    (10,8)
+  Goal: (4,1)
+  Goal: (9,8)
+  Goal: (9,1)
+
+GOALS
+Crate 1 goal: (4,1)
+Crate 2 goal: (9,1)
+Crate 3 goal: (9,8)
+
 TIMING
-Candidate generation: 1559 ms
-Solver: 548 ms
-Average solver call: 28.84 ms
-Total time: 00:00:02
+Candidate generation: 559 ms
+Solver: 814 ms
+Average solver call: 62.62 ms
+Total time: 00:00:01
 
 ========================================
-TOTAL CREATION TIME: 00:00:02
-START TIME:          2026-09-14 20:31:59
+TOTAL CREATION TIME: 00:00:01
+START TIME:          2026-09-15 09:36:51
 ========================================

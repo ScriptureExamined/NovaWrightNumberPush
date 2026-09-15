@@ -19,15 +19,117 @@ Pre-solver failed crate distance 3: 0
 Pre-solver failed crate distance 4+: 0
 Pre-solver no distinct goal matching: 0
 Unsolvable: 0
+  States explored: 0
+  Zero-legal-push states: 0
+  Maximum legal pushes: 0
+  Duplicate states: 0
 Below target: 0
 Above target: 0
 Accepted: 1
 
+SOLUTION
+Minimum pushes: 8
+Crates moved: 1
+Crate push order changes: 0
+Maximum consecutive pushes: 8
+
+Crate 1:
+  Pushes: 8
+  First push: 1
+  Last push: 8
+
+CRATE GEOMETRY
+Crate 1: start (4,3), distance 1, reachable goals 1
+  Reachable positions: 77
+    (1,1)
+    (2,1)
+    (3,1)
+    (4,1)
+    (5,1)
+    (6,1)
+    (7,1)
+    (8,1)
+    (9,1)
+    (10,1)
+    (1,2)
+    (2,2)
+    (3,2)
+    (4,2)
+    (5,2)
+    (6,2)
+    (7,2)
+    (8,2)
+    (9,2)
+    (10,2)
+    (1,3)
+    (2,3)
+    (3,3)
+    (5,3)
+    (6,3)
+    (7,3)
+    (8,3)
+    (9,3)
+    (10,3)
+    (1,4)
+    (2,4)
+    (3,4)
+    (4,4)
+    (5,4)
+    (6,4)
+    (7,4)
+    (8,4)
+    (9,4)
+    (10,4)
+    (1,5)
+    (2,5)
+    (3,5)
+    (4,5)
+    (5,5)
+    (6,5)
+    (7,5)
+    (8,5)
+    (9,5)
+    (10,5)
+    (1,6)
+    (2,6)
+    (3,6)
+    (5,6)
+    (6,6)
+    (7,6)
+    (8,6)
+    (9,6)
+    (10,6)
+    (1,7)
+    (2,7)
+    (3,7)
+    (5,7)
+    (6,7)
+    (7,7)
+    (8,7)
+    (9,7)
+    (10,7)
+    (1,8)
+    (2,8)
+    (3,8)
+    (4,8)
+    (5,8)
+    (6,8)
+    (7,8)
+    (8,8)
+    (9,8)
+    (10,8)
+  Goal: (1,8), minimum pushes 8
+
+GOALS
+Crate 1 goal: (1,8)
+
 TIMING
-Candidate generation: 8 ms
-Solver: 11 ms
-Average solver call: 11.00 ms
-Total time: 00:00:00
+Candidate generation: 52 ms
+Solver: 13 ms
+Average solver call: 13.00 ms
+Total time: 00:00:00Crate interaction pairs: 0
+Crate interaction blocks: 0
+
 
 ========================================
 LEVEL 2 DIAGNOSTICS
@@ -35,9 +137,9 @@ Target pushes: 5-12
 Final board: 10x12
 
 CANDIDATES
-Total attempts: 7
+Total attempts: 1
 Wall generation failures: 0
-Solver calls: 7
+Solver calls: 1
 Pre-solver rejected: 0
 Pre-solver no reachable goals: 0
 Pre-solver failed crate distance 1: 0
@@ -45,16 +147,112 @@ Pre-solver failed crate distance 2: 0
 Pre-solver failed crate distance 3: 0
 Pre-solver failed crate distance 4+: 0
 Pre-solver no distinct goal matching: 0
-Unsolvable: 4
-Below target: 2
+Unsolvable: 0
+  States explored: 0
+  Zero-legal-push states: 0
+  Maximum legal pushes: 0
+  Duplicate states: 0
+Below target: 0
 Above target: 0
 Accepted: 1
 
+SOLUTION
+Minimum pushes: 8
+Crates moved: 1
+Crate push order changes: 0
+Maximum consecutive pushes: 8
+
+Crate 1:
+  Pushes: 8
+  First push: 1
+  Last push: 8
+
+CRATE GEOMETRY
+Crate 1: start (2,5), distance 1, reachable goals 1
+  Reachable positions: 71
+    (1,1)
+    (2,1)
+    (3,1)
+    (4,1)
+    (5,1)
+    (6,1)
+    (7,1)
+    (8,1)
+    (9,1)
+    (1,2)
+    (2,2)
+    (3,2)
+    (5,2)
+    (6,2)
+    (7,2)
+    (8,2)
+    (9,2)
+    (10,2)
+    (1,3)
+    (2,3)
+    (3,3)
+    (4,3)
+    (5,3)
+    (6,3)
+    (8,3)
+    (9,3)
+    (1,4)
+    (2,4)
+    (3,4)
+    (4,4)
+    (5,4)
+    (6,4)
+    (7,4)
+    (8,4)
+    (9,4)
+    (10,4)
+    (1,5)
+    (3,5)
+    (4,5)
+    (6,5)
+    (7,5)
+    (8,5)
+    (9,5)
+    (10,5)
+    (2,6)
+    (3,6)
+    (4,6)
+    (5,6)
+    (6,6)
+    (7,6)
+    (8,6)
+    (9,6)
+    (10,6)
+    (1,7)
+    (2,7)
+    (3,7)
+    (4,7)
+    (5,7)
+    (7,7)
+    (8,7)
+    (9,7)
+    (10,7)
+    (1,8)
+    (2,8)
+    (3,8)
+    (4,8)
+    (5,8)
+    (7,8)
+    (8,8)
+    (9,8)
+    (10,8)
+  Goal: (8,7), minimum pushes 8
+
+GOALS
+Crate 1 goal: (8,7)
+
 TIMING
-Candidate generation: 102 ms
+Candidate generation: 46 ms
 Solver: 1 ms
-Average solver call: 0.14 ms
-Total time: 00:00:00
+Average solver call: 1.00 ms
+Total time: 00:00:00Crate interaction pairs: 0
+Crate interaction blocks: 0
+
 
 ========================================
 LEVEL 3 DIAGNOSTICS
@@ -62,26 +260,202 @@ Target pushes: 5-13
 Final board: 10x12
 
 CANDIDATES
-Total attempts: 8
+Total attempts: 2
 Wall generation failures: 0
-Solver calls: 5
-Pre-solver rejected: 3
-Pre-solver no reachable goals: 3
+Solver calls: 2
+Pre-solver rejected: 0
+Pre-solver no reachable goals: 0
 Pre-solver failed crate distance 1: 0
-Pre-solver failed crate distance 2: 3
+Pre-solver failed crate distance 2: 0
 Pre-solver failed crate distance 3: 0
 Pre-solver failed crate distance 4+: 0
 Pre-solver no distinct goal matching: 0
-Unsolvable: 4
-Below target: 0
+Unsolvable: 0
+  States explored: 0
+  Zero-legal-push states: 0
+  Maximum legal pushes: 0
+  Duplicate states: 0
+Below target: 1
 Above target: 0
 Accepted: 1
 
+SOLUTION
+Minimum pushes: 12
+Crates moved: 2
+Crate push order changes: 1
+Maximum consecutive pushes: 9
+
+Crate 1:
+  Pushes: 9
+  First push: 1
+  Last push: 9
+
+Crate 2:
+  Pushes: 3
+  First push: 10
+  Last push: 12
+
+CRATE GEOMETRY
+Crate 1: start (5,7), distance 1, reachable goals 2
+  Reachable positions: 70
+    (1,1)
+    (2,1)
+    (3,1)
+    (4,1)
+    (5,1)
+    (6,1)
+    (7,1)
+    (8,1)
+    (9,1)
+    (10,1)
+    (1,2)
+    (2,2)
+    (4,2)
+    (5,2)
+    (7,2)
+    (8,2)
+    (9,2)
+    (10,2)
+    (1,3)
+    (2,3)
+    (4,3)
+    (5,3)
+    (6,3)
+    (7,3)
+    (8,3)
+    (9,3)
+    (10,3)
+    (1,4)
+    (2,4)
+    (3,4)
+    (4,4)
+    (5,4)
+    (6,4)
+    (8,4)
+    (9,4)
+    (1,5)
+    (2,5)
+    (3,5)
+    (4,5)
+    (5,5)
+    (6,5)
+    (7,5)
+    (8,5)
+    (10,5)
+    (1,6)
+    (2,6)
+    (3,6)
+    (5,6)
+    (6,6)
+    (7,6)
+    (8,6)
+    (9,6)
+    (10,6)
+    (1,7)
+    (2,7)
+    (3,7)
+    (4,7)
+    (6,7)
+    (8,7)
+    (9,7)
+    (10,7)
+    (2,8)
+    (3,8)
+    (4,8)
+    (5,8)
+    (6,8)
+    (7,8)
+    (8,8)
+    (9,8)
+    (10,8)
+  Goal: (8,1), minimum pushes 9
+  Goal: (10,5), minimum pushes 7
+Crate 2: start (8,6), distance 1, reachable goals 2
+  Reachable positions: 70
+    (1,1)
+    (2,1)
+    (3,1)
+    (4,1)
+    (5,1)
+    (6,1)
+    (7,1)
+    (8,1)
+    (9,1)
+    (10,1)
+    (1,2)
+    (2,2)
+    (4,2)
+    (5,2)
+    (7,2)
+    (8,2)
+    (9,2)
+    (10,2)
+    (1,3)
+    (2,3)
+    (4,3)
+    (5,3)
+    (6,3)
+    (7,3)
+    (8,3)
+    (9,3)
+    (10,3)
+    (1,4)
+    (2,4)
+    (3,4)
+    (4,4)
+    (5,4)
+    (6,4)
+    (8,4)
+    (9,4)
+    (1,5)
+    (2,5)
+    (3,5)
+    (4,5)
+    (5,5)
+    (6,5)
+    (7,5)
+    (8,5)
+    (10,5)
+    (1,6)
+    (2,6)
+    (3,6)
+    (5,6)
+    (6,6)
+    (7,6)
+    (9,6)
+    (10,6)
+    (1,7)
+    (2,7)
+    (3,7)
+    (4,7)
+    (5,7)
+    (6,7)
+    (8,7)
+    (9,7)
+    (10,7)
+    (2,8)
+    (3,8)
+    (4,8)
+    (5,8)
+    (6,8)
+    (7,8)
+    (8,8)
+    (9,8)
+    (10,8)
+  Goal: (8,1), minimum pushes 5
+  Goal: (10,5), minimum pushes 3
+
+GOALS
+Crate 1 goal: (8,1)
+Crate 2 goal: (10,5)
+
 TIMING
-Candidate generation: 61 ms
-Solver: 50 ms
-Average solver call: 10.00 ms
-Total time: 00:00:00
+Candidate generation: 166 ms
+Solver: 105 ms
+Average solver call: 52.50 ms
+Total time: 00:00:00Crate interaction pairs: 0
+Crate interaction blocks: 0
+
 
 ========================================
 LEVEL 4 DIAGNOSTICS
@@ -89,26 +463,198 @@ Target pushes: 6-14
 Final board: 10x12
 
 CANDIDATES
-Total attempts: 13
+Total attempts: 4
 Wall generation failures: 0
 Solver calls: 4
-Pre-solver rejected: 9
-Pre-solver no reachable goals: 9
+Pre-solver rejected: 0
+Pre-solver no reachable goals: 0
 Pre-solver failed crate distance 1: 0
-Pre-solver failed crate distance 2: 9
+Pre-solver failed crate distance 2: 0
 Pre-solver failed crate distance 3: 0
 Pre-solver failed crate distance 4+: 0
 Pre-solver no distinct goal matching: 0
 Unsolvable: 3
+  States explored: 8729
+  Zero-legal-push states: 117
+  Maximum legal pushes: 8
+  Duplicate states: 33643
 Below target: 0
 Above target: 0
 Accepted: 1
 
+SOLUTION
+Minimum pushes: 8
+Crates moved: 2
+Crate push order changes: 1
+Maximum consecutive pushes: 6
+
+Crate 1:
+  Pushes: 6
+  First push: 1
+  Last push: 6
+
+Crate 2:
+  Pushes: 2
+  First push: 7
+  Last push: 8
+
+CRATE GEOMETRY
+Crate 1: start (6,7), distance 1, reachable goals 2
+  Reachable positions: 68
+    (1,1)
+    (3,1)
+    (5,1)
+    (6,1)
+    (7,1)
+    (8,1)
+    (9,1)
+    (10,1)
+    (1,2)
+    (2,2)
+    (3,2)
+    (4,2)
+    (5,2)
+    (6,2)
+    (7,2)
+    (8,2)
+    (9,2)
+    (10,2)
+    (1,3)
+    (2,3)
+    (3,3)
+    (4,3)
+    (5,3)
+    (7,3)
+    (8,3)
+    (10,3)
+    (1,4)
+    (3,4)
+    (4,4)
+    (6,4)
+    (7,4)
+    (8,4)
+    (9,4)
+    (10,4)
+    (1,5)
+    (2,5)
+    (3,5)
+    (4,5)
+    (5,5)
+    (6,5)
+    (7,5)
+    (8,5)
+    (9,5)
+    (1,6)
+    (2,6)
+    (3,6)
+    (4,6)
+    (5,6)
+    (6,6)
+    (7,6)
+    (8,6)
+    (9,6)
+    (10,6)
+    (1,7)
+    (2,7)
+    (4,7)
+    (5,7)
+    (7,7)
+    (8,7)
+    (9,7)
+    (10,7)
+    (1,8)
+    (3,8)
+    (4,8)
+    (5,8)
+    (6,8)
+    (7,8)
+    (10,8)
+  Goal: (7,2), minimum pushes 6
+  Goal: (8,2), minimum pushes 7
+Crate 2: start (8,4), distance 1, reachable goals 2
+  Reachable positions: 68
+    (1,1)
+    (3,1)
+    (5,1)
+    (6,1)
+    (7,1)
+    (8,1)
+    (9,1)
+    (10,1)
+    (1,2)
+    (2,2)
+    (3,2)
+    (4,2)
+    (5,2)
+    (6,2)
+    (7,2)
+    (8,2)
+    (9,2)
+    (10,2)
+    (1,3)
+    (2,3)
+    (3,3)
+    (4,3)
+    (5,3)
+    (7,3)
+    (8,3)
+    (10,3)
+    (1,4)
+    (3,4)
+    (4,4)
+    (6,4)
+    (7,4)
+    (9,4)
+    (10,4)
+    (1,5)
+    (2,5)
+    (3,5)
+    (4,5)
+    (5,5)
+    (6,5)
+    (7,5)
+    (8,5)
+    (9,5)
+    (1,6)
+    (2,6)
+    (3,6)
+    (4,6)
+    (5,6)
+    (6,6)
+    (7,6)
+    (8,6)
+    (9,6)
+    (10,6)
+    (1,7)
+    (2,7)
+    (4,7)
+    (5,7)
+    (6,7)
+    (7,7)
+    (8,7)
+    (9,7)
+    (10,7)
+    (1,8)
+    (3,8)
+    (4,8)
+    (5,8)
+    (6,8)
+    (7,8)
+    (10,8)
+  Goal: (7,2), minimum pushes 3
+  Goal: (8,2), minimum pushes 2
+
+GOALS
+Crate 1 goal: (7,2)
+Crate 2 goal: (8,2)
+
 TIMING
-Candidate generation: 135 ms
-Solver: 19 ms
-Average solver call: 4.75 ms
-Total time: 00:00:00
+Candidate generation: 245 ms
+Solver: 173 ms
+Average solver call: 43.25 ms
+Total time: 00:00:00Crate interaction pairs: 0
+Crate interaction blocks: 0
+
 
 ========================================
 LEVEL 5 DIAGNOSTICS
@@ -116,26 +662,190 @@ Target pushes: 6-15
 Final board: 10x12
 
 CANDIDATES
-Total attempts: 35
+Total attempts: 1
 Wall generation failures: 0
-Solver calls: 10
-Pre-solver rejected: 25
-Pre-solver no reachable goals: 25
+Solver calls: 1
+Pre-solver rejected: 0
+Pre-solver no reachable goals: 0
 Pre-solver failed crate distance 1: 0
-Pre-solver failed crate distance 2: 25
+Pre-solver failed crate distance 2: 0
 Pre-solver failed crate distance 3: 0
 Pre-solver failed crate distance 4+: 0
 Pre-solver no distinct goal matching: 0
-Unsolvable: 7
-Below target: 2
+Unsolvable: 0
+  States explored: 0
+  Zero-legal-push states: 0
+  Maximum legal pushes: 0
+  Duplicate states: 0
+Below target: 0
 Above target: 0
 Accepted: 1
 
+SOLUTION
+Minimum pushes: 9
+Crates moved: 2
+Crate push order changes: 1
+Maximum consecutive pushes: 6
+
+Crate 1:
+  Pushes: 6
+  First push: 1
+  Last push: 6
+
+Crate 2:
+  Pushes: 3
+  First push: 7
+  Last push: 9
+
+CRATE GEOMETRY
+Crate 1: start (9,2), distance 1, reachable goals 2
+  Reachable positions: 64
+    (1,1)
+    (2,1)
+    (3,1)
+    (4,1)
+    (5,1)
+    (6,1)
+    (7,1)
+    (8,1)
+    (9,1)
+    (10,1)
+    (1,2)
+    (2,2)
+    (3,2)
+    (4,2)
+    (5,2)
+    (7,2)
+    (8,2)
+    (10,2)
+    (1,3)
+    (2,3)
+    (4,3)
+    (5,3)
+    (6,3)
+    (7,3)
+    (9,3)
+    (10,3)
+    (1,4)
+    (3,4)
+    (4,4)
+    (5,4)
+    (7,4)
+    (8,4)
+    (1,5)
+    (3,5)
+    (4,5)
+    (5,5)
+    (7,5)
+    (8,5)
+    (9,5)
+    (10,5)
+    (1,6)
+    (2,6)
+    (3,6)
+    (4,6)
+    (5,6)
+    (6,6)
+    (8,6)
+    (10,6)
+    (1,7)
+    (2,7)
+    (3,7)
+    (4,7)
+    (5,7)
+    (6,7)
+    (8,7)
+    (10,7)
+    (2,8)
+    (3,8)
+    (4,8)
+    (5,8)
+    (6,8)
+    (7,8)
+    (9,8)
+    (10,8)
+  Goal: (4,1), minimum pushes 6
+  Goal: (3,8), minimum pushes 12
+Crate 2: start (4,6), distance 1, reachable goals 2
+  Reachable positions: 64
+    (1,1)
+    (2,1)
+    (3,1)
+    (4,1)
+    (5,1)
+    (6,1)
+    (7,1)
+    (8,1)
+    (9,1)
+    (10,1)
+    (1,2)
+    (2,2)
+    (3,2)
+    (4,2)
+    (5,2)
+    (7,2)
+    (8,2)
+    (9,2)
+    (10,2)
+    (1,3)
+    (2,3)
+    (4,3)
+    (5,3)
+    (6,3)
+    (7,3)
+    (9,3)
+    (10,3)
+    (1,4)
+    (3,4)
+    (4,4)
+    (5,4)
+    (7,4)
+    (8,4)
+    (1,5)
+    (3,5)
+    (4,5)
+    (5,5)
+    (7,5)
+    (8,5)
+    (9,5)
+    (10,5)
+    (1,6)
+    (2,6)
+    (3,6)
+    (5,6)
+    (6,6)
+    (8,6)
+    (10,6)
+    (1,7)
+    (2,7)
+    (3,7)
+    (4,7)
+    (5,7)
+    (6,7)
+    (8,7)
+    (10,7)
+    (2,8)
+    (3,8)
+    (4,8)
+    (5,8)
+    (6,8)
+    (7,8)
+    (9,8)
+    (10,8)
+  Goal: (4,1), minimum pushes 5
+  Goal: (3,8), minimum pushes 3
+
+GOALS
+Crate 1 goal: (4,1)
+Crate 2 goal: (3,8)
+
 TIMING
-Candidate generation: 153 ms
-Solver: 64 ms
-Average solver call: 6.40 ms
-Total time: 00:00:00
+Candidate generation: 15 ms
+Solver: 12 ms
+Average solver call: 12.00 ms
+Total time: 00:00:00Crate interaction pairs: 0
+Crate interaction blocks: 0
+
 
 ========================================
 LEVEL 6 DIAGNOSTICS
@@ -143,26 +853,276 @@ Target pushes: 7-16
 Final board: 10x12
 
 CANDIDATES
-Total attempts: 554
+Total attempts: 1
 Wall generation failures: 0
-Solver calls: 18
-Pre-solver rejected: 536
-Pre-solver no reachable goals: 531
+Solver calls: 1
+Pre-solver rejected: 0
+Pre-solver no reachable goals: 0
 Pre-solver failed crate distance 1: 0
-Pre-solver failed crate distance 2: 44
-Pre-solver failed crate distance 3: 487
+Pre-solver failed crate distance 2: 0
+Pre-solver failed crate distance 3: 0
 Pre-solver failed crate distance 4+: 0
-Pre-solver no distinct goal matching: 5
-Unsolvable: 17
+Pre-solver no distinct goal matching: 0
+Unsolvable: 0
+  States explored: 0
+  Zero-legal-push states: 0
+  Maximum legal pushes: 0
+  Duplicate states: 0
 Below target: 0
 Above target: 0
 Accepted: 1
 
+SOLUTION
+Minimum pushes: 15
+Crates moved: 3
+Crate push order changes: 2
+Maximum consecutive pushes: 9
+
+Crate 1:
+  Pushes: 5
+  First push: 1
+  Last push: 5
+
+Crate 2:
+  Pushes: 9
+  First push: 6
+  Last push: 14
+
+Crate 3:
+  Pushes: 1
+  First push: 15
+  Last push: 15
+
+CRATE GEOMETRY
+Crate 1: start (4,7), distance 1, reachable goals 3
+  Reachable positions: 67
+    (1,1)
+    (2,1)
+    (3,1)
+    (4,1)
+    (5,1)
+    (6,1)
+    (7,1)
+    (8,1)
+    (9,1)
+    (10,1)
+    (1,2)
+    (3,2)
+    (4,2)
+    (5,2)
+    (6,2)
+    (8,2)
+    (9,2)
+    (10,2)
+    (2,3)
+    (3,3)
+    (4,3)
+    (5,3)
+    (6,3)
+    (7,3)
+    (8,3)
+    (9,3)
+    (10,3)
+    (2,4)
+    (3,4)
+    (4,4)
+    (5,4)
+    (6,4)
+    (8,4)
+    (9,4)
+    (10,4)
+    (2,5)
+    (3,5)
+    (4,5)
+    (6,5)
+    (7,5)
+    (8,5)
+    (9,5)
+    (10,5)
+    (2,6)
+    (3,6)
+    (4,6)
+    (6,6)
+    (7,6)
+    (8,6)
+    (10,6)
+    (1,7)
+    (2,7)
+    (3,7)
+    (5,7)
+    (6,7)
+    (7,7)
+    (8,7)
+    (9,7)
+    (10,7)
+    (1,8)
+    (2,8)
+    (3,8)
+    (4,8)
+    (5,8)
+    (6,8)
+    (9,8)
+    (10,8)
+  Goal: (4,3), minimum pushes 4
+  Goal: (10,4), minimum pushes 9
+  Goal: (9,7), minimum pushes 5
+Crate 2: start (3,4), distance 1, reachable goals 3
+  Reachable positions: 67
+    (1,1)
+    (2,1)
+    (3,1)
+    (4,1)
+    (5,1)
+    (6,1)
+    (7,1)
+    (8,1)
+    (9,1)
+    (10,1)
+    (1,2)
+    (3,2)
+    (4,2)
+    (5,2)
+    (6,2)
+    (8,2)
+    (9,2)
+    (10,2)
+    (2,3)
+    (3,3)
+    (4,3)
+    (5,3)
+    (6,3)
+    (7,3)
+    (8,3)
+    (9,3)
+    (10,3)
+    (2,4)
+    (4,4)
+    (5,4)
+    (6,4)
+    (8,4)
+    (9,4)
+    (10,4)
+    (2,5)
+    (3,5)
+    (4,5)
+    (6,5)
+    (7,5)
+    (8,5)
+    (9,5)
+    (10,5)
+    (2,6)
+    (3,6)
+    (4,6)
+    (6,6)
+    (7,6)
+    (8,6)
+    (10,6)
+    (1,7)
+    (2,7)
+    (3,7)
+    (4,7)
+    (5,7)
+    (6,7)
+    (7,7)
+    (8,7)
+    (9,7)
+    (10,7)
+    (1,8)
+    (2,8)
+    (3,8)
+    (4,8)
+    (5,8)
+    (6,8)
+    (9,8)
+    (10,8)
+  Goal: (4,3), minimum pushes 2
+  Goal: (10,4), minimum pushes 9
+  Goal: (9,7), minimum pushes 9
+Crate 3: start (4,4), distance 1, reachable goals 3
+  Reachable positions: 67
+    (1,1)
+    (2,1)
+    (3,1)
+    (4,1)
+    (5,1)
+    (6,1)
+    (7,1)
+    (8,1)
+    (9,1)
+    (10,1)
+    (1,2)
+    (3,2)
+    (4,2)
+    (5,2)
+    (6,2)
+    (8,2)
+    (9,2)
+    (10,2)
+    (2,3)
+    (3,3)
+    (4,3)
+    (5,3)
+    (6,3)
+    (7,3)
+    (8,3)
+    (9,3)
+    (10,3)
+    (2,4)
+    (3,4)
+    (5,4)
+    (6,4)
+    (8,4)
+    (9,4)
+    (10,4)
+    (2,5)
+    (3,5)
+    (4,5)
+    (6,5)
+    (7,5)
+    (8,5)
+    (9,5)
+    (10,5)
+    (2,6)
+    (3,6)
+    (4,6)
+    (6,6)
+    (7,6)
+    (8,6)
+    (10,6)
+    (1,7)
+    (2,7)
+    (3,7)
+    (4,7)
+    (5,7)
+    (6,7)
+    (7,7)
+    (8,7)
+    (9,7)
+    (10,7)
+    (1,8)
+    (2,8)
+    (3,8)
+    (4,8)
+    (5,8)
+    (6,8)
+    (9,8)
+    (10,8)
+  Goal: (4,3), minimum pushes 1
+  Goal: (10,4), minimum pushes 8
+  Goal: (9,7), minimum pushes 8
+
+GOALS
+Crate 1 goal: (9,7)
+Crate 2 goal: (10,4)
+Crate 3 goal: (4,3)
+
 TIMING
-Candidate generation: 1164 ms
-Solver: 486 ms
-Average solver call: 27.00 ms
-Total time: 00:00:02
+Candidate generation: 21 ms
+Solver: 1720 ms
+Average solver call: 1720.00 ms
+Total time: 00:00:03Crate interaction pairs: 1
+Crate interaction blocks: 2
+
 
 ========================================
 LEVEL 7 DIAGNOSTICS
@@ -170,109 +1130,1165 @@ Target pushes: 7-17
 Final board: 10x12
 
 CANDIDATES
-Total attempts: 884
+Total attempts: 21
 Wall generation failures: 0
-Solver calls: 17
-Pre-solver rejected: 867
-Pre-solver no reachable goals: 858
+Solver calls: 21
+Pre-solver rejected: 0
+Pre-solver no reachable goals: 0
 Pre-solver failed crate distance 1: 0
-Pre-solver failed crate distance 2: 61
-Pre-solver failed crate distance 3: 797
+Pre-solver failed crate distance 2: 0
+Pre-solver failed crate distance 3: 0
 Pre-solver failed crate distance 4+: 0
-Pre-solver no distinct goal matching: 9
-Unsolvable: 16
-Below target: 0
-Above target: 0
+Pre-solver no distinct goal matching: 0
+Unsolvable: 18
+  States explored: 147330
+  Zero-legal-push states: 2492
+  Maximum legal pushes: 12
+  Duplicate states: 574162
+Below target: 1
+Above target: 1
 Accepted: 1
 
+SOLUTION
+Minimum pushes: 14
+Crates moved: 3
+Crate push order changes: 12
+Maximum consecutive pushes: 2
+
+Crate 1:
+  Pushes: 2
+  First push: 1
+  Last push: 2
+
+Crate 2:
+  Pushes: 6
+  First push: 3
+  Last push: 13
+
+Crate 3:
+  Pushes: 6
+  First push: 4
+  Last push: 14
+
+CRATE GEOMETRY
+Crate 1: start (9,7), distance 1, reachable goals 3
+  Reachable positions: 65
+    (1,1)
+    (2,1)
+    (3,1)
+    (6,1)
+    (7,1)
+    (8,1)
+    (9,1)
+    (10,1)
+    (1,2)
+    (3,2)
+    (4,2)
+    (5,2)
+    (6,2)
+    (7,2)
+    (8,2)
+    (10,2)
+    (1,3)
+    (2,3)
+    (3,3)
+    (4,3)
+    (5,3)
+    (6,3)
+    (7,3)
+    (8,3)
+    (9,3)
+    (10,3)
+    (1,4)
+    (3,4)
+    (5,4)
+    (6,4)
+    (7,4)
+    (8,4)
+    (9,4)
+    (2,5)
+    (4,5)
+    (5,5)
+    (6,5)
+    (7,5)
+    (9,5)
+    (2,6)
+    (3,6)
+    (4,6)
+    (5,6)
+    (6,6)
+    (7,6)
+    (8,6)
+    (9,6)
+    (10,6)
+    (1,7)
+    (2,7)
+    (3,7)
+    (5,7)
+    (6,7)
+    (7,7)
+    (8,7)
+    (10,7)
+    (1,8)
+    (2,8)
+    (3,8)
+    (4,8)
+    (5,8)
+    (6,8)
+    (7,8)
+    (9,8)
+    (10,8)
+  Goal: (1,3), minimum pushes 12
+  Goal: (4,3), minimum pushes 9
+  Goal: (9,5), minimum pushes 2
+Crate 2: start (8,3), distance 1, reachable goals 3
+  Reachable positions: 65
+    (1,1)
+    (2,1)
+    (3,1)
+    (6,1)
+    (7,1)
+    (8,1)
+    (9,1)
+    (10,1)
+    (1,2)
+    (3,2)
+    (4,2)
+    (5,2)
+    (6,2)
+    (7,2)
+    (8,2)
+    (10,2)
+    (1,3)
+    (2,3)
+    (3,3)
+    (4,3)
+    (5,3)
+    (6,3)
+    (7,3)
+    (9,3)
+    (10,3)
+    (1,4)
+    (3,4)
+    (5,4)
+    (6,4)
+    (7,4)
+    (8,4)
+    (9,4)
+    (2,5)
+    (4,5)
+    (5,5)
+    (6,5)
+    (7,5)
+    (9,5)
+    (2,6)
+    (3,6)
+    (4,6)
+    (5,6)
+    (6,6)
+    (7,6)
+    (8,6)
+    (9,6)
+    (10,6)
+    (1,7)
+    (2,7)
+    (3,7)
+    (5,7)
+    (6,7)
+    (7,7)
+    (8,7)
+    (9,7)
+    (10,7)
+    (1,8)
+    (2,8)
+    (3,8)
+    (4,8)
+    (5,8)
+    (6,8)
+    (7,8)
+    (9,8)
+    (10,8)
+  Goal: (1,3), minimum pushes 7
+  Goal: (4,3), minimum pushes 4
+  Goal: (9,5), minimum pushes 3
+Crate 3: start (7,3), distance 1, reachable goals 3
+  Reachable positions: 65
+    (1,1)
+    (2,1)
+    (3,1)
+    (6,1)
+    (7,1)
+    (8,1)
+    (9,1)
+    (10,1)
+    (1,2)
+    (3,2)
+    (4,2)
+    (5,2)
+    (6,2)
+    (7,2)
+    (8,2)
+    (10,2)
+    (1,3)
+    (2,3)
+    (3,3)
+    (4,3)
+    (5,3)
+    (6,3)
+    (8,3)
+    (9,3)
+    (10,3)
+    (1,4)
+    (3,4)
+    (5,4)
+    (6,4)
+    (7,4)
+    (8,4)
+    (9,4)
+    (2,5)
+    (4,5)
+    (5,5)
+    (6,5)
+    (7,5)
+    (9,5)
+    (2,6)
+    (3,6)
+    (4,6)
+    (5,6)
+    (6,6)
+    (7,6)
+    (8,6)
+    (9,6)
+    (10,6)
+    (1,7)
+    (2,7)
+    (3,7)
+    (5,7)
+    (6,7)
+    (7,7)
+    (8,7)
+    (9,7)
+    (10,7)
+    (1,8)
+    (2,8)
+    (3,8)
+    (4,8)
+    (5,8)
+    (6,8)
+    (7,8)
+    (9,8)
+    (10,8)
+  Goal: (1,3), minimum pushes 6
+  Goal: (4,3), minimum pushes 3
+  Goal: (9,5), minimum pushes 4
+
+GOALS
+Crate 1 goal: (9,5)
+Crate 2 goal: (4,3)
+Crate 3 goal: (1,3)
+
 TIMING
-Candidate generation: 2435 ms
-Solver: 18 ms
-Average solver call: 1.06 ms
-Total time: 00:00:02
+Candidate generation: 400 ms
+Solver: 2717 ms
+Average solver call: 129.38 ms
+Total time: 00:00:04Crate interaction pairs: 1
+Crate interaction blocks: 2
+
 
 ========================================
 LEVEL 8 DIAGNOSTICS
 Target pushes: 8-18
-Final board: 12x14
+Final board: 10x12
 
 CANDIDATES
-Total attempts: 1551
+Total attempts: 9
 Wall generation failures: 0
-Solver calls: 28
-Pre-solver rejected: 1523
-Pre-solver no reachable goals: 1505
+Solver calls: 9
+Pre-solver rejected: 0
+Pre-solver no reachable goals: 0
 Pre-solver failed crate distance 1: 0
-Pre-solver failed crate distance 2: 89
-Pre-solver failed crate distance 3: 1416
+Pre-solver failed crate distance 2: 0
+Pre-solver failed crate distance 3: 0
 Pre-solver failed crate distance 4+: 0
-Pre-solver no distinct goal matching: 18
-Unsolvable: 24
-Below target: 3
+Pre-solver no distinct goal matching: 0
+Unsolvable: 8
+  States explored: 99164
+  Zero-legal-push states: 1470
+  Maximum legal pushes: 12
+  Duplicate states: 341411
+Below target: 0
 Above target: 0
 Accepted: 1
 
+SOLUTION
+Minimum pushes: 15
+Crates moved: 3
+Crate push order changes: 2
+Maximum consecutive pushes: 9
+
+Crate 1:
+  Pushes: 1
+  First push: 1
+  Last push: 1
+
+Crate 2:
+  Pushes: 5
+  First push: 2
+  Last push: 6
+
+Crate 3:
+  Pushes: 9
+  First push: 7
+  Last push: 15
+
+CRATE GEOMETRY
+Crate 1: start (5,7), distance 1, reachable goals 3
+  Reachable positions: 61
+    (1,1)
+    (2,1)
+    (3,1)
+    (5,1)
+    (6,1)
+    (7,1)
+    (8,1)
+    (9,1)
+    (10,1)
+    (1,2)
+    (2,2)
+    (3,2)
+    (4,2)
+    (5,2)
+    (6,2)
+    (7,2)
+    (8,2)
+    (9,2)
+    (10,2)
+    (1,3)
+    (2,3)
+    (3,3)
+    (4,3)
+    (5,3)
+    (7,3)
+    (9,3)
+    (1,4)
+    (2,4)
+    (3,4)
+    (5,4)
+    (6,4)
+    (8,4)
+    (9,4)
+    (1,5)
+    (3,5)
+    (4,5)
+    (5,5)
+    (6,5)
+    (9,5)
+    (10,5)
+    (2,6)
+    (3,6)
+    (4,6)
+    (5,6)
+    (6,6)
+    (7,6)
+    (8,6)
+    (9,6)
+    (10,6)
+    (2,7)
+    (3,7)
+    (4,7)
+    (6,7)
+    (10,7)
+    (4,8)
+    (5,8)
+    (6,8)
+    (7,8)
+    (8,8)
+    (9,8)
+    (10,8)
+  Goal: (8,6), minimum pushes 4
+  Goal: (10,6), minimum pushes 6
+  Goal: (6,7), minimum pushes 1
+Crate 2: start (5,6), distance 1, reachable goals 3
+  Reachable positions: 61
+    (1,1)
+    (2,1)
+    (3,1)
+    (5,1)
+    (6,1)
+    (7,1)
+    (8,1)
+    (9,1)
+    (10,1)
+    (1,2)
+    (2,2)
+    (3,2)
+    (4,2)
+    (5,2)
+    (6,2)
+    (7,2)
+    (8,2)
+    (9,2)
+    (10,2)
+    (1,3)
+    (2,3)
+    (3,3)
+    (4,3)
+    (5,3)
+    (7,3)
+    (9,3)
+    (1,4)
+    (2,4)
+    (3,4)
+    (5,4)
+    (6,4)
+    (8,4)
+    (9,4)
+    (1,5)
+    (3,5)
+    (4,5)
+    (5,5)
+    (6,5)
+    (9,5)
+    (10,5)
+    (2,6)
+    (3,6)
+    (4,6)
+    (6,6)
+    (7,6)
+    (8,6)
+    (9,6)
+    (10,6)
+    (2,7)
+    (3,7)
+    (4,7)
+    (5,7)
+    (6,7)
+    (10,7)
+    (4,8)
+    (5,8)
+    (6,8)
+    (7,8)
+    (8,8)
+    (9,8)
+    (10,8)
+  Goal: (8,6), minimum pushes 3
+  Goal: (10,6), minimum pushes 5
+  Goal: (6,7), minimum pushes 2
+Crate 3: start (2,3), distance 1, reachable goals 3
+  Reachable positions: 61
+    (1,1)
+    (2,1)
+    (3,1)
+    (5,1)
+    (6,1)
+    (7,1)
+    (8,1)
+    (9,1)
+    (10,1)
+    (1,2)
+    (2,2)
+    (3,2)
+    (4,2)
+    (5,2)
+    (6,2)
+    (7,2)
+    (8,2)
+    (9,2)
+    (10,2)
+    (1,3)
+    (3,3)
+    (4,3)
+    (5,3)
+    (7,3)
+    (9,3)
+    (1,4)
+    (2,4)
+    (3,4)
+    (5,4)
+    (6,4)
+    (8,4)
+    (9,4)
+    (1,5)
+    (3,5)
+    (4,5)
+    (5,5)
+    (6,5)
+    (9,5)
+    (10,5)
+    (2,6)
+    (3,6)
+    (4,6)
+    (5,6)
+    (6,6)
+    (7,6)
+    (8,6)
+    (9,6)
+    (10,6)
+    (2,7)
+    (3,7)
+    (4,7)
+    (5,7)
+    (6,7)
+    (10,7)
+    (4,8)
+    (5,8)
+    (6,8)
+    (7,8)
+    (8,8)
+    (9,8)
+    (10,8)
+  Goal: (8,6), minimum pushes 9
+  Goal: (10,6), minimum pushes 11
+  Goal: (6,7), minimum pushes 8
+
+GOALS
+Crate 1 goal: (6,7)
+Crate 2 goal: (10,6)
+Crate 3 goal: (8,6)
+
 TIMING
-Candidate generation: 5153 ms
-Solver: 745 ms
-Average solver call: 26.61 ms
-Total time: 00:00:07
+Candidate generation: 172 ms
+Solver: 1696 ms
+Average solver call: 188.44 ms
+Total time: 00:00:02Crate interaction pairs: 1
+Crate interaction blocks: 2
+
 
 ========================================
 LEVEL 9 DIAGNOSTICS
 Target pushes: 8-19
-Final board: 12x14
+Final board: 10x12
 
 CANDIDATES
-Total attempts: 1237
+Total attempts: 47
 Wall generation failures: 0
-Solver calls: 8
-Pre-solver rejected: 1229
-Pre-solver no reachable goals: 1223
+Solver calls: 47
+Pre-solver rejected: 0
+Pre-solver no reachable goals: 0
 Pre-solver failed crate distance 1: 0
-Pre-solver failed crate distance 2: 8
-Pre-solver failed crate distance 3: 68
-Pre-solver failed crate distance 4+: 1147
-Pre-solver no distinct goal matching: 6
-Unsolvable: 7
+Pre-solver failed crate distance 2: 0
+Pre-solver failed crate distance 3: 0
+Pre-solver failed crate distance 4+: 0
+Pre-solver no distinct goal matching: 0
+Unsolvable: 45
+  States explored: 1077201
+  Zero-legal-push states: 5214
+  Maximum legal pushes: 16
+  Duplicate states: 6582944
 Below target: 0
-Above target: 0
+Above target: 1
 Accepted: 1
 
+SOLUTION
+Minimum pushes: 18
+Crates moved: 4
+Crate push order changes: 11
+Maximum consecutive pushes: 3
+
+Crate 1:
+  Pushes: 2
+  First push: 1
+  Last push: 2
+
+Crate 2:
+  Pushes: 10
+  First push: 3
+  Last push: 18
+
+Crate 3:
+  Pushes: 1
+  First push: 6
+  Last push: 6
+
+Crate 4:
+  Pushes: 5
+  First push: 8
+  Last push: 17
+
+CRATE GEOMETRY
+Crate 1: start (3,5), distance 1, reachable goals 4
+  Reachable positions: 61
+    (1,1)
+    (2,1)
+    (4,1)
+    (5,1)
+    (7,1)
+    (8,1)
+    (9,1)
+    (10,1)
+    (2,2)
+    (3,2)
+    (4,2)
+    (5,2)
+    (6,2)
+    (7,2)
+    (9,2)
+    (10,2)
+    (1,3)
+    (2,3)
+    (6,3)
+    (7,3)
+    (8,3)
+    (9,3)
+    (10,3)
+    (2,4)
+    (3,4)
+    (4,4)
+    (5,4)
+    (6,4)
+    (8,4)
+    (9,4)
+    (10,4)
+    (2,5)
+    (4,5)
+    (5,5)
+    (7,5)
+    (9,5)
+    (10,5)
+    (2,6)
+    (3,6)
+    (4,6)
+    (6,6)
+    (7,6)
+    (8,6)
+    (9,6)
+    (1,7)
+    (2,7)
+    (3,7)
+    (4,7)
+    (5,7)
+    (6,7)
+    (7,7)
+    (8,7)
+    (9,7)
+    (10,7)
+    (1,8)
+    (3,8)
+    (5,8)
+    (6,8)
+    (7,8)
+    (8,8)
+    (10,8)
+  Goal: (4,4), minimum pushes 2
+  Goal: (9,4), minimum pushes 9
+  Goal: (10,4), minimum pushes 10
+  Goal: (6,8), minimum pushes 6
+Crate 2: start (3,6), distance 1, reachable goals 4
+  Reachable positions: 61
+    (1,1)
+    (2,1)
+    (4,1)
+    (5,1)
+    (7,1)
+    (8,1)
+    (9,1)
+    (10,1)
+    (2,2)
+    (3,2)
+    (4,2)
+    (5,2)
+    (6,2)
+    (7,2)
+    (9,2)
+    (10,2)
+    (1,3)
+    (2,3)
+    (6,3)
+    (7,3)
+    (8,3)
+    (9,3)
+    (10,3)
+    (2,4)
+    (3,4)
+    (4,4)
+    (5,4)
+    (6,4)
+    (8,4)
+    (9,4)
+    (10,4)
+    (2,5)
+    (3,5)
+    (4,5)
+    (5,5)
+    (7,5)
+    (9,5)
+    (10,5)
+    (2,6)
+    (4,6)
+    (6,6)
+    (7,6)
+    (8,6)
+    (9,6)
+    (1,7)
+    (2,7)
+    (3,7)
+    (4,7)
+    (5,7)
+    (6,7)
+    (7,7)
+    (8,7)
+    (9,7)
+    (10,7)
+    (1,8)
+    (3,8)
+    (5,8)
+    (6,8)
+    (7,8)
+    (8,8)
+    (10,8)
+  Goal: (4,4), minimum pushes 3
+  Goal: (9,4), minimum pushes 10
+  Goal: (10,4), minimum pushes 11
+  Goal: (6,8), minimum pushes 5
+Crate 3: start (6,7), distance 1, reachable goals 4
+  Reachable positions: 61
+    (1,1)
+    (2,1)
+    (4,1)
+    (5,1)
+    (7,1)
+    (8,1)
+    (9,1)
+    (10,1)
+    (2,2)
+    (3,2)
+    (4,2)
+    (5,2)
+    (6,2)
+    (7,2)
+    (9,2)
+    (10,2)
+    (1,3)
+    (2,3)
+    (6,3)
+    (7,3)
+    (8,3)
+    (9,3)
+    (10,3)
+    (2,4)
+    (3,4)
+    (4,4)
+    (5,4)
+    (6,4)
+    (8,4)
+    (9,4)
+    (10,4)
+    (2,5)
+    (3,5)
+    (4,5)
+    (5,5)
+    (7,5)
+    (9,5)
+    (10,5)
+    (2,6)
+    (3,6)
+    (4,6)
+    (6,6)
+    (7,6)
+    (8,6)
+    (9,6)
+    (1,7)
+    (2,7)
+    (3,7)
+    (4,7)
+    (5,7)
+    (7,7)
+    (8,7)
+    (9,7)
+    (10,7)
+    (1,8)
+    (3,8)
+    (5,8)
+    (6,8)
+    (7,8)
+    (8,8)
+    (10,8)
+  Goal: (4,4), minimum pushes 5
+  Goal: (9,4), minimum pushes 6
+  Goal: (10,4), minimum pushes 7
+  Goal: (6,8), minimum pushes 1
+Crate 4: start (8,7), distance 1, reachable goals 4
+  Reachable positions: 61
+    (1,1)
+    (2,1)
+    (4,1)
+    (5,1)
+    (7,1)
+    (8,1)
+    (9,1)
+    (10,1)
+    (2,2)
+    (3,2)
+    (4,2)
+    (5,2)
+    (6,2)
+    (7,2)
+    (9,2)
+    (10,2)
+    (1,3)
+    (2,3)
+    (6,3)
+    (7,3)
+    (8,3)
+    (9,3)
+    (10,3)
+    (2,4)
+    (3,4)
+    (4,4)
+    (5,4)
+    (6,4)
+    (8,4)
+    (9,4)
+    (10,4)
+    (2,5)
+    (3,5)
+    (4,5)
+    (5,5)
+    (7,5)
+    (9,5)
+    (10,5)
+    (2,6)
+    (3,6)
+    (4,6)
+    (6,6)
+    (7,6)
+    (8,6)
+    (9,6)
+    (1,7)
+    (2,7)
+    (3,7)
+    (4,7)
+    (5,7)
+    (6,7)
+    (7,7)
+    (9,7)
+    (10,7)
+    (1,8)
+    (3,8)
+    (5,8)
+    (6,8)
+    (7,8)
+    (8,8)
+    (10,8)
+  Goal: (4,4), minimum pushes 7
+  Goal: (9,4), minimum pushes 4
+  Goal: (10,4), minimum pushes 5
+  Goal: (6,8), minimum pushes 3
+
+GOALS
+Crate 1 goal: (4,4)
+Crate 2 goal: (9,4)
+Crate 3 goal: (6,8)
+Crate 4 goal: (10,4)
+
 TIMING
-Candidate generation: 7833 ms
-Solver: 5722 ms
-Average solver call: 715.25 ms
-Total time: 00:00:14
+Candidate generation: 961 ms
+Solver: 22391 ms
+Average solver call: 476.40 ms
+Total time: 00:00:26Crate interaction pairs: 1
+Crate interaction blocks: 2
+
 
 ========================================
 LEVEL 10 DIAGNOSTICS
 Target pushes: 9-20
-Final board: 14x16
+Final board: 10x12
 
 CANDIDATES
-Total attempts: 1752
-Wall generation failures: 0
-Solver calls: 2
-Pre-solver rejected: 1750
-Pre-solver no reachable goals: 1742
+Total attempts: 55
+Wall generation failures: 1
+Solver calls: 54
+Pre-solver rejected: 0
+Pre-solver no reachable goals: 0
 Pre-solver failed crate distance 1: 0
-Pre-solver failed crate distance 2: 7
-Pre-solver failed crate distance 3: 83
-Pre-solver failed crate distance 4+: 1652
-Pre-solver no distinct goal matching: 8
-Unsolvable: 1
+Pre-solver failed crate distance 2: 0
+Pre-solver failed crate distance 3: 0
+Pre-solver failed crate distance 4+: 0
+Pre-solver no distinct goal matching: 0
+Unsolvable: 53
+  States explored: 208163
+  Zero-legal-push states: 6953
+  Maximum legal pushes: 14
+  Duplicate states: 700719
 Below target: 0
 Above target: 0
 Accepted: 1
 
+SOLUTION
+Minimum pushes: 15
+Crates moved: 4
+Crate push order changes: 7
+Maximum consecutive pushes: 7
+
+Crate 1:
+  Pushes: 1
+  First push: 2
+  Last push: 2
+
+Crate 2:
+  Pushes: 10
+  First push: 3
+  Last push: 15
+
+Crate 3:
+  Pushes: 3
+  First push: 1
+  Last push: 13
+
+Crate 4:
+  Pushes: 1
+  First push: 10
+  Last push: 10
+
+CRATE GEOMETRY
+Crate 1: start (5,7), distance 1, reachable goals 4
+  Reachable positions: 52
+    (2,1)
+    (3,1)
+    (4,1)
+    (6,1)
+    (7,1)
+    (8,1)
+    (9,1)
+    (10,1)
+    (1,2)
+    (4,2)
+    (6,2)
+    (7,2)
+    (8,2)
+    (10,2)
+    (1,3)
+    (2,3)
+    (3,3)
+    (4,3)
+    (5,3)
+    (6,3)
+    (7,3)
+    (8,3)
+    (1,4)
+    (3,4)
+    (4,4)
+    (5,4)
+    (6,4)
+    (8,4)
+    (3,5)
+    (4,5)
+    (6,5)
+    (9,5)
+    (10,5)
+    (1,6)
+    (2,6)
+    (3,6)
+    (4,6)
+    (5,6)
+    (6,6)
+    (7,6)
+    (9,6)
+    (2,7)
+    (4,7)
+    (6,7)
+    (7,7)
+    (8,7)
+    (9,7)
+    (4,8)
+    (5,8)
+    (7,8)
+    (9,8)
+    (10,8)
+  Goal: (5,6), minimum pushes 1
+  Goal: (8,7), minimum pushes 3
+  Goal: (5,8), minimum pushes 1
+  Goal: (7,8), minimum pushes 3
+Crate 2: start (4,3), distance 1, reachable goals 4
+  Reachable positions: 52
+    (2,1)
+    (3,1)
+    (4,1)
+    (6,1)
+    (7,1)
+    (8,1)
+    (9,1)
+    (10,1)
+    (1,2)
+    (4,2)
+    (6,2)
+    (7,2)
+    (8,2)
+    (10,2)
+    (1,3)
+    (2,3)
+    (3,3)
+    (5,3)
+    (6,3)
+    (7,3)
+    (8,3)
+    (1,4)
+    (3,4)
+    (4,4)
+    (5,4)
+    (6,4)
+    (8,4)
+    (3,5)
+    (4,5)
+    (6,5)
+    (9,5)
+    (10,5)
+    (1,6)
+    (2,6)
+    (3,6)
+    (4,6)
+    (5,6)
+    (6,6)
+    (7,6)
+    (9,6)
+    (2,7)
+    (4,7)
+    (5,7)
+    (6,7)
+    (7,7)
+    (8,7)
+    (9,7)
+    (4,8)
+    (5,8)
+    (7,8)
+    (9,8)
+    (10,8)
+  Goal: (5,6), minimum pushes 4
+  Goal: (8,7), minimum pushes 8
+  Goal: (5,8), minimum pushes 6
+  Goal: (7,8), minimum pushes 8
+Crate 3: start (7,7), distance 1, reachable goals 4
+  Reachable positions: 52
+    (2,1)
+    (3,1)
+    (4,1)
+    (6,1)
+    (7,1)
+    (8,1)
+    (9,1)
+    (10,1)
+    (1,2)
+    (4,2)
+    (6,2)
+    (7,2)
+    (8,2)
+    (10,2)
+    (1,3)
+    (2,3)
+    (3,3)
+    (4,3)
+    (5,3)
+    (6,3)
+    (7,3)
+    (8,3)
+    (1,4)
+    (3,4)
+    (4,4)
+    (5,4)
+    (6,4)
+    (8,4)
+    (3,5)
+    (4,5)
+    (6,5)
+    (9,5)
+    (10,5)
+    (1,6)
+    (2,6)
+    (3,6)
+    (4,6)
+    (5,6)
+    (6,6)
+    (7,6)
+    (9,6)
+    (2,7)
+    (4,7)
+    (5,7)
+    (6,7)
+    (8,7)
+    (9,7)
+    (4,8)
+    (5,8)
+    (7,8)
+    (9,8)
+    (10,8)
+  Goal: (5,6), minimum pushes 3
+  Goal: (8,7), minimum pushes 1
+  Goal: (5,8), minimum pushes 3
+  Goal: (7,8), minimum pushes 1
+Crate 4: start (4,6), distance 1, reachable goals 4
+  Reachable positions: 52
+    (2,1)
+    (3,1)
+    (4,1)
+    (6,1)
+    (7,1)
+    (8,1)
+    (9,1)
+    (10,1)
+    (1,2)
+    (4,2)
+    (6,2)
+    (7,2)
+    (8,2)
+    (10,2)
+    (1,3)
+    (2,3)
+    (3,3)
+    (4,3)
+    (5,3)
+    (6,3)
+    (7,3)
+    (8,3)
+    (1,4)
+    (3,4)
+    (4,4)
+    (5,4)
+    (6,4)
+    (8,4)
+    (3,5)
+    (4,5)
+    (6,5)
+    (9,5)
+    (10,5)
+    (1,6)
+    (2,6)
+    (3,6)
+    (5,6)
+    (6,6)
+    (7,6)
+    (9,6)
+    (2,7)
+    (4,7)
+    (5,7)
+    (6,7)
+    (7,7)
+    (8,7)
+    (9,7)
+    (4,8)
+    (5,8)
+    (7,8)
+    (9,8)
+    (10,8)
+  Goal: (5,6), minimum pushes 1
+  Goal: (8,7), minimum pushes 5
+  Goal: (5,8), minimum pushes 3
+  Goal: (7,8), minimum pushes 5
+
+GOALS
+Crate 1 goal: (5,8)
+Crate 2 goal: (8,7)
+Crate 3 goal: (7,8)
+Crate 4 goal: (5,6)
+
 TIMING
-Candidate generation: 13689 ms
-Solver: 23844 ms
-Average solver call: 11922.00 ms
-Total time: 00:01:02
+Candidate generation: 1086 ms
+Solver: 2336 ms
+Average solver call: 43.26 ms
+Total time: 00:00:03Crate interaction pairs: 0
+Crate interaction blocks: 0
+
 
 ========================================
-TOTAL CREATION TIME: 00:01:29
-START TIME:          2026-09-15 07:02:33
+TOTAL CREATION TIME: 00:00:41
+START TIME:          2026-09-15 11:38:38
 ========================================

@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace NovaWright.NumberPush.LevelGenerator
+﻿namespace NovaWright.NumberPush.LevelGenerator
 {
     public class NumberPushSolution
     {
@@ -8,7 +6,28 @@ namespace NovaWright.NumberPush.LevelGenerator
 
         public int MinimumPushes { get; set; }
 
-        public List<NumberPushSolutionStep> Steps { get; set; } = new();
+        public List<NumberPushSolutionStep> Steps { get; set; } =
+            new();
+
+        public Dictionary<int, int> CratePushCounts { get; set; } =
+            new();
+
+        public Dictionary<int, int> CrateFirstPushNumbers { get; set; } =
+            new();
+
+        public Dictionary<int, int> CrateLastPushNumbers { get; set; } =
+            new();
+
+        public Dictionary<int, Point> CrateGoalPositions { get; set; } =
+    new();
+
+        public int CratesMoved
+        {
+            get
+            {
+                return CratePushCounts.Count;
+            }
+        }
     }
 
     public class NumberPushSolutionStep
@@ -40,4 +59,3 @@ namespace NovaWright.NumberPush.LevelGenerator
         public List<Point> PlayerPath { get; set; } = new();
     }
 }
-
