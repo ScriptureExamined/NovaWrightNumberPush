@@ -1,0 +1,29 @@
+NUMBER PUSH GENERATION DIAGNOSTICS
+Levels: 6-6
+Seed: 12345
+
+========================================
+LEVEL 6 DIAGNOSTICS
+Target pushes: 7-16
+Final board: 10x12
+
+CANDIDATES
+Total attempts: 622
+Wall generation failures: 0
+Solver calls: 19
+Pre-solver rejected: 603
+Unsolvable: 18
+Below target: 0
+Above target: 0
+Accepted: 1
+
+TIMING
+Candidate generation: 1559 ms
+Solver: 548 ms
+Average solver call: 28.84 ms
+Total time: 00:00:02
+
+========================================
+TOTAL CREATION TIME: 00:00:02
+START TIME:          2026-09-14 20:31:59
+========================================

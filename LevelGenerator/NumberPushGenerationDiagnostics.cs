@@ -18,6 +18,8 @@
 
         public int TotalSolverCalls { get; set; }
 
+        public int PreSolverRejectedCandidates { get; set; }
+
         public int UnsolvableCandidates { get; set; }
 
         public int BelowTargetCandidates { get; set; }
@@ -62,6 +64,7 @@
                 $"Total attempts: {TotalAttempts}\r\n" +
                 $"Wall generation failures: {WallGenerationFailures}\r\n" +
                 $"Solver calls: {TotalSolverCalls}\r\n" +
+                $"Pre-solver rejected: {PreSolverRejectedCandidates}\r\n" +
                 $"Unsolvable: {UnsolvableCandidates}\r\n" +
                 $"Below target: {BelowTargetCandidates}\r\n" +
                 $"Above target: {AboveTargetCandidates}\r\n" +
@@ -108,6 +111,10 @@
 
             Console.WriteLine(
                 $"Solver calls: {TotalSolverCalls}");
+
+            Console.WriteLine(
+                $"Pre-solver rejected: " +
+                $"{PreSolverRejectedCandidates}");
 
             Console.WriteLine(
                 $"Unsolvable: {UnsolvableCandidates}");

@@ -125,6 +125,17 @@ namespace NovaWright.NumberPush.LevelGenerator
                         continue;
                     }
 
+                    if (!CanCratesReachDistinctGoals(
+        candidate))
+                    {
+                        if (diagnostics != null)
+                        {
+                            diagnostics.PreSolverRejectedCandidates++;
+                        }
+
+                        continue;
+                    }
+
                     if (diagnostics != null)
                     {
                         diagnostics.TotalSolverCalls++;
@@ -210,6 +221,176 @@ namespace NovaWright.NumberPush.LevelGenerator
             }
 
             return null;
+        }
+
+        private bool CanCratesReachDistinctGoals(
+    NumberPushLevel level)
+        {
+            List<HashSet<Point>> reachableGoals =
+                new List<HashSet<Point>>();
+
+            foreach (NumberPushCrate crate in level.Crates)
+            {
+                HashSet<Point> goals =
+                    GetReachableGoals(
+                        level,
+                        crate.Position,
+                        crate.Distance);
+
+                if (goals.Count == 0)
+                {
+                    return false;
+                }
+
+                reachableGoals.Add(
+                    goals);
+            }
+
+            reachableGoals =
+                reachableGoals
+                    .OrderBy(
+                        goals =>
+                            goals.Count)
+                    .ToList();
+
+            HashSet<Point> assignedGoals =
+                new HashSet<Point>();
+
+            return TryMatchGoals(
+                reachableGoals,
+                0,
+                assignedGoals);
+        }
+
+        private HashSet<Point> GetReachableGoals(
+            NumberPushLevel level,
+            Point start,
+            int distance)
+        {
+            HashSet<Point> visited =
+                new HashSet<Point>();
+
+            Queue<Point> queue =
+                new Queue<Point>();
+
+            visited.Add(
+                start);
+
+            queue.Enqueue(
+                start);
+
+            Point[] directions =
+            {
+        new Point(0, -1),
+        new Point(0, 1),
+        new Point(-1, 0),
+        new Point(1, 0)
+    };
+
+            while (queue.Count > 0)
+            {
+                Point current =
+                    queue.Dequeue();
+
+                foreach (Point direction in directions)
+                {
+                    Point destination =
+                        new Point(
+                            current.X +
+                                direction.X * distance,
+                            current.Y +
+                                direction.Y * distance);
+
+                    if (!CanMoveCrateDistance(
+                            level,
+                            current,
+                            direction,
+                            distance))
+                    {
+                        continue;
+                    }
+
+                    if (visited.Add(
+                            destination))
+                    {
+                        queue.Enqueue(
+                            destination);
+                    }
+                }
+            }
+
+            return level.Goals
+                .Where(
+                    goal =>
+                        visited.Contains(
+                            goal))
+                .ToHashSet();
+        }
+
+        private bool CanMoveCrateDistance(
+            NumberPushLevel level,
+            Point start,
+            Point direction,
+            int distance)
+        {
+            for (int step = 1;
+                 step <= distance;
+                 step++)
+            {
+                Point position =
+                    new Point(
+                        start.X +
+                            direction.X * step,
+                        start.Y +
+                            direction.Y * step);
+
+                if (IsWall(
+                        level,
+                        position))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private bool TryMatchGoals(
+            List<HashSet<Point>> reachableGoals,
+            int crateIndex,
+            HashSet<Point> assignedGoals)
+        {
+            if (crateIndex >=
+                reachableGoals.Count)
+            {
+                return true;
+            }
+
+            foreach (Point goal in
+                     reachableGoals[crateIndex])
+            {
+                if (assignedGoals.Contains(
+                        goal))
+                {
+                    continue;
+                }
+
+                assignedGoals.Add(
+                    goal);
+
+                if (TryMatchGoals(
+                        reachableGoals,
+                        crateIndex + 1,
+                        assignedGoals))
+                {
+                    return true;
+                }
+
+                assignedGoals.Remove(
+                    goal);
+            }
+
+            return false;
         }
 
         private NumberPushLevel? CreateCandidate(
