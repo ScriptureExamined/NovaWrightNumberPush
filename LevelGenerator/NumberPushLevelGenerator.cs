@@ -125,12 +125,24 @@ namespace NovaWright.NumberPush.LevelGenerator
                         continue;
                     }
 
+                    bool noReachableGoals;
+
                     if (!CanCratesReachDistinctGoals(
-        candidate))
+                            candidate,
+                            out noReachableGoals))
                     {
                         if (diagnostics != null)
                         {
                             diagnostics.PreSolverRejectedCandidates++;
+
+                            if (noReachableGoals)
+                            {
+                                diagnostics.PreSolverNoReachableGoals++;
+                            }
+                            else
+                            {
+                                diagnostics.PreSolverNoDistinctGoalMatching++;
+                            }
                         }
 
                         continue;
@@ -224,8 +236,10 @@ namespace NovaWright.NumberPush.LevelGenerator
         }
 
         private bool CanCratesReachDistinctGoals(
-    NumberPushLevel level)
+    NumberPushLevel level, out bool noReachableGoals)
         {
+            noReachableGoals = false;
+
             List<HashSet<Point>> reachableGoals =
                 new List<HashSet<Point>>();
 
@@ -239,6 +253,7 @@ namespace NovaWright.NumberPush.LevelGenerator
 
                 if (goals.Count == 0)
                 {
+                    noReachableGoals = true;
                     return false;
                 }
 

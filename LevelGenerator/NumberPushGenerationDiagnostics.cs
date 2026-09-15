@@ -20,6 +20,10 @@
 
         public int PreSolverRejectedCandidates { get; set; }
 
+        public int PreSolverNoReachableGoals { get; set; }
+
+        public int PreSolverNoDistinctGoalMatching { get; set; }
+
         public int UnsolvableCandidates { get; set; }
 
         public int BelowTargetCandidates { get; set; }
@@ -65,6 +69,8 @@
                 $"Wall generation failures: {WallGenerationFailures}\r\n" +
                 $"Solver calls: {TotalSolverCalls}\r\n" +
                 $"Pre-solver rejected: {PreSolverRejectedCandidates}\r\n" +
+                $"Pre-solver no reachable goals: {PreSolverNoReachableGoals}\r\n" +
+                $"Pre-solver no distinct goal matching: {PreSolverNoDistinctGoalMatching}\r\n" +
                 $"Unsolvable: {UnsolvableCandidates}\r\n" +
                 $"Below target: {BelowTargetCandidates}\r\n" +
                 $"Above target: {AboveTargetCandidates}\r\n" +
