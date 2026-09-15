@@ -1,4 +1,5 @@
 ﻿using NovaWright.NumberPush.LevelGenerator;
+using System.Diagnostics;
 
 namespace NovaWrightNumberPush
 {
@@ -29,7 +30,8 @@ namespace NovaWrightNumberPush
             NumberPushGame game,
             NumberPushGameSession gameSession)
         {
-            this.game = game;
+            this.game =
+                game;
 
             this.gameSession =
                 gameSession;
@@ -379,10 +381,6 @@ namespace NovaWrightNumberPush
             Controls.Add(
                 generateRangeButton);
 
-            // --------------------------------------------------------
-            // Progress Bar
-            // --------------------------------------------------------
-
             progressBar =
                 new ProgressBar();
 
@@ -407,10 +405,6 @@ namespace NovaWrightNumberPush
 
             Controls.Add(
                 progressBar);
-
-            // --------------------------------------------------------
-            // Status
-            // --------------------------------------------------------
 
             statusLabel =
                 new Label();
@@ -437,10 +431,6 @@ namespace NovaWrightNumberPush
             Controls.Add(
                 statusLabel);
 
-            // --------------------------------------------------------
-            // Options
-            // --------------------------------------------------------
-
             openLevelCheckBox =
                 new CheckBox();
 
@@ -448,7 +438,7 @@ namespace NovaWrightNumberPush
                 "Open generated level after creation";
 
             openLevelCheckBox.Checked =
-                false;
+                true;
 
             openLevelCheckBox.AutoSize =
                 true;
@@ -471,7 +461,7 @@ namespace NovaWrightNumberPush
                 "Open Markdown solution after creation";
 
             openMarkdownCheckBox.Checked =
-                false;
+                true;
 
             openMarkdownCheckBox.AutoSize =
                 true;
@@ -494,7 +484,7 @@ namespace NovaWrightNumberPush
                 "Show crate numbers";
 
             showCrateNumbersCheckBox.Checked =
-                false;
+                true;
 
             showCrateNumbersCheckBox.ForeColor =
                 Color.White;
@@ -511,7 +501,7 @@ namespace NovaWrightNumberPush
                 showCrateNumbersCheckBox);
 
             reportDiagnosticsCheckBox =
-    new CheckBox();
+                new CheckBox();
 
             reportDiagnosticsCheckBox.Text =
                 "Report diagnostic data";
@@ -527,14 +517,8 @@ namespace NovaWrightNumberPush
             reportDiagnosticsCheckBox.ForeColor =
                 Color.White;
 
-            reportDiagnosticsCheckBox.Checked = false;
-
             Controls.Add(
                 reportDiagnosticsCheckBox);
-
-            // --------------------------------------------------------
-            // Close
-            // --------------------------------------------------------
 
             closeButton =
                 new Button();
@@ -602,7 +586,7 @@ namespace NovaWrightNumberPush
                 (int)seedInput.Value;
 
             bool reportDiagnostics =
-    reportDiagnosticsCheckBox.Checked;
+                reportDiagnosticsCheckBox.Checked;
 
             if (lastLevel < firstLevel)
             {
@@ -618,8 +602,14 @@ namespace NovaWrightNumberPush
             int levelCount =
                 lastLevel - firstLevel + 1;
 
+            DateTime startTime =
+                DateTime.Now;
+
+            Stopwatch creationTimer =
+                Stopwatch.StartNew();
+
             statusLabel.Text =
-                $"Generating level 0 of {levelCount}...";
+                $"Generating level 1 of {levelCount}...";
 
             generateButton.Enabled =
                 false;
@@ -657,16 +647,14 @@ namespace NovaWrightNumberPush
 
             try
             {
-                DateTime startTime = DateTime.Now;
-
                 List<NumberPushGenerationResult> results =
                     await Task.Run(
                         () =>
                         {
                             NumberPushGenerationService service =
-    new NumberPushGenerationService(
-        seed,
-        reportDiagnostics);
+                                new NumberPushGenerationService(
+                                    seed,
+                                    reportDiagnostics);
 
                             return service.GenerateRange(
                                 firstLevel,
@@ -674,8 +662,10 @@ namespace NovaWrightNumberPush
                                 generationProgress);
                         });
 
+                creationTimer.Stop();
+
                 NumberPushLevelRepository levelRepository =
-    new NumberPushLevelRepository();
+                    new NumberPushLevelRepository();
 
                 string outputDirectory =
                     Path.Combine(
@@ -710,7 +700,7 @@ namespace NovaWrightNumberPush
                         new List<string>();
 
                     reportLines.Add(
-                        $"NUMBER PUSH GENERATION DIAGNOSTICS");
+                        "NUMBER PUSH GENERATION DIAGNOSTICS");
 
                     reportLines.Add(
                         $"Levels: {firstLevel}-{lastLevel}");
@@ -720,12 +710,6 @@ namespace NovaWrightNumberPush
 
                     reportLines.Add(
                         "");
-
-                    TimeSpan totalCreationTime =
-    TimeSpan.FromMilliseconds(
-        results.Sum(
-            result =>
-                result.GenerationMilliseconds));
 
                     foreach (NumberPushGenerationResult result in results)
                     {
@@ -744,6 +728,9 @@ namespace NovaWrightNumberPush
                             "");
                     }
 
+                    TimeSpan totalCreationTime =
+                        creationTimer.Elapsed;
+
                     reportLines.Add(
                         "========================================");
 
@@ -761,7 +748,8 @@ namespace NovaWrightNumberPush
                         reportLines);
                 }
 
-                int successfulLevels = 0;
+                int successfulLevels =
+                    0;
 
                 foreach (NumberPushGenerationResult result in results)
                 {
@@ -798,6 +786,8 @@ namespace NovaWrightNumberPush
             }
             catch (Exception ex)
             {
+                creationTimer.Stop();
+
                 statusLabel.Text =
                     "Range generation failed.";
 
@@ -824,8 +814,8 @@ namespace NovaWrightNumberPush
         }
 
         private async void GenerateButton_Click(
-    object? sender,
-    EventArgs e)
+            object? sender,
+            EventArgs e)
         {
             int levelNumber =
                 (int)levelNumberInput.Value;
@@ -836,10 +826,19 @@ namespace NovaWrightNumberPush
             bool reportDiagnostics =
                 reportDiagnosticsCheckBox.Checked;
 
+            DateTime startTime =
+                DateTime.Now;
+
+            Stopwatch creationTimer =
+                Stopwatch.StartNew();
+
             statusLabel.Text =
                 $"Generating Level {levelNumber}...";
 
             generateButton.Enabled =
+                false;
+
+            generateRangeButton.Enabled =
                 false;
 
             progressBar.Style =
@@ -854,8 +853,6 @@ namespace NovaWrightNumberPush
                     await Task.Run(
                         () =>
                         {
-                            DateTime startTime = DateTime.Now;
-
                             NumberPushGenerationService service =
                                 new NumberPushGenerationService(
                                     seed,
@@ -864,6 +861,8 @@ namespace NovaWrightNumberPush
                             return service.Generate(
                                 levelNumber);
                         });
+
+                creationTimer.Stop();
 
                 if (!result.IsSuccessful)
                 {
@@ -899,6 +898,9 @@ namespace NovaWrightNumberPush
                         "Game",
                         "GeneratedLevels");
 
+                Directory.CreateDirectory(
+                    outputDirectory);
+
                 string markdownFile =
                     NumberPushMarkdownExporter.Export(
                         result.Level!,
@@ -910,9 +912,18 @@ namespace NovaWrightNumberPush
                 if (reportDiagnostics &&
                     result.Diagnostics != null)
                 {
+                    string diagnosticsDirectory =
+                        Path.Combine(
+                            projectDirectory,
+                            "Game",
+                            "GeneratedLevels");
+
+                    Directory.CreateDirectory(
+                        diagnosticsDirectory);
+
                     string diagnosticsFile =
                         Path.Combine(
-                            outputDirectory,
+                            diagnosticsDirectory,
                             $"GenerationDiagnostics_{levelNumber:D3}-{levelNumber:D3}.txt");
 
                     List<string> reportLines =
@@ -938,6 +949,21 @@ namespace NovaWrightNumberPush
 
                     reportLines.Add(
                         "");
+
+                    TimeSpan totalCreationTime =
+                        creationTimer.Elapsed;
+
+                    reportLines.Add(
+                        "========================================");
+
+                    reportLines.Add(
+                        $"TOTAL CREATION TIME: {totalCreationTime:hh\\:mm\\:ss}");
+
+                    reportLines.Add(
+                        $"START TIME:          {startTime:yyyy-MM-dd HH:mm:ss}");
+
+                    reportLines.Add(
+                        "========================================");
 
                     File.WriteAllLines(
                         diagnosticsFile,
@@ -966,15 +992,6 @@ namespace NovaWrightNumberPush
                     $"Seed: {seed}\r\n" +
                     $"Markdown: {markdownFile}";
 
-                MessageBox.Show(
-                    $"Successfully generated level {levelNumber}." +
-                    (reportDiagnostics
-                        ? "\r\n\r\nDiagnostics report generated."
-                        : ""),
-                    "Number Push Generator",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-
                 if (openLevelCheckBox.Checked)
                 {
                     Hide();
@@ -986,10 +1003,32 @@ namespace NovaWrightNumberPush
                             result.Level!,
                             showCrateNumbersCheckBox.Checked);
 
-                    gameForm.ShowDialog();
+                    gameForm.ShowDialog(
+                        this);
 
                     Show();
                 }
+                else
+                {
+                    MessageBox.Show(
+                        $"Successfully generated level {levelNumber}.",
+                        "Number Push Generator",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                creationTimer.Stop();
+
+                statusLabel.Text =
+                    "Generation failed.";
+
+                MessageBox.Show(
+                    ex.ToString(),
+                    "Number Push Generator",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
             finally
             {
@@ -997,6 +1036,9 @@ namespace NovaWrightNumberPush
                     false;
 
                 generateButton.Enabled =
+                    true;
+
+                generateRangeButton.Enabled =
                     true;
             }
         }

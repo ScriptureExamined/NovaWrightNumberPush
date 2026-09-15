@@ -5,8 +5,8 @@
   "PushMode": "Exact",
   "PlayerStart": {
     "IsEmpty": false,
-    "X": 8,
-    "Y": 4
+    "X": 2,
+    "Y": 8
   },
   "Walls": [
     {
@@ -895,8 +895,8 @@
   "Goals": [
     {
       "IsEmpty": false,
-      "X": 10,
-      "Y": 3
+      "X": 4,
+      "Y": 4
     }
   ],
   "Crates": [

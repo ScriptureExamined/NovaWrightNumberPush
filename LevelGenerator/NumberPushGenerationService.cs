@@ -12,8 +12,8 @@ namespace NovaWright.NumberPush.LevelGenerator
         public int Seed { get; }
 
         public NumberPushGenerationService(
-    int seed,
-    bool reportDiagnostics)
+            int seed,
+            bool reportDiagnostics)
         {
             Seed =
                 seed;
@@ -34,9 +34,9 @@ namespace NovaWright.NumberPush.LevelGenerator
                     levelNumber);
 
             NumberPushGenerationDiagnostics? diagnostics =
-    reportDiagnostics
-        ? new NumberPushGenerationDiagnostics()
-        : null;
+                reportDiagnostics
+                    ? new NumberPushGenerationDiagnostics()
+                    : null;
 
             Stopwatch generationTimer =
                 Stopwatch.StartNew();
@@ -50,7 +50,7 @@ namespace NovaWright.NumberPush.LevelGenerator
             generationTimer.Stop();
 
             if (diagnostics != null &&
-    level != null)
+                level != null)
             {
                 diagnostics.FinalRows =
                     level.Rows;
@@ -66,10 +66,10 @@ namespace NovaWright.NumberPush.LevelGenerator
                         level,
 
                     Difficulty =
-    difficulty,
+                        difficulty,
 
                     Diagnostics =
-    diagnostics,
+                        diagnostics,
 
                     GenerationMilliseconds =
                         generationTimer.ElapsedMilliseconds
@@ -109,9 +109,9 @@ namespace NovaWright.NumberPush.LevelGenerator
         }
 
         public List<NumberPushGenerationResult> GenerateRange(
-    int firstLevel,
-    int lastLevel,
-    IProgress<int>? progress = null)
+            int firstLevel,
+            int lastLevel,
+            IProgress<int>? progress = null)
         {
             if (firstLevel <= 0)
             {
@@ -133,7 +133,8 @@ namespace NovaWright.NumberPush.LevelGenerator
             int levelCount =
                 lastLevel - firstLevel + 1;
 
-            int completedLevels = 0;
+            int completedLevels =
+                0;
 
             for (int levelNumber = firstLevel;
                  levelNumber <= lastLevel;

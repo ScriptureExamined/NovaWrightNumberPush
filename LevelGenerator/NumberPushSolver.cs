@@ -44,6 +44,8 @@ namespace NovaWright.NumberPush.LevelGenerator
 
         public long GoalProgressUnchanged { get; private set; }
 
+        public long DuplicateCrateConfigurations { get; private set; }
+
         public NumberPushSolver(NumberPushLevel level)
         {
             this.level = level;
@@ -106,6 +108,9 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             HashSet<string> visited = new();
 
+            HashSet<string> visitedCrateConfigurations =
+    new();
+
             StatesExplored = 0;
 
             TotalLegalPushes = 0;
@@ -122,15 +127,15 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             GoalProgressUnchanged = 0;
 
-            DuplicateStates = 0;
+            DuplicateCrateConfigurations = 0;
 
             SolverState startState =
-                new SolverState(
-                    level.PlayerStart,
-                    crateStartPositions,
-                    0,
-                    null,
-                    null);
+    new SolverState(
+        level.PlayerStart,
+        crateStartPositions,
+        0,
+        null,
+        null);
 
             queue.Enqueue(startState);
 
@@ -138,6 +143,10 @@ namespace NovaWright.NumberPush.LevelGenerator
                 CreateStateKey(
                     level.PlayerStart,
                     crateStartPositions));
+
+            visitedCrateConfigurations.Add(
+    CreateCrateConfigurationKey(
+        crateStartPositions));
 
             while (queue.Count > 0)
             {
@@ -191,7 +200,8 @@ namespace NovaWright.NumberPush.LevelGenerator
                         new Point(0, -1),
                         currentReachableVisitId,
                         queue,
-                        visited);
+                        visited,
+                        visitedCrateConfigurations);
 
                     TryPush(
                         state,
@@ -200,7 +210,8 @@ namespace NovaWright.NumberPush.LevelGenerator
                         new Point(0, 1),
                         currentReachableVisitId,
                         queue,
-                        visited);
+                        visited,
+                        visitedCrateConfigurations);
 
                     TryPush(
                         state,
@@ -209,7 +220,8 @@ namespace NovaWright.NumberPush.LevelGenerator
                         new Point(-1, 0),
                         currentReachableVisitId,
                         queue,
-                        visited);
+                        visited,
+                        visitedCrateConfigurations);
 
                     TryPush(
                         state,
@@ -218,7 +230,8 @@ namespace NovaWright.NumberPush.LevelGenerator
                         new Point(1, 0),
                         currentReachableVisitId,
                         queue,
-                        visited);
+                        visited,
+                        visitedCrateConfigurations);
                 }
 
                 TotalLegalPushes +=
@@ -240,6 +253,26 @@ namespace NovaWright.NumberPush.LevelGenerator
                 IsSolved = false,
                 MinimumPushes = -1
             };
+        }
+
+        private string CreateCrateConfigurationKey(
+    List<Point> cratePositions)
+        {
+            List<int> crateIndexes =
+                cratePositions
+                    .Select(
+                        position =>
+                            position.Y * columns +
+                            position.X)
+                    .OrderBy(
+                        value =>
+                            value)
+                    .ToList();
+
+            return
+                string.Join(
+                    ",",
+                    crateIndexes);
         }
 
         /// <summary>
@@ -277,7 +310,8 @@ namespace NovaWright.NumberPush.LevelGenerator
             Point direction,
             int currentReachableVisitId,
             Queue<SolverState> queue,
-            HashSet<string> visited)
+HashSet<string> visited,
+HashSet<string> visitedCrateConfigurations)
         {
             Point cratePosition =
                 state.CratePositions[crateIndex];
@@ -341,14 +375,24 @@ namespace NovaWright.NumberPush.LevelGenerator
                 cratePosition;
 
             string newStateKey =
-                CreateStateKey(
-                    newPlayerPosition,
-                    newCratePositions);
+    CreateStateKey(
+        newPlayerPosition,
+        newCratePositions);
 
             if (!visited.Add(newStateKey))
             {
                 DuplicateStates++;
                 return;
+            }
+
+            string newCrateConfigurationKey =
+                CreateCrateConfigurationKey(
+                    newCratePositions);
+
+            if (!visitedCrateConfigurations.Add(
+                    newCrateConfigurationKey))
+            {
+                DuplicateCrateConfigurations++;
             }
 
             int newCratesOnGoals =
@@ -400,12 +444,12 @@ namespace NovaWright.NumberPush.LevelGenerator
                 };
 
             SolverState newState =
-                new SolverState(
-                    newPlayerPosition,
-                    newCratePositions,
-                    state.Pushes + 1,
-                    state,
-                    stepData);
+    new SolverState(
+        newPlayerPosition,
+        newCratePositions,
+        state.Pushes + 1,
+        state,
+        stepData);
 
             queue.Enqueue(newState);
         }
@@ -910,11 +954,11 @@ namespace NovaWright.NumberPush.LevelGenerator
             public NumberPushSolutionStep? Step { get; }
 
             public SolverState(
-                Point playerPosition,
-                List<Point> cratePositions,
-                int pushes,
-                SolverState? parent,
-                NumberPushSolutionStep? step)
+    Point playerPosition,
+    List<Point> cratePositions,
+    int pushes,
+    SolverState? parent,
+    NumberPushSolutionStep? step)
             {
                 PlayerPosition =
                     playerPosition;
