@@ -438,7 +438,7 @@ namespace NovaWrightNumberPush
                 "Open generated level after creation";
 
             openLevelCheckBox.Checked =
-                true;
+                false;
 
             openLevelCheckBox.AutoSize =
                 true;
@@ -461,7 +461,7 @@ namespace NovaWrightNumberPush
                 "Open Markdown solution after creation";
 
             openMarkdownCheckBox.Checked =
-                true;
+                false;
 
             openMarkdownCheckBox.AutoSize =
                 true;
@@ -484,7 +484,7 @@ namespace NovaWrightNumberPush
                 "Show crate numbers";
 
             showCrateNumbersCheckBox.Checked =
-                true;
+                false;
 
             showCrateNumbersCheckBox.ForeColor =
                 Color.White;
@@ -508,6 +508,9 @@ namespace NovaWrightNumberPush
 
             reportDiagnosticsCheckBox.AutoSize =
                 true;
+
+            reportDiagnosticsCheckBox.Checked =
+                false;
 
             reportDiagnosticsCheckBox.Location =
                 new Point(

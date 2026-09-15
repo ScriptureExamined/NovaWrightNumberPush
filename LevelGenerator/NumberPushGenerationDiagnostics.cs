@@ -24,6 +24,14 @@
 
         public int PreSolverNoDistinctGoalMatching { get; set; }
 
+        public int PreSolverFailedCrateDistance1 { get; set; }
+
+        public int PreSolverFailedCrateDistance2 { get; set; }
+
+        public int PreSolverFailedCrateDistance3 { get; set; }
+
+        public int PreSolverFailedCrateDistance4Plus { get; set; }
+
         public int UnsolvableCandidates { get; set; }
 
         public int BelowTargetCandidates { get; set; }
@@ -60,27 +68,31 @@
                     TotalMilliseconds);
 
             return
-                $"LEVEL {LevelNumber} DIAGNOSTICS\r\n" +
-                $"Target pushes: {TargetMinimumPushes}-{TargetMaximumPushes}\r\n" +
-                $"Final board: {FinalRows}x{FinalColumns}\r\n" +
-                "\r\n" +
-                "CANDIDATES\r\n" +
-                $"Total attempts: {TotalAttempts}\r\n" +
-                $"Wall generation failures: {WallGenerationFailures}\r\n" +
-                $"Solver calls: {TotalSolverCalls}\r\n" +
-                $"Pre-solver rejected: {PreSolverRejectedCandidates}\r\n" +
-                $"Pre-solver no reachable goals: {PreSolverNoReachableGoals}\r\n" +
-                $"Pre-solver no distinct goal matching: {PreSolverNoDistinctGoalMatching}\r\n" +
-                $"Unsolvable: {UnsolvableCandidates}\r\n" +
-                $"Below target: {BelowTargetCandidates}\r\n" +
-                $"Above target: {AboveTargetCandidates}\r\n" +
-                $"Accepted: {AcceptedCandidates}\r\n" +
-                "\r\n" +
-                "TIMING\r\n" +
-                $"Candidate generation: {CandidateGenerationMilliseconds} ms\r\n" +
-                $"Solver: {SolverMilliseconds} ms\r\n" +
-                $"Average solver call: {AverageSolverMilliseconds:F2} ms\r\n" +
-                $"Total time: {totalTime:hh\\:mm\\:ss}";
+    $"LEVEL {LevelNumber} DIAGNOSTICS\r\n" +
+    $"Target pushes: {TargetMinimumPushes}-{TargetMaximumPushes}\r\n" +
+    $"Final board: {FinalRows}x{FinalColumns}\r\n" +
+    "\r\n" +
+    "CANDIDATES\r\n" +
+    $"Total attempts: {TotalAttempts}\r\n" +
+    $"Wall generation failures: {WallGenerationFailures}\r\n" +
+    $"Solver calls: {TotalSolverCalls}\r\n" +
+    $"Pre-solver rejected: {PreSolverRejectedCandidates}\r\n" +
+    $"Pre-solver no reachable goals: {PreSolverNoReachableGoals}\r\n" +
+    $"Pre-solver failed crate distance 1: {PreSolverFailedCrateDistance1}\r\n" +
+    $"Pre-solver failed crate distance 2: {PreSolverFailedCrateDistance2}\r\n" +
+    $"Pre-solver failed crate distance 3: {PreSolverFailedCrateDistance3}\r\n" +
+    $"Pre-solver failed crate distance 4+: {PreSolverFailedCrateDistance4Plus}\r\n" +
+    $"Pre-solver no distinct goal matching: {PreSolverNoDistinctGoalMatching}\r\n" +
+    $"Unsolvable: {UnsolvableCandidates}\r\n" +
+    $"Below target: {BelowTargetCandidates}\r\n" +
+    $"Above target: {AboveTargetCandidates}\r\n" +
+    $"Accepted: {AcceptedCandidates}\r\n" +
+    "\r\n" +
+    "TIMING\r\n" +
+    $"Candidate generation: {CandidateGenerationMilliseconds} ms\r\n" +
+    $"Solver: {SolverMilliseconds} ms\r\n" +
+    $"Average solver call: {AverageSolverMilliseconds:F2} ms\r\n" +
+    $"Total time: {totalTime:hh\\:mm\\:ss}";
         }
 
         public void PrintReport()

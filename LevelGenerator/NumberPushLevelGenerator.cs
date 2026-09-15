@@ -126,10 +126,12 @@ namespace NovaWright.NumberPush.LevelGenerator
                     }
 
                     bool noReachableGoals;
+                    int failedCrateDistance;
 
                     if (!CanCratesReachDistinctGoals(
                             candidate,
-                            out noReachableGoals))
+                            out noReachableGoals,
+                            out failedCrateDistance))
                     {
                         if (diagnostics != null)
                         {
@@ -138,6 +140,25 @@ namespace NovaWright.NumberPush.LevelGenerator
                             if (noReachableGoals)
                             {
                                 diagnostics.PreSolverNoReachableGoals++;
+
+                                switch (failedCrateDistance)
+                                {
+                                    case 1:
+                                        diagnostics.PreSolverFailedCrateDistance1++;
+                                        break;
+
+                                    case 2:
+                                        diagnostics.PreSolverFailedCrateDistance2++;
+                                        break;
+
+                                    case 3:
+                                        diagnostics.PreSolverFailedCrateDistance3++;
+                                        break;
+
+                                    default:
+                                        diagnostics.PreSolverFailedCrateDistance4Plus++;
+                                        break;
+                                }
                             }
                             else
                             {
@@ -236,9 +257,12 @@ namespace NovaWright.NumberPush.LevelGenerator
         }
 
         private bool CanCratesReachDistinctGoals(
-    NumberPushLevel level, out bool noReachableGoals)
+    NumberPushLevel level,
+    out bool noReachableGoals,
+    out int failedCrateDistance)
         {
             noReachableGoals = false;
+            failedCrateDistance = 0;
 
             List<HashSet<Point>> reachableGoals =
                 new List<HashSet<Point>>();
@@ -254,6 +278,7 @@ namespace NovaWright.NumberPush.LevelGenerator
                 if (goals.Count == 0)
                 {
                     noReachableGoals = true;
+                    failedCrateDistance = crate.Distance;
                     return false;
                 }
 

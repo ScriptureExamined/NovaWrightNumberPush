@@ -13,6 +13,10 @@ Wall generation failures: 0
 Solver calls: 1
 Pre-solver rejected: 0
 Pre-solver no reachable goals: 0
+Pre-solver failed crate distance 1: 0
+Pre-solver failed crate distance 2: 0
+Pre-solver failed crate distance 3: 0
+Pre-solver failed crate distance 4+: 0
 Pre-solver no distinct goal matching: 0
 Unsolvable: 0
 Below target: 0
@@ -20,7 +24,7 @@ Above target: 0
 Accepted: 1
 
 TIMING
-Candidate generation: 7 ms
+Candidate generation: 8 ms
 Solver: 11 ms
 Average solver call: 11.00 ms
 Total time: 00:00:00
@@ -36,6 +40,10 @@ Wall generation failures: 0
 Solver calls: 7
 Pre-solver rejected: 0
 Pre-solver no reachable goals: 0
+Pre-solver failed crate distance 1: 0
+Pre-solver failed crate distance 2: 0
+Pre-solver failed crate distance 3: 0
+Pre-solver failed crate distance 4+: 0
 Pre-solver no distinct goal matching: 0
 Unsolvable: 4
 Below target: 2
@@ -43,7 +51,7 @@ Above target: 0
 Accepted: 1
 
 TIMING
-Candidate generation: 111 ms
+Candidate generation: 102 ms
 Solver: 1 ms
 Average solver call: 0.14 ms
 Total time: 00:00:00
@@ -59,6 +67,10 @@ Wall generation failures: 0
 Solver calls: 5
 Pre-solver rejected: 3
 Pre-solver no reachable goals: 3
+Pre-solver failed crate distance 1: 0
+Pre-solver failed crate distance 2: 3
+Pre-solver failed crate distance 3: 0
+Pre-solver failed crate distance 4+: 0
 Pre-solver no distinct goal matching: 0
 Unsolvable: 4
 Below target: 0
@@ -82,6 +94,10 @@ Wall generation failures: 0
 Solver calls: 4
 Pre-solver rejected: 9
 Pre-solver no reachable goals: 9
+Pre-solver failed crate distance 1: 0
+Pre-solver failed crate distance 2: 9
+Pre-solver failed crate distance 3: 0
+Pre-solver failed crate distance 4+: 0
 Pre-solver no distinct goal matching: 0
 Unsolvable: 3
 Below target: 0
@@ -89,9 +105,9 @@ Above target: 0
 Accepted: 1
 
 TIMING
-Candidate generation: 117 ms
-Solver: 17 ms
-Average solver call: 4.25 ms
+Candidate generation: 135 ms
+Solver: 19 ms
+Average solver call: 4.75 ms
 Total time: 00:00:00
 
 ========================================
@@ -105,6 +121,10 @@ Wall generation failures: 0
 Solver calls: 10
 Pre-solver rejected: 25
 Pre-solver no reachable goals: 25
+Pre-solver failed crate distance 1: 0
+Pre-solver failed crate distance 2: 25
+Pre-solver failed crate distance 3: 0
+Pre-solver failed crate distance 4+: 0
 Pre-solver no distinct goal matching: 0
 Unsolvable: 7
 Below target: 2
@@ -112,9 +132,9 @@ Above target: 0
 Accepted: 1
 
 TIMING
-Candidate generation: 57 ms
-Solver: 66 ms
-Average solver call: 6.60 ms
+Candidate generation: 153 ms
+Solver: 64 ms
+Average solver call: 6.40 ms
 Total time: 00:00:00
 
 ========================================
@@ -128,6 +148,10 @@ Wall generation failures: 0
 Solver calls: 18
 Pre-solver rejected: 536
 Pre-solver no reachable goals: 531
+Pre-solver failed crate distance 1: 0
+Pre-solver failed crate distance 2: 44
+Pre-solver failed crate distance 3: 487
+Pre-solver failed crate distance 4+: 0
 Pre-solver no distinct goal matching: 5
 Unsolvable: 17
 Below target: 0
@@ -135,9 +159,9 @@ Above target: 0
 Accepted: 1
 
 TIMING
-Candidate generation: 1189 ms
-Solver: 491 ms
-Average solver call: 27.28 ms
+Candidate generation: 1164 ms
+Solver: 486 ms
+Average solver call: 27.00 ms
 Total time: 00:00:02
 
 ========================================
@@ -151,6 +175,10 @@ Wall generation failures: 0
 Solver calls: 17
 Pre-solver rejected: 867
 Pre-solver no reachable goals: 858
+Pre-solver failed crate distance 1: 0
+Pre-solver failed crate distance 2: 61
+Pre-solver failed crate distance 3: 797
+Pre-solver failed crate distance 4+: 0
 Pre-solver no distinct goal matching: 9
 Unsolvable: 16
 Below target: 0
@@ -158,7 +186,7 @@ Above target: 0
 Accepted: 1
 
 TIMING
-Candidate generation: 2428 ms
+Candidate generation: 2435 ms
 Solver: 18 ms
 Average solver call: 1.06 ms
 Total time: 00:00:02
@@ -174,6 +202,10 @@ Wall generation failures: 0
 Solver calls: 28
 Pre-solver rejected: 1523
 Pre-solver no reachable goals: 1505
+Pre-solver failed crate distance 1: 0
+Pre-solver failed crate distance 2: 89
+Pre-solver failed crate distance 3: 1416
+Pre-solver failed crate distance 4+: 0
 Pre-solver no distinct goal matching: 18
 Unsolvable: 24
 Below target: 3
@@ -181,9 +213,9 @@ Above target: 0
 Accepted: 1
 
 TIMING
-Candidate generation: 5138 ms
-Solver: 763 ms
-Average solver call: 27.25 ms
+Candidate generation: 5153 ms
+Solver: 745 ms
+Average solver call: 26.61 ms
 Total time: 00:00:07
 
 ========================================
@@ -197,6 +229,10 @@ Wall generation failures: 0
 Solver calls: 8
 Pre-solver rejected: 1229
 Pre-solver no reachable goals: 1223
+Pre-solver failed crate distance 1: 0
+Pre-solver failed crate distance 2: 8
+Pre-solver failed crate distance 3: 68
+Pre-solver failed crate distance 4+: 1147
 Pre-solver no distinct goal matching: 6
 Unsolvable: 7
 Below target: 0
@@ -204,9 +240,9 @@ Above target: 0
 Accepted: 1
 
 TIMING
-Candidate generation: 7806 ms
-Solver: 5677 ms
-Average solver call: 709.62 ms
+Candidate generation: 7833 ms
+Solver: 5722 ms
+Average solver call: 715.25 ms
 Total time: 00:00:14
 
 ========================================
@@ -220,6 +256,10 @@ Wall generation failures: 0
 Solver calls: 2
 Pre-solver rejected: 1750
 Pre-solver no reachable goals: 1742
+Pre-solver failed crate distance 1: 0
+Pre-solver failed crate distance 2: 7
+Pre-solver failed crate distance 3: 83
+Pre-solver failed crate distance 4+: 1652
 Pre-solver no distinct goal matching: 8
 Unsolvable: 1
 Below target: 0
@@ -227,12 +267,12 @@ Above target: 0
 Accepted: 1
 
 TIMING
-Candidate generation: 13615 ms
-Solver: 23881 ms
-Average solver call: 11940.50 ms
+Candidate generation: 13689 ms
+Solver: 23844 ms
+Average solver call: 11922.00 ms
 Total time: 00:01:02
 
 ========================================
 TOTAL CREATION TIME: 00:01:29
-START TIME:          2026-09-14 20:53:03
+START TIME:          2026-09-15 07:02:33
 ========================================
