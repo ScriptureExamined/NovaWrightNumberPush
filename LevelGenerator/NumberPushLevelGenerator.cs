@@ -350,6 +350,32 @@ namespace NovaWright.NumberPush.LevelGenerator
                         diagnostics.CrateGoalPositions =
     new Dictionary<int, Point>(
         solution.CrateGoalPositions);
+
+                        diagnostics.SolutionPushSequence.Clear();
+
+                        foreach (NumberPushSolutionStep step
+                                 in solution.Steps)
+                        {
+                            diagnostics.SolutionPushSequence.Add(
+                                $"Push {step.PushNumber}: Crate {step.CrateNumber} " +
+                                $"{step.CrateStart} -> {step.CrateEnd}");
+                        }
+
+                        CalculateSolutionOpportunities(
+    candidate,
+    solution,
+    diagnostics);
+
+                        CalculateSolutionPlayerAccessBlocks(
+    candidate,
+    solution,
+    diagnostics);
+
+                        CalculateTemporaryDisplacement(
+    candidate,
+    solution,
+    diagnostics);
+
                     }
 
                     currentRows =
@@ -1055,6 +1081,365 @@ namespace NovaWright.NumberPush.LevelGenerator
             playerCandidates.Count)];
 
             return level;
+        }
+
+        private void CalculateSolutionOpportunities(
+    NumberPushLevel level,
+    NumberPushSolution solution,
+    NumberPushGenerationDiagnostics diagnostics)
+        {
+            diagnostics.SolutionOpportunityPairs = 0;
+            diagnostics.SolutionOpportunityBlocks = 0;
+            diagnostics.SolutionOpportunities.Clear();
+
+            diagnostics.SolutionRequiredDependencyPairs = 0;
+            diagnostics.SolutionRequiredDependencyBlocks = 0;
+            diagnostics.SolutionRequiredDependencies.Clear();
+
+            List<Point> cratePositions =
+                level.Crates
+                    .Select(crate => crate.Position)
+                    .ToList();
+
+            Point playerPosition =
+                level.PlayerStart;
+
+            NumberPushSolver solver =
+                new NumberPushSolver(level);
+
+            for (int solutionStepIndex = 0;
+                 solutionStepIndex < solution.Steps.Count;
+                 solutionStepIndex++)
+            {
+                NumberPushSolutionStep solutionStep =
+                    solution.Steps[solutionStepIndex];
+
+                List<(int CrateIndex, Point Direction)> beforePush =
+                    solver.GetLegalPushes(
+                        playerPosition,
+                        cratePositions);
+
+                HashSet<string> beforeKeys =
+                    beforePush
+                        .Select(
+                            push =>
+                                $"{push.CrateIndex}:{push.Direction.X}:{push.Direction.Y}")
+                        .ToHashSet();
+
+                int movingCrateIndex =
+                    solutionStep.CrateIndex;
+
+                Point movingCrateStart =
+                    cratePositions[movingCrateIndex];
+
+                cratePositions[movingCrateIndex] =
+                    solutionStep.CrateEnd;
+
+                playerPosition =
+                    movingCrateStart;
+
+                List<(int CrateIndex, Point Direction)> afterPush =
+                    solver.GetLegalPushes(
+                        playerPosition,
+                        cratePositions);
+
+                foreach ((int CrateIndex, Point Direction) push
+                         in afterPush)
+                {
+                    if (push.CrateIndex ==
+                        movingCrateIndex)
+                    {
+                        continue;
+                    }
+
+                    string key =
+                        $"{push.CrateIndex}:{push.Direction.X}:{push.Direction.Y}";
+
+                    if (beforeKeys.Contains(key))
+                    {
+                        continue;
+                    }
+
+                    diagnostics.SolutionOpportunityBlocks++;
+
+                    if (!diagnostics.SolutionOpportunities.ContainsKey(
+                            movingCrateIndex))
+                    {
+                        diagnostics.SolutionOpportunities[
+                            movingCrateIndex] =
+                            new HashSet<int>();
+                    }
+
+                    if (diagnostics.SolutionOpportunities[
+                            movingCrateIndex].Add(
+                                push.CrateIndex))
+                    {
+                        diagnostics.SolutionOpportunityPairs++;
+                    }
+
+                    int nextPushIndex =
+                        solution.Steps
+                            .FindIndex(
+                                solutionStepIndex + 1,
+                                step =>
+                                    step.CrateIndex ==
+                                        push.CrateIndex &&
+                                    step.Direction ==
+                                        push.Direction);
+
+                    if (nextPushIndex ==
+                        solutionStepIndex + 1)
+                    {
+                        diagnostics.SolutionRequiredDependencyBlocks++;
+
+                        if (!diagnostics.SolutionRequiredDependencies.ContainsKey(
+                                movingCrateIndex))
+                        {
+                            diagnostics.SolutionRequiredDependencies[
+                                movingCrateIndex] =
+                                new HashSet<int>();
+                        }
+
+                        if (diagnostics.SolutionRequiredDependencies[
+                            movingCrateIndex].Add(
+                                push.CrateIndex))
+                        {
+                            diagnostics.SolutionRequiredDependencyPairs++;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Diagnostic only.
+        // Measures crate-to-crate blocking of the player's required position
+        // for a push. This is intended to identify structural difficulty caused
+        // by crates interfering with each other's manipulation, rather than
+        // simply blocking the crate's travel path.
+        // Level 7 is an example: Crate 2 blocks player access needed to push
+        // Crate 3, while Crate 3 also blocks player access needed to manipulate
+        // Crate 2. This mutual interaction may become a future difficulty
+        // criterion for level generation.
+        private void CalculateSolutionPlayerAccessBlocks(
+            NumberPushLevel level,
+    NumberPushSolution solution,
+    NumberPushGenerationDiagnostics diagnostics)
+        {
+            diagnostics.SolutionPlayerAccessBlockPairs = 0;
+            diagnostics.SolutionPlayerAccessBlockMoves = 0;
+            diagnostics.SolutionPlayerAccessBlocks.Clear();
+
+            List<Point> cratePositions =
+                level.Crates
+                    .Select(crate => crate.Position)
+                    .ToList();
+
+            Point[] directions =
+            {
+        new Point(0, -1),
+        new Point(0, 1),
+        new Point(-1, 0),
+        new Point(1, 0)
+    };
+
+            for (int solutionStepIndex = 0;
+                 solutionStepIndex < solution.Steps.Count;
+                 solutionStepIndex++)
+            {
+                NumberPushSolutionStep solutionStep =
+                    solution.Steps[solutionStepIndex];
+
+                int targetCrateIndex =
+                    solutionStep.CrateIndex;
+
+                Point targetCratePosition =
+                    cratePositions[targetCrateIndex];
+
+                int targetDistance =
+                    level.Crates[targetCrateIndex].Distance;
+
+                foreach (Point direction in directions)
+                {
+                    Point requiredPlayerPosition =
+                        new Point(
+                            targetCratePosition.X -
+                                direction.X,
+                            targetCratePosition.Y -
+                                direction.Y);
+
+                    int blockingCrateIndex =
+                        cratePositions.FindIndex(
+                            position =>
+                                position ==
+                                requiredPlayerPosition);
+
+                    if (blockingCrateIndex < 0 ||
+                        blockingCrateIndex ==
+                            targetCrateIndex)
+                    {
+                        continue;
+                    }
+
+                    bool pathClear =
+                        true;
+
+                    for (int distance = 1;
+                         distance <= targetDistance;
+                         distance++)
+                    {
+                        Point destination =
+                            new Point(
+                                targetCratePosition.X +
+                                    direction.X * distance,
+                                targetCratePosition.Y +
+                                    direction.Y * distance);
+
+                        if (IsWall(
+                                level,
+                                destination))
+                        {
+                            pathClear = false;
+                            break;
+                        }
+
+                        for (int crateIndex = 0;
+                             crateIndex < cratePositions.Count;
+                             crateIndex++)
+                        {
+                            if (crateIndex ==
+                                targetCrateIndex ||
+                                crateIndex ==
+                                blockingCrateIndex)
+                            {
+                                continue;
+                            }
+
+                            if (cratePositions[crateIndex] ==
+                                destination)
+                            {
+                                pathClear = false;
+                                break;
+                            }
+                        }
+
+                        if (!pathClear)
+                        {
+                            break;
+                        }
+                    }
+
+                    if (!pathClear)
+                    {
+                        continue;
+                    }
+
+                    diagnostics.SolutionPlayerAccessBlockMoves++;
+
+                    if (!diagnostics.SolutionPlayerAccessBlocks.ContainsKey(
+                            blockingCrateIndex))
+                    {
+                        diagnostics.SolutionPlayerAccessBlocks[
+                            blockingCrateIndex] =
+                            new HashSet<int>();
+                    }
+
+                    if (diagnostics.SolutionPlayerAccessBlocks[
+                        blockingCrateIndex].Add(
+                            targetCrateIndex))
+                    {
+                        diagnostics.SolutionPlayerAccessBlockPairs++;
+                    }
+                }
+
+                Point movingCrateStart =
+                    cratePositions[targetCrateIndex];
+
+                cratePositions[targetCrateIndex] =
+                    solutionStep.CrateEnd;
+            }
+        }
+
+        private void CalculateTemporaryDisplacement(
+    NumberPushLevel level,
+    NumberPushSolution solution,
+    NumberPushGenerationDiagnostics diagnostics)
+        {
+            diagnostics.SolutionTemporaryDisplacementCrates = 0;
+            diagnostics.SolutionTemporaryDisplacementMoves = 0;
+
+            foreach (KeyValuePair<int, Point> goalEntry
+                     in solution.CrateGoalPositions)
+            {
+                int crateIndex =
+                    goalEntry.Key;
+
+                Point goal =
+                    goalEntry.Value;
+
+                Point currentPosition =
+                    level.Crates[crateIndex].Position;
+
+                int displacementMoves =
+                    0;
+
+                bool hasMovedAway =
+                    false;
+
+                bool hasRecovered =
+                    false;
+
+                foreach (NumberPushSolutionStep step
+                         in solution.Steps)
+                {
+                    if (step.CrateIndex !=
+                        crateIndex)
+                    {
+                        continue;
+                    }
+
+                    int beforeDistance =
+                        Math.Abs(
+                            currentPosition.X -
+                            goal.X) +
+                        Math.Abs(
+                            currentPosition.Y -
+                            goal.Y);
+
+                    int afterDistance =
+                        Math.Abs(
+                            step.CrateEnd.X -
+                            goal.X) +
+                        Math.Abs(
+                            step.CrateEnd.Y -
+                            goal.Y);
+
+                    if (afterDistance >
+                        beforeDistance)
+                    {
+                        hasMovedAway = true;
+
+                        displacementMoves++;
+                    }
+                    else if (hasMovedAway &&
+                             afterDistance <
+                             beforeDistance)
+                    {
+                        hasRecovered = true;
+                    }
+
+                    currentPosition =
+                        step.CrateEnd;
+                }
+
+                if (hasMovedAway &&
+                    hasRecovered)
+                {
+                    diagnostics.SolutionTemporaryDisplacementCrates++;
+
+                    diagnostics.SolutionTemporaryDisplacementMoves +=
+                        displacementMoves;
+                }
+            }
         }
 
         private int GetCrateDistance(

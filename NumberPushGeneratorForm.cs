@@ -741,7 +741,7 @@ namespace NovaWrightNumberPush
                         $"TOTAL CREATION TIME: {totalCreationTime:hh\\:mm\\:ss}");
 
                     reportLines.Add(
-                        $"START TIME:          {startTime:yyyy-MM-dd HH:mm:ss}");
+                        $"START TIME:          {startTime:yyyy-MM-dd hh:mm:ss tt}");
 
                     reportLines.Add(
                         "========================================");

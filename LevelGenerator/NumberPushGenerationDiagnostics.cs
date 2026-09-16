@@ -87,6 +87,28 @@
 
         public int CrateInteractionBlocks { get; set; }
 
+        public int SolutionOpportunityPairs { get; set; }
+
+        public int SolutionOpportunityBlocks { get; set; }
+
+        public Dictionary<int, HashSet<int>> SolutionOpportunities { get; set; } = new();
+
+        public int SolutionRequiredDependencyPairs { get; set; }
+
+        public int SolutionRequiredDependencyBlocks { get; set; }
+
+        public Dictionary<int, HashSet<int>> SolutionRequiredDependencies { get; set; } = new();
+
+        public int SolutionTemporaryDisplacementCrates { get; set; }
+
+        public int SolutionTemporaryDisplacementMoves { get; set; }
+
+        public List<string> SolutionPushSequence { get; set; } = new();
+
+        public int SolutionPlayerAccessBlockPairs { get; set; }
+        public int SolutionPlayerAccessBlockMoves { get; set; }
+        public Dictionary<int, HashSet<int>> SolutionPlayerAccessBlocks { get; set; } = new();
+
         public long CandidateGenerationMilliseconds { get; set; }
 
         public long SolverMilliseconds { get; set; }
@@ -197,14 +219,33 @@
     $"  Reachable positions: " +
     $"{reachablePositions.Count}\r\n";
 
-                foreach (Point position in
-                         reachablePositions.OrderBy(
-                             point => point.Y)
-                             .ThenBy(
-                                 point => point.X))
+                List<Point> orderedReachablePositions =
+                    reachablePositions
+                        .OrderBy(
+                            point => point.Y)
+                        .ThenBy(
+                            point => point.X)
+                        .ToList();
+
+                for (int positionIndex = 0;
+                     positionIndex < orderedReachablePositions.Count;
+                     positionIndex += 6)
                 {
+                    List<string> positions =
+                        orderedReachablePositions
+                            .Skip(positionIndex)
+                            .Take(15) //Increasing this prints more positions per line, but can make the report harder to read
+                            .Select(
+                                point =>
+                                    $"({point.X},{point.Y})")
+                            .ToList();
+
                     report +=
-                        $"    ({position.X},{position.Y})\r\n";
+                        "    " +
+                        string.Join(
+                            " ",
+                            positions) +
+                        "\r\n";
                 }
 
                 foreach (Point goal in
@@ -236,6 +277,111 @@
                 report +=
                     $"Crate {crateNumber} goal: " +
                     $"({goalPosition.X},{goalPosition.Y})\r\n";
+            }
+
+            report +=
+    "\r\n" +
+    "SOLUTION OPPORTUNITIES\r\n" +
+    $"Opportunity pairs: {SolutionOpportunityPairs}\r\n" +
+    $"Opportunity blocks: {SolutionOpportunityBlocks}\r\n";
+
+            report +=
+    "\r\n" +
+    "SOLUTION PLAYER ACCESS BLOCKS\r\n" +
+    $"Player access block pairs: {SolutionPlayerAccessBlockPairs}\r\n" +
+    $"Player access block moves: {SolutionPlayerAccessBlockMoves}\r\n";
+
+            foreach (int crateIndex in
+                     SolutionPlayerAccessBlocks.Keys.OrderBy(
+                         index => index))
+            {
+                int crateNumber =
+                    crateIndex + 1;
+
+                report +=
+                    $"Crate {crateNumber} blocks player access to: ";
+
+                List<int> affectedCrates =
+                    SolutionPlayerAccessBlocks[crateIndex]
+                        .OrderBy(
+                            index => index)
+                        .Select(
+                            index => index + 1)
+                        .ToList();
+
+                report +=
+                    string.Join(
+                        ", ",
+                        affectedCrates) +
+                    "\r\n";
+            }
+
+            report +=
+    "\r\n" +
+    "REQUIRED SOLUTION DEPENDENCIES\r\n" +
+    $"Required dependency pairs: {SolutionRequiredDependencyPairs}\r\n" +
+    $"Required dependency blocks: {SolutionRequiredDependencyBlocks}\r\n";
+
+            foreach (int crateIndex in
+                     SolutionRequiredDependencies.Keys.OrderBy(
+                         index => index))
+            {
+                int crateNumber =
+                    crateIndex + 1;
+
+                report +=
+                    $"Crate {crateNumber} must move before: ";
+
+                List<int> affectedCrates =
+                    SolutionRequiredDependencies[crateIndex]
+                        .OrderBy(
+                            index => index)
+                        .Select(
+                            index => index + 1)
+                        .ToList();
+
+                report +=
+                    string.Join(
+                        ", ",
+                        affectedCrates) +
+                    "\r\n";
+            }
+
+            foreach (int crateIndex in
+                     SolutionOpportunities.Keys.OrderBy(
+                         index => index))
+            {
+                int crateNumber =
+                    crateIndex + 1;
+
+                report +=
+                    $"Crate {crateNumber} opens opportunities for: ";
+
+                List<int> affectedCrates =
+                    SolutionOpportunities[crateIndex]
+                        .OrderBy(
+                            index => index)
+                        .Select(
+                            index => index + 1)
+                        .ToList();
+
+                report +=
+                    string.Join(
+                        ", ",
+                        affectedCrates) +
+                    "\r\n";
+            }
+
+            report +=
+    "\r\n" +
+    "SOLUTION PUSH SEQUENCE\r\n";
+
+            foreach (string push in
+                     SolutionPushSequence)
+            {
+                report +=
+                    push +
+                    "\r\n";
             }
 
             report +=

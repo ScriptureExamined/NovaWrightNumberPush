@@ -275,6 +275,100 @@ namespace NovaWright.NumberPush.LevelGenerator
                     crateIndexes);
         }
 
+        public List<(int CrateIndex, Point Direction)> GetLegalPushes(
+    Point playerPosition,
+    List<Point> cratePositions)
+        {
+            List<(int CrateIndex, Point Direction)> legalPushes =
+                new();
+
+            BuildCrateOccupancy(
+                cratePositions);
+
+            int currentReachableVisitId =
+                MarkReachableCells(
+                    playerPosition);
+
+            Point[] directions =
+            {
+        new Point(0, -1),
+        new Point(0, 1),
+        new Point(-1, 0),
+        new Point(1, 0)
+    };
+
+            for (int crateIndex = 0;
+                 crateIndex < cratePositions.Count;
+                 crateIndex++)
+            {
+                Point cratePosition =
+                    cratePositions[crateIndex];
+
+                int distance =
+                    level.Crates[crateIndex].Distance;
+
+                foreach (Point direction in directions)
+                {
+                    Point playerRequiredPosition =
+                        new Point(
+                            cratePosition.X - direction.X,
+                            cratePosition.Y - direction.Y);
+
+                    if (!IsReachable(
+                            playerRequiredPosition,
+                            currentReachableVisitId))
+                    {
+                        continue;
+                    }
+
+                    Point finalPosition =
+                        cratePosition;
+
+                    bool blocked =
+                        false;
+
+                    for (int step = 1;
+                         step <= distance;
+                         step++)
+                    {
+                        Point testPosition =
+                            new Point(
+                                cratePosition.X +
+                                    direction.X * step,
+                                cratePosition.Y +
+                                    direction.Y * step);
+
+                        if (IsWall(testPosition) ||
+                            IsOccupiedByAnyCrate(
+                                testPosition))
+                        {
+                            blocked = true;
+                            break;
+                        }
+
+                        finalPosition =
+                            testPosition;
+                    }
+
+                    if (blocked)
+                    {
+                        continue;
+                    }
+
+                    if (IsStaticCornerDeadlock(
+                            finalPosition))
+                    {
+                        continue;
+                    }
+
+                    legalPushes.Add(
+                        (crateIndex, direction));
+                }
+            }
+
+            return legalPushes;
+        }
+
         /// <summary>
         /// Maintains compatibility with the original solver API.
         /// </summary>
