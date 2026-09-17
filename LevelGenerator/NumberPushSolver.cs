@@ -398,14 +398,14 @@ namespace NovaWright.NumberPush.LevelGenerator
         }
 
         private void TryPush(
-            SolverState state,
-            int crateIndex,
-            int distance,
-            Point direction,
-            int currentReachableVisitId,
-            Queue<SolverState> queue,
-HashSet<string> visited,
-HashSet<string> visitedCrateConfigurations)
+    SolverState state,
+    int crateIndex,
+    int distance,
+    Point direction,
+    int currentReachableVisitId,
+    Queue<SolverState> queue,
+    HashSet<string> visited,
+    HashSet<string> visitedCrateConfigurations)
         {
             Point cratePosition =
                 state.CratePositions[crateIndex];
@@ -494,14 +494,14 @@ HashSet<string> visitedCrateConfigurations)
         newCratePositions);
 
             if (newCratesOnGoals >
-                CountCratesOnGoals(
-                    state.CratePositions))
+    CountCratesOnGoals(
+        state.CratePositions))
             {
                 GoalProgressIncreases++;
             }
             else if (newCratesOnGoals <
-                     CountCratesOnGoals(
-                         state.CratePositions))
+         CountCratesOnGoals(
+             state.CratePositions))
             {
                 GoalProgressDecreases++;
             }
