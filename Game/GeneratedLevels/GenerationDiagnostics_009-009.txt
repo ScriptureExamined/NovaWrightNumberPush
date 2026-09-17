@@ -163,14 +163,14 @@ Push 18: Crate 2 {X=4,Y=6} -> {X=4,Y=5}
 Push 19: Crate 2 {X=4,Y=5} -> {X=4,Y=4}
 
 TIMING
-Candidate generation: 1013 ms
-Solver: 17329 ms
-Average solver call: 577.63 ms
-Total time: 00:00:21Crate interaction pairs: 0
+Candidate generation: 959 ms
+Solver: 17059 ms
+Average solver call: 568.63 ms
+Total time: 00:00:20Crate interaction pairs: 0
 Crate interaction blocks: 0
 
 
 ========================================
-TOTAL CREATION TIME: 00:00:21
-START TIME:          2026-09-17 07:02:26 PM
+TOTAL CREATION TIME: 00:00:20
+START TIME:          2026-09-17 07:06:27 PM
 ========================================

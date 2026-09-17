@@ -516,31 +516,50 @@ namespace NovaWright.NumberPush.LevelGenerator
             }
 
             Point finalPosition =
-                cratePosition;
+    cratePosition;
 
             for (int step = 1;
                  step <= distance;
                  step++)
             {
-                Point testPosition =
+                int testX =
+                    cratePosition.X +
+                    direction.X * step;
+
+                int testY =
+                    cratePosition.Y +
+                    direction.Y * step;
+
+                if (testX < 0 ||
+                    testX >= columns ||
+                    testY < 0 ||
+                    testY >= rows)
+                {
+                    return;
+                }
+
+                int testIndex =
+                    testY * columns +
+                    testX;
+
+                if (wallPositions.Contains(
                     new Point(
-                        cratePosition.X +
-                            direction.X * step,
-                        cratePosition.Y +
-                            direction.Y * step);
-
-                if (IsWall(testPosition))
+                        testX,
+                        testY)))
                 {
                     return;
                 }
 
-                if (IsOccupiedByAnyCrate(
-                    testPosition))
+                if (crateOccupancyVisit[testIndex] ==
+                    crateOccupancyVisitId)
                 {
                     return;
                 }
 
-                finalPosition = testPosition;
+                finalPosition =
+                    new Point(
+                        testX,
+                        testY);
             }
 
             // Create an independent array snapshot for the successor state.
