@@ -5,8 +5,8 @@
   "PushMode": "Exact",
   "PlayerStart": {
     "IsEmpty": false,
-    "X": 3,
-    "Y": 7
+    "X": 1,
+    "Y": 4
   },
   "Walls": [
     {
@@ -852,22 +852,22 @@
     {
       "Location": {
         "IsEmpty": false,
-        "X": 9,
-        "Y": 8
+        "X": 8,
+        "Y": 2
       },
       "Size": {
         "IsEmpty": false,
         "Width": 1,
         "Height": 1
       },
-      "X": 9,
-      "Y": 8,
+      "X": 8,
+      "Y": 2,
       "Width": 1,
       "Height": 1,
-      "Left": 9,
-      "Top": 8,
-      "Right": 10,
-      "Bottom": 9,
+      "Left": 8,
+      "Top": 2,
+      "Right": 9,
+      "Bottom": 3,
       "IsEmpty": false
     },
     {
@@ -889,6 +889,153 @@
       "Top": 5,
       "Right": 2,
       "Bottom": 6,
+      "IsEmpty": false
+    },
+    {
+      "Location": {
+        "IsEmpty": false,
+        "X": 4,
+        "Y": 8
+      },
+      "Size": {
+        "IsEmpty": false,
+        "Width": 1,
+        "Height": 1
+      },
+      "X": 4,
+      "Y": 8,
+      "Width": 1,
+      "Height": 1,
+      "Left": 4,
+      "Top": 8,
+      "Right": 5,
+      "Bottom": 9,
+      "IsEmpty": false
+    },
+    {
+      "Location": {
+        "IsEmpty": false,
+        "X": 1,
+        "Y": 3
+      },
+      "Size": {
+        "IsEmpty": false,
+        "Width": 1,
+        "Height": 1
+      },
+      "X": 1,
+      "Y": 3,
+      "Width": 1,
+      "Height": 1,
+      "Left": 1,
+      "Top": 3,
+      "Right": 2,
+      "Bottom": 4,
+      "IsEmpty": false
+    },
+    {
+      "Location": {
+        "IsEmpty": false,
+        "X": 6,
+        "Y": 4
+      },
+      "Size": {
+        "IsEmpty": false,
+        "Width": 1,
+        "Height": 1
+      },
+      "X": 6,
+      "Y": 4,
+      "Width": 1,
+      "Height": 1,
+      "Left": 6,
+      "Top": 4,
+      "Right": 7,
+      "Bottom": 5,
+      "IsEmpty": false
+    },
+    {
+      "Location": {
+        "IsEmpty": false,
+        "X": 5,
+        "Y": 5
+      },
+      "Size": {
+        "IsEmpty": false,
+        "Width": 1,
+        "Height": 1
+      },
+      "X": 5,
+      "Y": 5,
+      "Width": 1,
+      "Height": 1,
+      "Left": 5,
+      "Top": 5,
+      "Right": 6,
+      "Bottom": 6,
+      "IsEmpty": false
+    },
+    {
+      "Location": {
+        "IsEmpty": false,
+        "X": 3,
+        "Y": 4
+      },
+      "Size": {
+        "IsEmpty": false,
+        "Width": 1,
+        "Height": 1
+      },
+      "X": 3,
+      "Y": 4,
+      "Width": 1,
+      "Height": 1,
+      "Left": 3,
+      "Top": 4,
+      "Right": 4,
+      "Bottom": 5,
+      "IsEmpty": false
+    },
+    {
+      "Location": {
+        "IsEmpty": false,
+        "X": 10,
+        "Y": 1
+      },
+      "Size": {
+        "IsEmpty": false,
+        "Width": 1,
+        "Height": 1
+      },
+      "X": 10,
+      "Y": 1,
+      "Width": 1,
+      "Height": 1,
+      "Left": 10,
+      "Top": 1,
+      "Right": 11,
+      "Bottom": 2,
+      "IsEmpty": false
+    },
+    {
+      "Location": {
+        "IsEmpty": false,
+        "X": 9,
+        "Y": 6
+      },
+      "Size": {
+        "IsEmpty": false,
+        "Width": 1,
+        "Height": 1
+      },
+      "X": 9,
+      "Y": 6,
+      "Width": 1,
+      "Height": 1,
+      "Left": 9,
+      "Top": 6,
+      "Right": 10,
+      "Bottom": 7,
       "IsEmpty": false
     },
     {
@@ -915,133 +1062,7 @@
     {
       "Location": {
         "IsEmpty": false,
-        "X": 8,
-        "Y": 5
-      },
-      "Size": {
-        "IsEmpty": false,
-        "Width": 1,
-        "Height": 1
-      },
-      "X": 8,
-      "Y": 5,
-      "Width": 1,
-      "Height": 1,
-      "Left": 8,
-      "Top": 5,
-      "Right": 9,
-      "Bottom": 6,
-      "IsEmpty": false
-    },
-    {
-      "Location": {
-        "IsEmpty": false,
-        "X": 10,
-        "Y": 6
-      },
-      "Size": {
-        "IsEmpty": false,
-        "Width": 1,
-        "Height": 1
-      },
-      "X": 10,
-      "Y": 6,
-      "Width": 1,
-      "Height": 1,
-      "Left": 10,
-      "Top": 6,
-      "Right": 11,
-      "Bottom": 7,
-      "IsEmpty": false
-    },
-    {
-      "Location": {
-        "IsEmpty": false,
-        "X": 5,
-        "Y": 3
-      },
-      "Size": {
-        "IsEmpty": false,
-        "Width": 1,
-        "Height": 1
-      },
-      "X": 5,
-      "Y": 3,
-      "Width": 1,
-      "Height": 1,
-      "Left": 5,
-      "Top": 3,
-      "Right": 6,
-      "Bottom": 4,
-      "IsEmpty": false
-    },
-    {
-      "Location": {
-        "IsEmpty": false,
-        "X": 6,
-        "Y": 5
-      },
-      "Size": {
-        "IsEmpty": false,
-        "Width": 1,
-        "Height": 1
-      },
-      "X": 6,
-      "Y": 5,
-      "Width": 1,
-      "Height": 1,
-      "Left": 6,
-      "Top": 5,
-      "Right": 7,
-      "Bottom": 6,
-      "IsEmpty": false
-    },
-    {
-      "Location": {
-        "IsEmpty": false,
-        "X": 8,
-        "Y": 2
-      },
-      "Size": {
-        "IsEmpty": false,
-        "Width": 1,
-        "Height": 1
-      },
-      "X": 8,
-      "Y": 2,
-      "Width": 1,
-      "Height": 1,
-      "Left": 8,
-      "Top": 2,
-      "Right": 9,
-      "Bottom": 3,
-      "IsEmpty": false
-    },
-    {
-      "Location": {
-        "IsEmpty": false,
-        "X": 5,
-        "Y": 6
-      },
-      "Size": {
-        "IsEmpty": false,
-        "Width": 1,
-        "Height": 1
-      },
-      "X": 5,
-      "Y": 6,
-      "Width": 1,
-      "Height": 1,
-      "Left": 5,
-      "Top": 6,
-      "Right": 6,
-      "Bottom": 7,
-      "IsEmpty": false
-    },
-    {
-      "Location": {
-        "IsEmpty": false,
-        "X": 3,
+        "X": 9,
         "Y": 1
       },
       "Size": {
@@ -1049,13 +1070,55 @@
         "Width": 1,
         "Height": 1
       },
-      "X": 3,
+      "X": 9,
       "Y": 1,
       "Width": 1,
       "Height": 1,
-      "Left": 3,
+      "Left": 9,
       "Top": 1,
-      "Right": 4,
+      "Right": 10,
+      "Bottom": 2,
+      "IsEmpty": false
+    },
+    {
+      "Location": {
+        "IsEmpty": false,
+        "X": 9,
+        "Y": 2
+      },
+      "Size": {
+        "IsEmpty": false,
+        "Width": 1,
+        "Height": 1
+      },
+      "X": 9,
+      "Y": 2,
+      "Width": 1,
+      "Height": 1,
+      "Left": 9,
+      "Top": 2,
+      "Right": 10,
+      "Bottom": 3,
+      "IsEmpty": false
+    },
+    {
+      "Location": {
+        "IsEmpty": false,
+        "X": 4,
+        "Y": 1
+      },
+      "Size": {
+        "IsEmpty": false,
+        "Width": 1,
+        "Height": 1
+      },
+      "X": 4,
+      "Y": 1,
+      "Width": 1,
+      "Height": 1,
+      "Left": 4,
+      "Top": 1,
+      "Right": 5,
       "Bottom": 2,
       "IsEmpty": false
     },
@@ -1063,7 +1126,7 @@
       "Location": {
         "IsEmpty": false,
         "X": 2,
-        "Y": 8
+        "Y": 5
       },
       "Size": {
         "IsEmpty": false,
@@ -1071,13 +1134,13 @@
         "Height": 1
       },
       "X": 2,
-      "Y": 8,
+      "Y": 5,
       "Width": 1,
       "Height": 1,
       "Left": 2,
-      "Top": 8,
+      "Top": 5,
       "Right": 3,
-      "Bottom": 9,
+      "Bottom": 6,
       "IsEmpty": false
     },
     {
@@ -1104,7 +1167,7 @@
     {
       "Location": {
         "IsEmpty": false,
-        "X": 4,
+        "X": 8,
         "Y": 8
       },
       "Size": {
@@ -1112,83 +1175,20 @@
         "Width": 1,
         "Height": 1
       },
-      "X": 4,
+      "X": 8,
       "Y": 8,
       "Width": 1,
       "Height": 1,
-      "Left": 4,
+      "Left": 8,
       "Top": 8,
-      "Right": 5,
+      "Right": 9,
       "Bottom": 9,
       "IsEmpty": false
     },
     {
       "Location": {
         "IsEmpty": false,
-        "X": 1,
-        "Y": 6
-      },
-      "Size": {
-        "IsEmpty": false,
-        "Width": 1,
-        "Height": 1
-      },
-      "X": 1,
-      "Y": 6,
-      "Width": 1,
-      "Height": 1,
-      "Left": 1,
-      "Top": 6,
-      "Right": 2,
-      "Bottom": 7,
-      "IsEmpty": false
-    },
-    {
-      "Location": {
-        "IsEmpty": false,
-        "X": 1,
-        "Y": 4
-      },
-      "Size": {
-        "IsEmpty": false,
-        "Width": 1,
-        "Height": 1
-      },
-      "X": 1,
-      "Y": 4,
-      "Width": 1,
-      "Height": 1,
-      "Left": 1,
-      "Top": 4,
-      "Right": 2,
-      "Bottom": 5,
-      "IsEmpty": false
-    },
-    {
-      "Location": {
-        "IsEmpty": false,
-        "X": 1,
-        "Y": 2
-      },
-      "Size": {
-        "IsEmpty": false,
-        "Width": 1,
-        "Height": 1
-      },
-      "X": 1,
-      "Y": 2,
-      "Width": 1,
-      "Height": 1,
-      "Left": 1,
-      "Top": 2,
-      "Right": 2,
-      "Bottom": 3,
-      "IsEmpty": false
-    },
-    {
-      "Location": {
-        "IsEmpty": false,
-        "X": 4,
+        "X": 8,
         "Y": 3
       },
       "Size": {
@@ -1196,13 +1196,13 @@
         "Width": 1,
         "Height": 1
       },
-      "X": 4,
+      "X": 8,
       "Y": 3,
       "Width": 1,
       "Height": 1,
-      "Left": 4,
+      "Left": 8,
       "Top": 3,
-      "Right": 5,
+      "Right": 9,
       "Bottom": 4,
       "IsEmpty": false
     },
@@ -1210,7 +1210,7 @@
       "Location": {
         "IsEmpty": false,
         "X": 3,
-        "Y": 3
+        "Y": 5
       },
       "Size": {
         "IsEmpty": false,
@@ -1218,44 +1218,65 @@
         "Height": 1
       },
       "X": 3,
-      "Y": 3,
+      "Y": 5,
       "Width": 1,
       "Height": 1,
       "Left": 3,
-      "Top": 3,
+      "Top": 5,
       "Right": 4,
-      "Bottom": 4,
+      "Bottom": 6,
+      "IsEmpty": false
+    },
+    {
+      "Location": {
+        "IsEmpty": false,
+        "X": 6,
+        "Y": 7
+      },
+      "Size": {
+        "IsEmpty": false,
+        "Width": 1,
+        "Height": 1
+      },
+      "X": 6,
+      "Y": 7,
+      "Width": 1,
+      "Height": 1,
+      "Left": 6,
+      "Top": 7,
+      "Right": 7,
+      "Bottom": 8,
       "IsEmpty": false
     }
   ],
   "Goals": [
     {
       "IsEmpty": false,
-      "X": 10,
+      "X": 5,
       "Y": 4
-    },
-    {
-      "IsEmpty": false,
-      "X": 9,
-      "Y": 4
-    },
-    {
-      "IsEmpty": false,
-      "X": 6,
-      "Y": 8
     },
     {
       "IsEmpty": false,
       "X": 4,
       "Y": 4
+    },
+    {
+      "IsEmpty": false,
+      "X": 5,
+      "Y": 3
+    },
+    {
+      "IsEmpty": false,
+      "X": 7,
+      "Y": 8
     }
   ],
   "Crates": [
     {
       "Position": {
         "IsEmpty": false,
-        "X": 3,
-        "Y": 5
+        "X": 5,
+        "Y": 2
       },
       "Distance": 1
     },
@@ -1263,14 +1284,6 @@
       "Position": {
         "IsEmpty": false,
         "X": 3,
-        "Y": 6
-      },
-      "Distance": 1
-    },
-    {
-      "Position": {
-        "IsEmpty": false,
-        "X": 6,
         "Y": 7
       },
       "Distance": 1
@@ -1278,8 +1291,16 @@
     {
       "Position": {
         "IsEmpty": false,
-        "X": 8,
-        "Y": 7
+        "X": 9,
+        "Y": 4
+      },
+      "Distance": 1
+    },
+    {
+      "Position": {
+        "IsEmpty": false,
+        "X": 4,
+        "Y": 3
       },
       "Distance": 1
     }
