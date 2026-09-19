@@ -48,6 +48,15 @@
 
         public int AcceptedCandidates { get; set; }
 
+        public Dictionary<int, int> SolvableCandidatePushCounts { get; set; } =
+            new();
+
+        public Dictionary<int, int> UnsolvableCandidateMaximumPushCounts { get; set; } =
+    new();
+
+        public Dictionary<int, int> InitialCrateMobilityDistribution { get; set; } =
+    new();
+
         public int MinimumPushes { get; set; }
 
         public int CratesMoved { get; set; }
@@ -66,22 +75,22 @@
             new();
 
         public Dictionary<int, Point> CrateGoalPositions { get; set; } =
-    new();
+            new();
 
         public Dictionary<int, Point> CrateStartPositions { get; set; } =
-    new();
+            new();
 
         public Dictionary<int, int> CrateDistances { get; set; } =
             new();
 
         public Dictionary<int, HashSet<Point>> CrateReachableGoals { get; set; } =
-    new();
+            new();
 
         public Dictionary<int, HashSet<Point>> CrateReachablePositions { get; set; } =
-    new();
+            new();
 
         public Dictionary<int, Dictionary<Point, int>> CrateGoalPushDistances { get; set; } =
-    new();
+            new();
 
         public int CrateInteractionPairs { get; set; }
 
@@ -91,23 +100,29 @@
 
         public int SolutionOpportunityBlocks { get; set; }
 
-        public Dictionary<int, HashSet<int>> SolutionOpportunities { get; set; } = new();
+        public Dictionary<int, HashSet<int>> SolutionOpportunities { get; set; } =
+            new();
 
         public int SolutionRequiredDependencyPairs { get; set; }
 
         public int SolutionRequiredDependencyBlocks { get; set; }
 
-        public Dictionary<int, HashSet<int>> SolutionRequiredDependencies { get; set; } = new();
+        public Dictionary<int, HashSet<int>> SolutionRequiredDependencies { get; set; } =
+            new();
 
         public int SolutionTemporaryDisplacementCrates { get; set; }
 
         public int SolutionTemporaryDisplacementMoves { get; set; }
 
-        public List<string> SolutionPushSequence { get; set; } = new();
+        public List<string> SolutionPushSequence { get; set; } =
+            new();
 
         public int SolutionPlayerAccessBlockPairs { get; set; }
+
         public int SolutionPlayerAccessBlockMoves { get; set; }
-        public Dictionary<int, HashSet<int>> SolutionPlayerAccessBlocks { get; set; } = new();
+
+        public Dictionary<int, HashSet<int>> SolutionPlayerAccessBlocks { get; set; } =
+            new();
 
         public long CandidateGenerationMilliseconds { get; set; }
 
@@ -159,7 +174,35 @@
                 $"  Duplicate states: {UnsolvableDuplicateStates}\r\n" +
                 $"Below target: {BelowTargetCandidates}\r\n" +
                 $"Above target: {AboveTargetCandidates}\r\n" +
-                $"Accepted: {AcceptedCandidates}\r\n" +
+                $"Accepted: {AcceptedCandidates}\r\n";
+
+            report +=
+                "\r\n" +
+                "SOLVABLE CANDIDATE PUSH DISTRIBUTION\r\n";
+
+            foreach (int pushCount in
+                     SolvableCandidatePushCounts.Keys.OrderBy(
+                         pushes => pushes))
+            {
+                report +=
+                    $"  {pushCount} pushes: " +
+                    $"{SolvableCandidatePushCounts[pushCount]}\r\n";
+            }
+
+            report +=
+    "\r\n" +
+    "UNSOLVABLE CANDIDATE MAXIMUM PUSH DISTRIBUTION\r\n";
+
+            foreach (int pushCount in
+                     UnsolvableCandidateMaximumPushCounts.Keys.OrderBy(
+                         pushes => pushes))
+            {
+                report +=
+                    $"  {pushCount} maximum pushes: " +
+                    $"{UnsolvableCandidateMaximumPushCounts[pushCount]}\r\n";
+            }
+
+            report +=
                 "\r\n" +
                 "SOLUTION\r\n" +
                 $"Minimum pushes: {MinimumPushes}\r\n" +
@@ -185,7 +228,20 @@
 
             report +=
     "\r\n" +
-    "CRATE GEOMETRY\r\n";
+    "INITIAL CRATE MOBILITY DISTRIBUTION\r\n";
+
+            foreach (int mobility in
+                     InitialCrateMobilityDistribution.Keys.OrderBy(
+                         value => value))
+            {
+                report +=
+                    $"  {mobility} legal pushes: " +
+                    $"{InitialCrateMobilityDistribution[mobility]}\r\n";
+            }
+
+            report +=
+                "\r\n" +
+                "CRATE GEOMETRY\r\n";
 
             foreach (int crateIndex in
                      CrateStartPositions.Keys.OrderBy(
@@ -201,23 +257,23 @@
                     CrateDistances[crateIndex];
 
                 HashSet<Point> reachableGoals =
-    CrateReachableGoals[crateIndex];
+                    CrateReachableGoals[crateIndex];
 
                 Dictionary<Point, int> goalPushDistances =
-    CrateGoalPushDistances[crateIndex];
+                    CrateGoalPushDistances[crateIndex];
 
                 HashSet<Point> reachablePositions =
-    CrateReachablePositions[crateIndex];
+                    CrateReachablePositions[crateIndex];
 
                 report +=
-    $"Crate {crateNumber}: " +
-    $"start ({startPosition.X},{startPosition.Y}), " +
-    $"distance {distance}, " +
-    $"reachable goals {reachableGoals.Count}\r\n";
+                    $"Crate {crateNumber}: " +
+                    $"start ({startPosition.X},{startPosition.Y}), " +
+                    $"distance {distance}, " +
+                    $"reachable goals {reachableGoals.Count}\r\n";
 
                 report +=
-    $"  Reachable positions: " +
-    $"{reachablePositions.Count}\r\n";
+                    $"  Reachable positions: " +
+                    $"{reachablePositions.Count}\r\n";
 
                 List<Point> orderedReachablePositions =
                     reachablePositions
@@ -234,7 +290,7 @@
                     List<string> positions =
                         orderedReachablePositions
                             .Skip(positionIndex)
-                            .Take(15) //Increasing this prints more positions per line, but can make the report harder to read
+                            .Take(15)
                             .Select(
                                 point =>
                                     $"({point.X},{point.Y})")
@@ -249,10 +305,10 @@
                 }
 
                 foreach (Point goal in
-         reachableGoals.OrderBy(
-             point => point.Y)
-             .ThenBy(
-                 point => point.X))
+                         reachableGoals.OrderBy(
+                             point => point.Y)
+                             .ThenBy(
+                                 point => point.X))
                 {
                     report +=
                         $"  Goal: ({goal.X},{goal.Y}), " +
@@ -261,8 +317,8 @@
             }
 
             report +=
-    "\r\n" +
-    "GOALS\r\n";
+                "\r\n" +
+                "GOALS\r\n";
 
             foreach (int crateIndex in
                      CrateGoalPositions.Keys.OrderBy(
@@ -280,16 +336,16 @@
             }
 
             report +=
-    "\r\n" +
-    "SOLUTION OPPORTUNITIES\r\n" +
-    $"Opportunity pairs: {SolutionOpportunityPairs}\r\n" +
-    $"Opportunity blocks: {SolutionOpportunityBlocks}\r\n";
+                "\r\n" +
+                "SOLUTION OPPORTUNITIES\r\n" +
+                $"Opportunity pairs: {SolutionOpportunityPairs}\r\n" +
+                $"Opportunity blocks: {SolutionOpportunityBlocks}\r\n";
 
             report +=
-    "\r\n" +
-    "SOLUTION PLAYER ACCESS BLOCKS\r\n" +
-    $"Player access block pairs: {SolutionPlayerAccessBlockPairs}\r\n" +
-    $"Player access block moves: {SolutionPlayerAccessBlockMoves}\r\n";
+                "\r\n" +
+                "SOLUTION PLAYER ACCESS BLOCKS\r\n" +
+                $"Player access block pairs: {SolutionPlayerAccessBlockPairs}\r\n" +
+                $"Player access block moves: {SolutionPlayerAccessBlockMoves}\r\n";
 
             foreach (int crateIndex in
                      SolutionPlayerAccessBlocks.Keys.OrderBy(
@@ -317,10 +373,10 @@
             }
 
             report +=
-    "\r\n" +
-    "REQUIRED SOLUTION DEPENDENCIES\r\n" +
-    $"Required dependency pairs: {SolutionRequiredDependencyPairs}\r\n" +
-    $"Required dependency blocks: {SolutionRequiredDependencyBlocks}\r\n";
+                "\r\n" +
+                "REQUIRED SOLUTION DEPENDENCIES\r\n" +
+                $"Required dependency pairs: {SolutionRequiredDependencyPairs}\r\n" +
+                $"Required dependency blocks: {SolutionRequiredDependencyBlocks}\r\n";
 
             foreach (int crateIndex in
                      SolutionRequiredDependencies.Keys.OrderBy(
@@ -362,7 +418,7 @@
                         .OrderBy(
                             index => index)
                         .Select(
-                            index => index + 1)
+                                index => index + 1)
                         .ToList();
 
                 report +=
@@ -373,8 +429,8 @@
             }
 
             report +=
-    "\r\n" +
-    "SOLUTION PUSH SEQUENCE\r\n";
+                "\r\n" +
+                "SOLUTION PUSH SEQUENCE\r\n";
 
             foreach (string push in
                      SolutionPushSequence)
@@ -390,11 +446,9 @@
                 $"Candidate generation: {CandidateGenerationMilliseconds} ms\r\n" +
                 $"Solver: {SolverMilliseconds} ms\r\n" +
                 $"Average solver call: {AverageSolverMilliseconds:F2} ms\r\n" +
-                $"Total time: {totalTime:hh\\:mm\\:ss}";
-
-            report +=
-    $"Crate interaction pairs: {CrateInteractionPairs}\r\n" +
-    $"Crate interaction blocks: {CrateInteractionBlocks}\r\n";
+                $"Total time: {totalTime:hh\\:mm\\:ss}\r\n" +
+                $"Crate interaction pairs: {CrateInteractionPairs}\r\n" +
+                $"Crate interaction blocks: {CrateInteractionBlocks}\r\n";
 
             return report;
         }

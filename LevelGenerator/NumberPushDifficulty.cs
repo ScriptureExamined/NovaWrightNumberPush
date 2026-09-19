@@ -45,12 +45,22 @@
             LevelNumber =
                 levelNumber;
 
+            //        Complexity =
+            //levelNumber;
+
             Complexity =
-    levelNumber;
+    levelNumber == 12
+        ? 11
+        : levelNumber;
+
+            //        MinimumCrates =
+            //1 +
+            //Complexity / 3;
 
             MinimumCrates =
-    1 +
-    Complexity / 3;
+    levelNumber == 12
+        ? 4
+        : 1 + Complexity / 3;
 
             MaximumCrates =
                 MinimumCrates + 1;
@@ -63,15 +73,30 @@
                     1,
                     Complexity);
 
+            //MinimumInteriorWalls =
+            //    Complexity * 2;
+
+            //MaximumInteriorWalls =
+            //    Complexity * 4 + 4;
+
             MinimumInteriorWalls =
-                Complexity * 2;
+    levelNumber == 12
+        ? 22
+        : Complexity * 2;
 
             MaximumInteriorWalls =
-                Complexity * 4 + 4;
+                levelNumber == 12
+                    ? 48
+                    : Complexity * 4 + 4;
+
+            //        MinimumSolutionPushes =
+            //4 +
+            //Complexity / 2;
 
             MinimumSolutionPushes =
-    4 +
-    Complexity / 2;
+    levelNumber == 12
+        ? 9
+        : 4 + Complexity / 2;
 
             MaximumSolutionPushes =
                 10 +

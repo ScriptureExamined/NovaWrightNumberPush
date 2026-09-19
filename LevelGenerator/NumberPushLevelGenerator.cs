@@ -178,6 +178,46 @@ namespace NovaWright.NumberPush.LevelGenerator
 
                     if (diagnostics != null)
                     {
+                        int initialCrateMobility =
+                            0;
+
+                        foreach (NumberPushCrate crate in
+                                 candidate.Crates)
+                        {
+                            Point[] directions =
+                            {
+            new Point(0, -1),
+            new Point(0, 1),
+            new Point(-1, 0),
+            new Point(1, 0)
+        };
+
+                            foreach (Point direction in directions)
+                            {
+                                if (CanMoveCrateDistance(
+                                        candidate,
+                                        crate.Position,
+                                        direction,
+                                        crate.Distance))
+                                {
+                                    initialCrateMobility++;
+                                }
+                            }
+                        }
+
+                        if (!diagnostics.InitialCrateMobilityDistribution.ContainsKey(
+                                initialCrateMobility))
+                        {
+                            diagnostics.InitialCrateMobilityDistribution[
+                                initialCrateMobility] = 0;
+                        }
+
+                        diagnostics.InitialCrateMobilityDistribution[
+                            initialCrateMobility]++;
+                    }
+
+                    if (diagnostics != null)
+                    {
                         diagnostics.TotalSolverCalls++;
                     }
 
@@ -193,6 +233,20 @@ namespace NovaWright.NumberPush.LevelGenerator
 
                     int minimumSolution =
                         solution.MinimumPushes;
+
+                    if (minimumSolution >= 0 &&
+    diagnostics != null)
+                    {
+                        if (!diagnostics.SolvableCandidatePushCounts.ContainsKey(
+                                minimumSolution))
+                        {
+                            diagnostics.SolvableCandidatePushCounts[
+                                minimumSolution] = 0;
+                        }
+
+                        diagnostics.SolvableCandidatePushCounts[
+                            minimumSolution]++;
+                    }
 
                     solverTimer.Stop();
 
@@ -221,6 +275,19 @@ namespace NovaWright.NumberPush.LevelGenerator
 
                             diagnostics.UnsolvableDuplicateStates +=
                                 solver.DuplicateStates;
+
+                            int maximumLegalPushes =
+    solver.MaximumLegalPushes;
+
+                            if (!diagnostics.UnsolvableCandidateMaximumPushCounts.ContainsKey(
+                                    maximumLegalPushes))
+                            {
+                                diagnostics.UnsolvableCandidateMaximumPushCounts[
+                                    maximumLegalPushes] = 0;
+                            }
+
+                            diagnostics.UnsolvableCandidateMaximumPushCounts[
+                                maximumLegalPushes]++;
                         }
 
                         continue;
@@ -237,12 +304,25 @@ namespace NovaWright.NumberPush.LevelGenerator
                         continue;
                     }
 
-                    if (minimumSolution >
-                        difficulty.MaximumSolutionPushes)
+
+                    //TODO: removed the below to force the generator to accept levels that are above the target maximum pushes. This is because the generator is not able to generate levels that are within the target range for some difficulties. This is a temporary fix until a better solution can be implemented.
+                    //if (minimumSolution >
+                    //    difficulty.MaximumSolutionPushes)
+                    //{
+                    //    if (diagnostics != null)
+                    //    {
+                    //        diagnostics.AboveTargetCandidates++;
+                    //    }
+
+                    //    continue;
+                    //}
+
+                    if (minimumSolution <
+                        difficulty.MinimumSolutionPushes)
                     {
                         if (diagnostics != null)
                         {
-                            diagnostics.AboveTargetCandidates++;
+                            diagnostics.BelowTargetCandidates++;
                         }
 
                         continue;
@@ -391,6 +471,23 @@ namespace NovaWright.NumberPush.LevelGenerator
                     $"No suitable level at " +
                     $"{rows}x{columns}. " +
                     $"Increasing board size.");
+
+                //rows += 2;
+                //columns += 2;
+
+                //currentRows =
+                //    rows;
+
+                //currentColumns =
+                //    columns;
+
+                //TODO:// TEMPORARY TEST:
+                // Keep Level 12 on the starting 10x12 board.
+                // Do not allow the generator to expand the board.
+                if (levelNumber == 12)
+                {
+                    break;
+                }
 
                 rows += 2;
                 columns += 2;
@@ -854,7 +951,9 @@ namespace NovaWright.NumberPush.LevelGenerator
                     level);
 
             int crateCount =
-    difficulty.MinimumCrates;
+    difficulty.LevelNumber == 12
+        ? 4
+        : difficulty.MinimumCrates;
 
             if (availableCells.Count <
                 crateCount * 2 + 1)

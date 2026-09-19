@@ -872,11 +872,92 @@ namespace NovaWrightNumberPush
                     statusLabel.Text =
                         "Generation failed.";
 
-                    MessageBox.Show(
-                        $"Level {levelNumber} could not be generated.",
-                        "Number Push Generator",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning);
+                    if (reportDiagnostics &&
+                        result.Diagnostics != null)
+                    {
+                        string failureProjectDirectory =
+                            Directory.GetParent(
+                                AppContext.BaseDirectory)!
+                            .Parent!
+                            .Parent!
+                            .Parent!
+                            .FullName;
+
+                        string diagnosticsDirectory =
+                            Path.Combine(
+                                failureProjectDirectory,
+                                "Game",
+                                "GeneratedLevels");
+
+                        Directory.CreateDirectory(
+                            diagnosticsDirectory);
+
+                        string diagnosticsFile =
+                            Path.Combine(
+                                diagnosticsDirectory,
+                                $"GenerationDiagnostics_{levelNumber:D3}-{levelNumber:D3}.txt");
+
+                        List<string> reportLines =
+                            new List<string>();
+
+                        reportLines.Add(
+                            "NUMBER PUSH GENERATION DIAGNOSTICS");
+
+                        reportLines.Add(
+                            "GENERATION FAILED");
+
+                        reportLines.Add(
+                            $"Level: {levelNumber}");
+
+                        reportLines.Add(
+                            $"Seed: {seed}");
+
+                        reportLines.Add(
+                            "");
+
+                        reportLines.Add(
+                            "========================================");
+
+                        reportLines.Add(
+                            result.Diagnostics.GetReportText());
+
+                        reportLines.Add(
+                            "");
+
+                        TimeSpan totalCreationTime =
+                            creationTimer.Elapsed;
+
+                        reportLines.Add(
+                            "========================================");
+
+                        reportLines.Add(
+                            $"GENERATION FAILED AFTER: {totalCreationTime:hh\\:mm\\:ss}");
+
+                        reportLines.Add(
+                            $"START TIME:              {startTime:yyyy-MM-dd HH:mm:ss}");
+
+                        reportLines.Add(
+                            "========================================");
+
+                        File.WriteAllLines(
+                            diagnosticsFile,
+                            reportLines);
+
+                        MessageBox.Show(
+                            $"Level {levelNumber} could not be generated.\r\n\r\n" +
+                            $"Diagnostics were saved to:\r\n{diagnosticsFile}",
+                            "Number Push Generator",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning);
+                    }
+                    else
+                    {
+                        MessageBox.Show(
+                            $"Level {levelNumber} could not be generated.",
+                            "Number Push Generator",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning);
+                    }
 
                     return;
                 }

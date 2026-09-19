@@ -10,6 +10,7 @@
 
 	<ItemGroup>
 	  <Folder Include="Game\GeneratedLevels\" />
+	  <Folder Include="Game\Levels\" />
 	</ItemGroup>
 
 </Project>

@@ -110,11 +110,6 @@ namespace NovaWright.NumberPush.LevelGenerator
             HashSet<SolverStateKey> visited =
                 new();
 
-            //TODO: Next experiment Temporarily remove the diagnostic-only work:
-
-            //HashSet<string> visitedCrateConfigurations =
-            //    new();
-
             StatesExplored = 0;
 
             TotalLegalPushes = 0;
@@ -122,6 +117,8 @@ namespace NovaWright.NumberPush.LevelGenerator
             MaximumLegalPushes = 0;
 
             ZeroLegalPushStates = 0;
+
+            DuplicateStates = 0;
 
             GoalProgressStates.Clear();
 
@@ -143,15 +140,23 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             queue.Enqueue(startState);
 
+            // Build the initial player's reachable region using
+            // the initial crate configuration.
+            BuildCrateOccupancy(
+                crateStartPositions);
+
+            int startReachableVisitId =
+                MarkReachableCells(
+                    level.PlayerStart);
+
+            int startPlayerRegion =
+                GetPlayerRegionKey(
+                    startReachableVisitId);
+
             visited.Add(
                 CreateStateKey(
-                    level.PlayerStart,
+                    startPlayerRegion,
                     crateStartPositions));
-
-            //TODO: Next experiment Temporarily remove the diagnostic-only work:
-            //visitedCrateConfigurations.Add(
-            //    CreateCrateConfigurationKey(
-            //        crateStartPositions));
 
             while (queue.Count > 0)
             {
@@ -325,18 +330,17 @@ namespace NovaWright.NumberPush.LevelGenerator
         // Creates the unique key used to determine whether a solver state
         // has already been visited.
         //
-        // This version keeps the exact same state semantics as the baseline:
-        // - The exact player position remains part of the key.
-        // - Crate positions are sorted so equivalent crate configurations
-        //   produce the same key.
-        // - No crate identity or distance information is added.
+        // The player is represented by the lowest cell index in the
+        // player's currently reachable region rather than by the exact
+        // player position.
         //
-        // The optimization removes LINQ allocations from this method.
-        // This method is called millions of times during the solver search,
-        // so avoiding Select(), OrderBy(), ToList(), and string.Join()
-        // allocations is important.
+        // This means two states with:
+        // - the same crate positions
+        // - and the player somewhere in the same reachable region
+        //
+        // are treated as the same solver state.
         private SolverStateKey CreateStateKey(
-            Point playerPosition,
+            int playerRegion,
             IReadOnlyList<Point> cratePositions)
         {
             int[] crateIndexes =
@@ -360,12 +364,8 @@ namespace NovaWright.NumberPush.LevelGenerator
             Array.Sort(
                 crateIndexes);
 
-            int playerIndex =
-                playerPosition.Y * columns +
-                playerPosition.X;
-
             return new SolverStateKey(
-                playerIndex,
+                playerRegion,
                 crateIndexes);
         }
 
@@ -516,7 +516,7 @@ namespace NovaWright.NumberPush.LevelGenerator
             }
 
             Point finalPosition =
-    cratePosition;
+                cratePosition;
 
             for (int step = 1;
                  step <= distance;
@@ -563,8 +563,6 @@ namespace NovaWright.NumberPush.LevelGenerator
             }
 
             // Create an independent array snapshot for the successor state.
-            // The array must not be reused because the queued state needs
-            // its own immutable crate-position configuration.
             Point[] newCratePositions =
                 new Point[
                     state.CratePositions.Length];
@@ -588,9 +586,26 @@ namespace NovaWright.NumberPush.LevelGenerator
             Point newPlayerPosition =
                 cratePosition;
 
+            // The crate configuration has changed, so the player's
+            // reachable region may also have changed.
+            //
+            // The player is now standing at the crate's former position.
+            // Rebuild occupancy using the successor crate configuration
+            // and determine the canonical region identifier for that state.
+            BuildCrateOccupancy(
+                newCratePositions);
+
+            int newReachableVisitId =
+                MarkReachableCells(
+                    newPlayerPosition);
+
+            int newPlayerRegion =
+                GetPlayerRegionKey(
+                    newReachableVisitId);
+
             SolverStateKey newStateKey =
                 CreateStateKey(
-                    newPlayerPosition,
+                    newPlayerRegion,
                     newCratePositions);
 
             if (!visited.Add(newStateKey))
@@ -601,9 +616,6 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             // Only the pushed crate changes position, so we can determine
             // goal progress by comparing its old and new positions.
-            //
-            // This avoids scanning every crate with CountCratesOnGoals()
-            // for every legal push.
             bool crateStartedOnGoal =
                 goalPositions.Contains(
                     cratePosition);
@@ -663,6 +675,39 @@ namespace NovaWright.NumberPush.LevelGenerator
                     stepData);
 
             queue.Enqueue(newState);
+        }
+
+        /// <summary>
+        /// Returns a stable identifier for the player's current reachable
+        /// region.
+        ///
+        /// Every cell in one connected reachable region has the same
+        /// identifier: the lowest cell index in that region.
+        ///
+        /// This lets the solver treat different player positions in the
+        /// same walkable region as the same state.
+        /// </summary>
+        private int GetPlayerRegionKey(
+            int currentReachableVisitId)
+        {
+            int regionKey =
+                int.MaxValue;
+
+            for (int index = 0;
+                 index < reachableVisit.Length;
+                 index++)
+            {
+                if (reachableVisit[index] ==
+                    currentReachableVisitId)
+                {
+                    regionKey =
+                        index;
+
+                    break;
+                }
+            }
+
+            return regionKey;
         }
 
         private bool IsStaticCornerDeadlock(
@@ -1079,7 +1124,8 @@ namespace NovaWright.NumberPush.LevelGenerator
         {
             foreach (Point cratePosition in cratePositions)
             {
-                if (!goalPositions.Contains(cratePosition))
+                if (!goalPositions.Contains(
+                    cratePosition))
                 {
                     return false;
                 }
@@ -1197,16 +1243,16 @@ namespace NovaWright.NumberPush.LevelGenerator
         private readonly struct SolverStateKey :
             IEquatable<SolverStateKey>
         {
-            private readonly int playerPosition;
+            private readonly int playerRegion;
 
             private readonly int[] cratePositions;
 
             public SolverStateKey(
-                int playerPosition,
+                int playerRegion,
                 int[] cratePositions)
             {
-                this.playerPosition =
-                    playerPosition;
+                this.playerRegion =
+                    playerRegion;
 
                 this.cratePositions =
                     cratePositions;
@@ -1215,8 +1261,8 @@ namespace NovaWright.NumberPush.LevelGenerator
             public bool Equals(
                 SolverStateKey other)
             {
-                if (playerPosition !=
-                    other.playerPosition)
+                if (playerRegion !=
+                    other.playerRegion)
                 {
                     return false;
                 }
@@ -1255,7 +1301,7 @@ namespace NovaWright.NumberPush.LevelGenerator
                     new HashCode();
 
                 hash.Add(
-                    playerPosition);
+                    playerRegion);
 
                 for (
                     int index = 0;
