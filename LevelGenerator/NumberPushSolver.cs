@@ -46,6 +46,14 @@ namespace NovaWright.NumberPush.LevelGenerator
 
         public int FirstZeroPushCornerDeadlockedCrates { get; private set; }
 
+        public int FirstZeroPushUpBlocked { get; private set; }
+
+        public int FirstZeroPushDownBlocked { get; private set; }
+
+        public int FirstZeroPushLeftBlocked { get; private set; }
+
+        public int FirstZeroPushRightBlocked { get; private set; }
+
         public long DuplicateStates { get; private set; }
 
         public Dictionary<int, long> GoalProgressStates { get; } =
@@ -141,6 +149,14 @@ namespace NovaWright.NumberPush.LevelGenerator
             FirstZeroPushCrateBlockedCrates = 0;
 
             FirstZeroPushCornerDeadlockedCrates = 0;
+
+            FirstZeroPushUpBlocked = 0;
+
+            FirstZeroPushDownBlocked = 0;
+
+            FirstZeroPushLeftBlocked = 0;
+
+            FirstZeroPushRightBlocked = 0;
 
             DuplicateStates = 0;
 
@@ -773,10 +789,27 @@ namespace NovaWright.NumberPush.LevelGenerator
                                 direction.Y);
 
                     if (!IsReachable(
-                        playerRequiredPosition,
-                        currentReachableVisitId))
+    playerRequiredPosition,
+    currentReachableVisitId))
                     {
                         playerAccessBlocked = true;
+
+                        if (direction == new Point(0, -1))
+                        {
+                            FirstZeroPushUpBlocked++;
+                        }
+                        else if (direction == new Point(0, 1))
+                        {
+                            FirstZeroPushDownBlocked++;
+                        }
+                        else if (direction == new Point(-1, 0))
+                        {
+                            FirstZeroPushLeftBlocked++;
+                        }
+                        else if (direction == new Point(1, 0))
+                        {
+                            FirstZeroPushRightBlocked++;
+                        }
 
                         continue;
                     }

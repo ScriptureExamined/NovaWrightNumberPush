@@ -80,6 +80,14 @@
 
         public int FirstZeroPushCornerDeadlockedCrates { get; set; }
 
+        public int FirstZeroPushUpBlocked { get; set; }
+
+        public int FirstZeroPushDownBlocked { get; set; }
+
+        public int FirstZeroPushLeftBlocked { get; set; }
+
+        public int FirstZeroPushRightBlocked { get; set; }
+
         public int MinimumPushes { get; set; }
 
         public int CratesMoved { get; set; }
@@ -262,6 +270,18 @@
     $"{FirstZeroPushCrateBlockedCrates}\r\n" +
     "  Static corner deadlock: " +
     $"{FirstZeroPushCornerDeadlockedCrates}\r\n";
+
+            report +=
+                "\r\n" +
+                "FIRST ZERO-PUSH STATE PLAYER ACCESS BLOCKED DIRECTIONS\r\n" +
+                "  Up: " +
+                $"{FirstZeroPushUpBlocked}\r\n" +
+                "  Down: " +
+                $"{FirstZeroPushDownBlocked}\r\n" +
+                "  Left: " +
+                $"{FirstZeroPushLeftBlocked}\r\n" +
+                "  Right: " +
+                $"{FirstZeroPushRightBlocked}\r\n";
 
             report +=
                 "\r\n" +

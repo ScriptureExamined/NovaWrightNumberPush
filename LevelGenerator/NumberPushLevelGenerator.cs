@@ -398,6 +398,18 @@ namespace NovaWright.NumberPush.LevelGenerator
                             diagnostics.FirstZeroPushCornerDeadlockedCrates +=
                                 solver.FirstZeroPushCornerDeadlockedCrates;
 
+                            diagnostics.FirstZeroPushUpBlocked +=
+    solver.FirstZeroPushUpBlocked;
+
+                            diagnostics.FirstZeroPushDownBlocked +=
+                                solver.FirstZeroPushDownBlocked;
+
+                            diagnostics.FirstZeroPushLeftBlocked +=
+                                solver.FirstZeroPushLeftBlocked;
+
+                            diagnostics.FirstZeroPushRightBlocked +=
+                                solver.FirstZeroPushRightBlocked;
+
                             if (legalPushesBeforeZero >= 0)
                             {
                                 if (!diagnostics.UnsolvableCandidateLegalPushesBeforeZero.ContainsKey(
