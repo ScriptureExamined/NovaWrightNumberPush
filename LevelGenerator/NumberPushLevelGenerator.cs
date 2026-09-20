@@ -386,6 +386,18 @@ namespace NovaWright.NumberPush.LevelGenerator
                             int legalPushesBeforeZero =
     solver.LegalPushesBeforeMinimumZeroPushDepth;
 
+                            diagnostics.FirstZeroPushPlayerAccessBlockedCrates +=
+    solver.FirstZeroPushPlayerAccessBlockedCrates;
+
+                            diagnostics.FirstZeroPushWallBlockedCrates +=
+                                solver.FirstZeroPushWallBlockedCrates;
+
+                            diagnostics.FirstZeroPushCrateBlockedCrates +=
+                                solver.FirstZeroPushCrateBlockedCrates;
+
+                            diagnostics.FirstZeroPushCornerDeadlockedCrates +=
+                                solver.FirstZeroPushCornerDeadlockedCrates;
+
                             if (legalPushesBeforeZero >= 0)
                             {
                                 if (!diagnostics.UnsolvableCandidateLegalPushesBeforeZero.ContainsKey(

@@ -72,6 +72,14 @@
         public Dictionary<int, int> UnsolvableCandidateLegalPushesBeforeZero { get; set; } =
             new();
 
+        public int FirstZeroPushPlayerAccessBlockedCrates { get; set; }
+
+        public int FirstZeroPushWallBlockedCrates { get; set; }
+
+        public int FirstZeroPushCrateBlockedCrates { get; set; }
+
+        public int FirstZeroPushCornerDeadlockedCrates { get; set; }
+
         public int MinimumPushes { get; set; }
 
         public int CratesMoved { get; set; }
@@ -242,6 +250,18 @@
                     $"  {legalPushes} legal pushes before zero: " +
                     $"{UnsolvableCandidateLegalPushesBeforeZero[legalPushes]}\r\n";
             }
+
+            report +=
+    "\r\n" +
+    "FIRST ZERO-PUSH STATE CRATE BLOCKING REASONS\r\n" +
+    "  Player access blocked: " +
+    $"{FirstZeroPushPlayerAccessBlockedCrates}\r\n" +
+    "  Wall blocked: " +
+    $"{FirstZeroPushWallBlockedCrates}\r\n" +
+    "  Another crate blocked: " +
+    $"{FirstZeroPushCrateBlockedCrates}\r\n" +
+    "  Static corner deadlock: " +
+    $"{FirstZeroPushCornerDeadlockedCrates}\r\n";
 
             report +=
                 "\r\n" +

@@ -38,6 +38,14 @@ namespace NovaWright.NumberPush.LevelGenerator
 
         public int LegalPushesBeforeMinimumZeroPushDepth { get; private set; }
 
+        public int FirstZeroPushPlayerAccessBlockedCrates { get; private set; }
+
+        public int FirstZeroPushWallBlockedCrates { get; private set; }
+
+        public int FirstZeroPushCrateBlockedCrates { get; private set; }
+
+        public int FirstZeroPushCornerDeadlockedCrates { get; private set; }
+
         public long DuplicateStates { get; private set; }
 
         public Dictionary<int, long> GoalProgressStates { get; } =
@@ -125,6 +133,14 @@ namespace NovaWright.NumberPush.LevelGenerator
             MinimumZeroLegalPushDepth = -1;
 
             LegalPushesBeforeMinimumZeroPushDepth = -1;
+
+            FirstZeroPushPlayerAccessBlockedCrates = 0;
+
+            FirstZeroPushWallBlockedCrates = 0;
+
+            FirstZeroPushCrateBlockedCrates = 0;
+
+            FirstZeroPushCornerDeadlockedCrates = 0;
 
             DuplicateStates = 0;
 
@@ -280,6 +296,9 @@ namespace NovaWright.NumberPush.LevelGenerator
                                     state.Parent.PlayerPosition,
                                     parentCratePositions).Count;
                         }
+
+                        AnalyzeFirstZeroPushState(
+                            state);
                     }
                 }
             }
@@ -705,6 +724,138 @@ namespace NovaWright.NumberPush.LevelGenerator
                     stepData);
 
             queue.Enqueue(newState);
+        }
+
+        private void AnalyzeFirstZeroPushState(
+    SolverState state)
+        {
+            Point[] directions =
+            {
+        new Point(0, -1),
+        new Point(0, 1),
+        new Point(-1, 0),
+        new Point(1, 0)
+    };
+
+            BuildCrateOccupancy(
+                state.CratePositions);
+
+            int currentReachableVisitId =
+                MarkReachableCells(
+                    state.PlayerPosition);
+
+            for (int crateIndex = 0;
+                 crateIndex < state.CratePositions.Length;
+                 crateIndex++)
+            {
+                Point cratePosition =
+                    state.CratePositions[crateIndex];
+
+                bool playerAccessBlocked =
+                    false;
+
+                bool wallBlocked =
+                    false;
+
+                bool crateBlocked =
+                    false;
+
+                bool cornerDeadlocked =
+                    false;
+
+                foreach (Point direction in directions)
+                {
+                    Point playerRequiredPosition =
+                        new Point(
+                            cratePosition.X -
+                                direction.X,
+                            cratePosition.Y -
+                                direction.Y);
+
+                    if (!IsReachable(
+                        playerRequiredPosition,
+                        currentReachableVisitId))
+                    {
+                        playerAccessBlocked = true;
+
+                        continue;
+                    }
+
+                    Point finalPosition =
+                        cratePosition;
+
+                    bool pathBlocked =
+                        false;
+
+                    for (int step = 1;
+                         step <= level.Crates[crateIndex].Distance;
+                         step++)
+                    {
+                        int testX =
+                            cratePosition.X +
+                            direction.X * step;
+
+                        int testY =
+                            cratePosition.Y +
+                            direction.Y * step;
+
+                        Point testPosition =
+                            new Point(
+                                testX,
+                                testY);
+
+                        if (IsWall(
+                            testPosition))
+                        {
+                            wallBlocked = true;
+                            pathBlocked = true;
+                            break;
+                        }
+
+                        if (IsOccupiedByAnyCrate(
+                            testPosition))
+                        {
+                            crateBlocked = true;
+                            pathBlocked = true;
+                            break;
+                        }
+
+                        finalPosition =
+                            testPosition;
+                    }
+
+                    if (pathBlocked)
+                    {
+                        continue;
+                    }
+
+                    if (IsStaticCornerDeadlock(
+                        finalPosition))
+                    {
+                        cornerDeadlocked = true;
+                    }
+                }
+
+                if (playerAccessBlocked)
+                {
+                    FirstZeroPushPlayerAccessBlockedCrates++;
+                }
+
+                if (wallBlocked)
+                {
+                    FirstZeroPushWallBlockedCrates++;
+                }
+
+                if (crateBlocked)
+                {
+                    FirstZeroPushCrateBlockedCrates++;
+                }
+
+                if (cornerDeadlocked)
+                {
+                    FirstZeroPushCornerDeadlockedCrates++;
+                }
+            }
         }
 
         /// <summary>

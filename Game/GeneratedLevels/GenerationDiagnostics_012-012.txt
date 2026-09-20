@@ -64,6 +64,12 @@ UNSOLVABLE CANDIDATE LEGAL PUSHES BEFORE FIRST ZERO-PUSH STATE
   4 legal pushes before zero: 7
   6 legal pushes before zero: 1
 
+FIRST ZERO-PUSH STATE CRATE BLOCKING REASONS
+  Player access blocked: 1704
+  Wall blocked: 448
+  Another crate blocked: 224
+  Static corner deadlock: 495
+
 SOLUTION
 Minimum pushes: 11
 Crates moved: 4
@@ -315,8 +321,8 @@ Push 10: Crate 4 {X=3,Y=2} -> {X=3,Y=1}
 Push 11: Crate 1 {X=2,Y=2} -> {X=1,Y=2}
 
 TIMING
-Candidate generation: 8979 ms
-Solver: 39 ms
+Candidate generation: 8945 ms
+Solver: 40 ms
 Average solver call: 0.09 ms
 Total time: 00:00:09
 Crate interaction pairs: 1
@@ -325,5 +331,5 @@ Crate interaction blocks: 2
 
 ========================================
 TOTAL CREATION TIME: 00:00:09
-START TIME:          2026-09-20 10:48:00
+START TIME:          2026-09-20 10:57:11
 ========================================
