@@ -332,6 +332,17 @@ namespace NovaWright.NumberPush.LevelGenerator
                     NumberPushSolution solution =
                         solver.FindSolution();
 
+                    if (solution.MinimumPushes >= 0 &&
+    solution.Steps.Count > 0)
+                    {
+                        if (!SetPlayerStartForFirstSolutionPush(
+                                candidate,
+                                solution))
+                        {
+                            continue;
+                        }
+                    }
+
                     int minimumSolution =
                         solution.MinimumPushes;
 
@@ -685,6 +696,134 @@ namespace NovaWright.NumberPush.LevelGenerator
             }
 
             return null;
+        }
+
+        private bool SetPlayerStartForFirstSolutionPush(
+    NumberPushLevel level,
+    NumberPushSolution solution)
+        {
+            NumberPushSolutionStep firstStep =
+                solution.Steps[0];
+
+            if (firstStep.CrateIndex < 0 ||
+                firstStep.CrateIndex >= level.Crates.Count)
+            {
+                return false;
+            }
+
+            NumberPushCrate crate =
+                level.Crates[firstStep.CrateIndex];
+
+            Point playerRequiredPosition =
+                new Point(
+                    crate.Position.X -
+                        firstStep.Direction.X,
+                    crate.Position.Y -
+                        firstStep.Direction.Y);
+
+            if (IsWall(
+                    level,
+                    playerRequiredPosition) ||
+                level.Crates.Any(
+                    otherCrate =>
+                        otherCrate.Position ==
+                        playerRequiredPosition))
+            {
+                return false;
+            }
+
+            List<Point> playerCandidates =
+                GetAvailableCells(level)
+                    .Where(
+                        cell =>
+                            !level.Crates.Any(
+                                crateAtCell =>
+                                    crateAtCell.Position == cell) &&
+                            !level.Goals.Contains(cell))
+                    .ToList();
+
+            List<Point> reachableCandidates =
+                new List<Point>();
+
+            Queue<Point> queue =
+                new Queue<Point>();
+
+            HashSet<Point> visited =
+                new HashSet<Point>();
+
+            foreach (Point candidate in playerCandidates)
+            {
+                queue.Clear();
+                visited.Clear();
+
+                queue.Enqueue(candidate);
+                visited.Add(candidate);
+
+                while (queue.Count > 0)
+                {
+                    Point current =
+                        queue.Dequeue();
+
+                    if (current ==
+                        playerRequiredPosition)
+                    {
+                        reachableCandidates.Add(
+                            candidate);
+
+                        break;
+                    }
+
+                    Point[] directions =
+                    {
+                new Point(0, -1),
+                new Point(0, 1),
+                new Point(-1, 0),
+                new Point(1, 0)
+            };
+
+                    foreach (Point direction in directions)
+                    {
+                        Point next =
+                            new Point(
+                                current.X +
+                                    direction.X,
+                                current.Y +
+                                    direction.Y);
+
+                        if (IsWall(
+                                level,
+                                next))
+                        {
+                            continue;
+                        }
+
+                        if (level.Crates.Any(
+                                crateAtCell =>
+                                    crateAtCell.Position ==
+                                    next))
+                        {
+                            continue;
+                        }
+
+                        if (visited.Add(next))
+                        {
+                            queue.Enqueue(next);
+                        }
+                    }
+                }
+            }
+
+            if (reachableCandidates.Count == 0)
+            {
+                return false;
+            }
+
+            level.PlayerStart =
+                reachableCandidates[
+                    random.Next(
+                        reachableCandidates.Count)];
+
+            return true;
         }
 
         private Dictionary<Point, int> GetCrateGoalPushDistances(
@@ -1345,14 +1484,14 @@ namespace NovaWright.NumberPush.LevelGenerator
             }
 
             List<Point> playerCandidates =
-                availableCells
-                    .Where(
-                        cell =>
-                            !cratePositions.Contains(
-                                cell) &&
-                            !level.Goals.Contains(
-                                cell))
-                    .ToList();
+    availableCells
+        .Where(
+            cell =>
+                !cratePositions.Contains(
+                    cell) &&
+                !level.Goals.Contains(
+                    cell))
+        .ToList();
 
             if (playerCandidates.Count == 0)
             {
@@ -1360,9 +1499,7 @@ namespace NovaWright.NumberPush.LevelGenerator
             }
 
             level.PlayerStart =
-                playerCandidates[
-                    random.Next(
-                        playerCandidates.Count)];
+                playerCandidates[0];
 
             return level;
         }
