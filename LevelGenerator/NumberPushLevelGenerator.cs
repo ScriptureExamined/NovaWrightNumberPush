@@ -10,6 +10,9 @@ namespace NovaWright.NumberPush.LevelGenerator
         private int? currentRows;
         private int? currentColumns;
 
+        private HashSet<Point> currentWallPositions =
+    new HashSet<Point>();
+
         public NumberPushLevelGenerator(int seed)
         {
             random =
@@ -1262,6 +1265,15 @@ namespace NovaWright.NumberPush.LevelGenerator
                 return null;
             }
 
+            currentWallPositions =
+    level.Walls
+        .Select(
+            wall =>
+                new Point(
+                    wall.X,
+                    wall.Y))
+        .ToHashSet();
+
             List<Point> availableCells =
                 GetAvailableCells(
                     level);
@@ -2097,8 +2109,8 @@ namespace NovaWright.NumberPush.LevelGenerator
         }
 
         private bool IsWall(
-            NumberPushLevel level,
-            Point position)
+    NumberPushLevel level,
+    Point position)
         {
             if (position.X < 0 ||
                 position.X >= level.Columns ||
@@ -2108,10 +2120,8 @@ namespace NovaWright.NumberPush.LevelGenerator
                 return true;
             }
 
-            return level.Walls.Any(
-                wall =>
-                    wall.X == position.X &&
-                    wall.Y == position.Y);
+            return currentWallPositions.Contains(
+                position);
         }
 
         private void Shuffle<T>(

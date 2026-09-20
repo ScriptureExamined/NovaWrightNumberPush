@@ -387,15 +387,15 @@ Push 11: Crate 3 {X=7,Y=3} -> {X=8,Y=3}
 Push 12: Crate 4 {X=9,Y=3} -> {X=9,Y=2}
 
 TIMING
-Candidate generation: 1384 ms
-Solver: 131 ms
-Average solver call: 0.13 ms
-Total time: 00:00:02
+Candidate generation: 45 ms
+Solver: 106 ms
+Average solver call: 0.10 ms
+Total time: 00:00:01
 Crate interaction pairs: 0
 Crate interaction blocks: 0
 
 
 ========================================
-TOTAL CREATION TIME: 00:00:02
-START TIME:          2026-09-20 14:28:12
+TOTAL CREATION TIME: 00:00:01
+START TIME:          2026-09-20 14:34:20
 ========================================
