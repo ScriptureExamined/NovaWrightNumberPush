@@ -52,10 +52,25 @@
             new();
 
         public Dictionary<int, int> UnsolvableCandidateMaximumPushCounts { get; set; } =
-    new();
+            new();
 
         public Dictionary<int, int> InitialCrateMobilityDistribution { get; set; } =
-    new();
+            new();
+
+        public Dictionary<int, int> InitialPlayerPushMobilityDistribution { get; set; } =
+            new();
+
+        public Dictionary<int, Dictionary<int, int>> InitialPlayerMobilityMaximumPushDistribution { get; set; } =
+            new();
+
+        public Dictionary<int, Dictionary<int, int>> InitialToAfterFirstPushMobilityDistribution { get; set; } =
+            new();
+
+        public Dictionary<int, int> UnsolvableCandidateMinimumZeroPushDepths { get; set; } =
+            new();
+
+        public Dictionary<int, int> UnsolvableCandidateLegalPushesBeforeZero { get; set; } =
+            new();
 
         public int MinimumPushes { get; set; }
 
@@ -190,8 +205,8 @@
             }
 
             report +=
-    "\r\n" +
-    "UNSOLVABLE CANDIDATE MAXIMUM PUSH DISTRIBUTION\r\n";
+                "\r\n" +
+                "UNSOLVABLE CANDIDATE MAXIMUM PUSH DISTRIBUTION\r\n";
 
             foreach (int pushCount in
                      UnsolvableCandidateMaximumPushCounts.Keys.OrderBy(
@@ -203,16 +218,41 @@
             }
 
             report +=
+    "\r\n" +
+    "UNSOLVABLE CANDIDATE MINIMUM ZERO-PUSH DEPTH DISTRIBUTION\r\n";
+
+            foreach (int depth in
+                     UnsolvableCandidateMinimumZeroPushDepths.Keys.OrderBy(
+                         value => value))
+            {
+                report +=
+                    $"  Depth {depth}: " +
+                    $"{UnsolvableCandidateMinimumZeroPushDepths[depth]}\r\n";
+            }
+
+            report +=
+    "\r\n" +
+    "UNSOLVABLE CANDIDATE LEGAL PUSHES BEFORE FIRST ZERO-PUSH STATE\r\n";
+
+            foreach (int legalPushes in
+                     UnsolvableCandidateLegalPushesBeforeZero.Keys.OrderBy(
+                         value => value))
+            {
+                report +=
+                    $"  {legalPushes} legal pushes before zero: " +
+                    $"{UnsolvableCandidateLegalPushesBeforeZero[legalPushes]}\r\n";
+            }
+
+            report +=
                 "\r\n" +
                 "SOLUTION\r\n" +
                 $"Minimum pushes: {MinimumPushes}\r\n" +
-                $"Crates moved: {CratesMoved}\r\n";
-
-            report +=
+                $"Crates moved: {CratesMoved}\r\n" +
                 $"Crate push order changes: {CratePushOrderChanges}\r\n" +
                 $"Maximum consecutive pushes: {MaximumConsecutivePushes}\r\n";
 
-            foreach (int crateIndex in CratePushCounts.Keys.OrderBy(
+            foreach (int crateIndex in
+                     CratePushCounts.Keys.OrderBy(
                          index => index))
             {
                 int crateNumber =
@@ -227,8 +267,8 @@
             }
 
             report +=
-    "\r\n" +
-    "INITIAL CRATE MOBILITY DISTRIBUTION\r\n";
+                "\r\n" +
+                "INITIAL CRATE MOBILITY DISTRIBUTION\r\n";
 
             foreach (int mobility in
                      InitialCrateMobilityDistribution.Keys.OrderBy(
@@ -237,6 +277,67 @@
                 report +=
                     $"  {mobility} legal pushes: " +
                     $"{InitialCrateMobilityDistribution[mobility]}\r\n";
+            }
+
+            report +=
+                "\r\n" +
+                "INITIAL PLAYER PUSH MOBILITY DISTRIBUTION\r\n";
+
+            foreach (int mobility in
+                     InitialPlayerPushMobilityDistribution.Keys.OrderBy(
+                         value => value))
+            {
+                report +=
+                    $"  {mobility} legal pushes: " +
+                    $"{InitialPlayerPushMobilityDistribution[mobility]}\r\n";
+            }
+
+            report +=
+                "\r\n" +
+                "INITIAL PLAYER MOBILITY -> MAXIMUM PUSH DISTRIBUTION\r\n";
+
+            foreach (int mobility in
+                     InitialPlayerMobilityMaximumPushDistribution.Keys.OrderBy(
+                         value => value))
+            {
+                report +=
+                    $"  Initial {mobility} legal pushes:\r\n";
+
+                foreach (int maximumPushes in
+                         InitialPlayerMobilityMaximumPushDistribution[mobility]
+                             .Keys
+                             .OrderBy(
+                                 value => value))
+                {
+                    report +=
+                        $"    {maximumPushes} maximum pushes: " +
+                        $"{InitialPlayerMobilityMaximumPushDistribution[mobility][maximumPushes]}\r\n";
+                }
+            }
+
+            report +=
+    "\r\n" +
+    "INITIAL -> AFTER FIRST PUSH MOBILITY DISTRIBUTION\r\n";
+
+            foreach (int initialMobility in
+                     InitialToAfterFirstPushMobilityDistribution.Keys.OrderBy(
+                         value => value))
+            {
+                report +=
+                    $"  Initial {initialMobility} legal pushes:\r\n";
+
+                Dictionary<int, int> afterFirstPushDistribution =
+                    InitialToAfterFirstPushMobilityDistribution[
+                        initialMobility];
+
+                foreach (int afterFirstPushMobility in
+                         afterFirstPushDistribution.Keys.OrderBy(
+                             value => value))
+                {
+                    report +=
+                        $"    {afterFirstPushMobility} legal pushes after first push: " +
+                        $"{afterFirstPushDistribution[afterFirstPushMobility]}\r\n";
+                }
             }
 
             report +=
@@ -285,7 +386,7 @@
 
                 for (int positionIndex = 0;
                      positionIndex < orderedReachablePositions.Count;
-                     positionIndex += 6)
+                     positionIndex += 15)
                 {
                     List<string> positions =
                         orderedReachablePositions
@@ -305,8 +406,9 @@
                 }
 
                 foreach (Point goal in
-                         reachableGoals.OrderBy(
-                             point => point.Y)
+                         reachableGoals
+                             .OrderBy(
+                                 point => point.Y)
                              .ThenBy(
                                  point => point.X))
                 {
@@ -418,7 +520,7 @@
                         .OrderBy(
                             index => index)
                         .Select(
-                                index => index + 1)
+                            index => index + 1)
                         .ToList();
 
                 report +=

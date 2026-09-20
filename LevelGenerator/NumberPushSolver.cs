@@ -34,6 +34,10 @@ namespace NovaWright.NumberPush.LevelGenerator
 
         public int ZeroLegalPushStates { get; private set; }
 
+        public int MinimumZeroLegalPushDepth { get; private set; }
+
+        public int LegalPushesBeforeMinimumZeroPushDepth { get; private set; }
+
         public long DuplicateStates { get; private set; }
 
         public Dictionary<int, long> GoalProgressStates { get; } =
@@ -117,6 +121,10 @@ namespace NovaWright.NumberPush.LevelGenerator
             MaximumLegalPushes = 0;
 
             ZeroLegalPushStates = 0;
+
+            MinimumZeroLegalPushDepth = -1;
+
+            LegalPushesBeforeMinimumZeroPushDepth = -1;
 
             DuplicateStates = 0;
 
@@ -251,6 +259,28 @@ namespace NovaWright.NumberPush.LevelGenerator
                 if (legalPushesForState == 0)
                 {
                     ZeroLegalPushStates++;
+
+                    if (MinimumZeroLegalPushDepth == -1)
+                    {
+                        MinimumZeroLegalPushDepth =
+                            state.Pushes;
+
+                        if (state.Parent == null)
+                        {
+                            LegalPushesBeforeMinimumZeroPushDepth =
+                                0;
+                        }
+                        else
+                        {
+                            List<Point> parentCratePositions =
+                                state.Parent.CratePositions.ToList();
+
+                            LegalPushesBeforeMinimumZeroPushDepth =
+                                GetLegalPushes(
+                                    state.Parent.PlayerPosition,
+                                    parentCratePositions).Count;
+                        }
+                    }
                 }
             }
 

@@ -17,9 +17,9 @@ namespace NovaWright.NumberPush.LevelGenerator
         }
 
         public NumberPushLevel? Generate(
-    int levelNumber,
-    NumberPushDifficulty difficulty,
-    NumberPushGenerationDiagnostics? diagnostics = null)
+            int levelNumber,
+            NumberPushDifficulty difficulty,
+            NumberPushGenerationDiagnostics? diagnostics = null)
         {
             if (difficulty == null)
             {
@@ -98,7 +98,7 @@ namespace NovaWright.NumberPush.LevelGenerator
                     }
 
                     Stopwatch candidateTimer =
-    Stopwatch.StartNew();
+                        Stopwatch.StartNew();
 
                     NumberPushLevel? candidate =
                         CreateCandidate(
@@ -176,6 +176,12 @@ namespace NovaWright.NumberPush.LevelGenerator
                         continue;
                     }
 
+                    int initialPlayerPushMobility =
+                        0;
+
+                    List<(int CrateIndex, Point Direction)> initialLegalPushes =
+                        new List<(int CrateIndex, Point Direction)>();
+
                     if (diagnostics != null)
                     {
                         int initialCrateMobility =
@@ -214,6 +220,101 @@ namespace NovaWright.NumberPush.LevelGenerator
 
                         diagnostics.InitialCrateMobilityDistribution[
                             initialCrateMobility]++;
+
+                        List<Point> initialCratePositions =
+                            candidate.Crates
+                                .Select(
+                                    crate =>
+                                        crate.Position)
+                                .ToList();
+
+                        NumberPushSolver mobilitySolver =
+                            new NumberPushSolver(
+                                candidate);
+
+                        initialLegalPushes =
+    mobilitySolver
+        .GetLegalPushes(
+            candidate.PlayerStart,
+            initialCratePositions);
+
+                        initialPlayerPushMobility =
+                            initialLegalPushes.Count;
+
+                        if (!diagnostics.InitialPlayerPushMobilityDistribution.ContainsKey(
+                                initialPlayerPushMobility))
+                        {
+                            diagnostics.InitialPlayerPushMobilityDistribution[
+                                initialPlayerPushMobility] = 0;
+                        }
+
+                        diagnostics.InitialPlayerPushMobilityDistribution[
+                            initialPlayerPushMobility]++;
+
+                        if (initialLegalPushes.Count > 0)
+                        {
+                            (int CrateIndex, Point Direction) firstPush =
+                                initialLegalPushes[0];
+
+                            List<Point> afterFirstPushCratePositions =
+                                new List<Point>(
+                                    initialCratePositions);
+
+                            Point firstCratePosition =
+                                afterFirstPushCratePositions[
+                                    firstPush.CrateIndex];
+
+                            Point firstCrateDestination =
+                                new Point(
+                                    firstCratePosition.X +
+                                        firstPush.Direction.X *
+                                        candidate.Crates[
+                                            firstPush.CrateIndex].Distance,
+                                    firstCratePosition.Y +
+                                        firstPush.Direction.Y *
+                                        candidate.Crates[
+                                            firstPush.CrateIndex].Distance);
+
+                            afterFirstPushCratePositions[
+                                firstPush.CrateIndex] =
+                                firstCrateDestination;
+
+                            Point afterFirstPushPlayerPosition =
+                                firstCratePosition;
+
+                            NumberPushSolver afterFirstPushSolver =
+                                new NumberPushSolver(
+                                    candidate);
+
+                            int afterFirstPushMobility =
+                                afterFirstPushSolver
+                                    .GetLegalPushes(
+                                        afterFirstPushPlayerPosition,
+                                        afterFirstPushCratePositions)
+                                    .Count;
+
+                            if (!diagnostics.InitialToAfterFirstPushMobilityDistribution.ContainsKey(
+                                    initialPlayerPushMobility))
+                            {
+                                diagnostics.InitialToAfterFirstPushMobilityDistribution[
+                                    initialPlayerPushMobility] =
+                                    new Dictionary<int, int>();
+                            }
+
+                            Dictionary<int, int> afterFirstPushDistribution =
+                                diagnostics.InitialToAfterFirstPushMobilityDistribution[
+                                    initialPlayerPushMobility];
+
+                            if (!afterFirstPushDistribution.ContainsKey(
+                                    afterFirstPushMobility))
+                            {
+                                afterFirstPushDistribution[
+                                    afterFirstPushMobility] = 0;
+                            }
+
+                            afterFirstPushDistribution[
+                                afterFirstPushMobility]++;
+                        }
                     }
 
                     if (diagnostics != null)
@@ -229,13 +330,13 @@ namespace NovaWright.NumberPush.LevelGenerator
                             candidate);
 
                     NumberPushSolution solution =
-    solver.FindSolution();
+                        solver.FindSolution();
 
                     int minimumSolution =
                         solution.MinimumPushes;
 
                     if (minimumSolution >= 0 &&
-    diagnostics != null)
+                        diagnostics != null)
                     {
                         if (!diagnostics.SolvableCandidatePushCounts.ContainsKey(
                                 minimumSolution))
@@ -277,7 +378,61 @@ namespace NovaWright.NumberPush.LevelGenerator
                                 solver.DuplicateStates;
 
                             int maximumLegalPushes =
-    solver.MaximumLegalPushes;
+                                solver.MaximumLegalPushes;
+
+                            int minimumZeroPushDepth =
+    solver.MinimumZeroLegalPushDepth;
+
+                            int legalPushesBeforeZero =
+    solver.LegalPushesBeforeMinimumZeroPushDepth;
+
+                            if (legalPushesBeforeZero >= 0)
+                            {
+                                if (!diagnostics.UnsolvableCandidateLegalPushesBeforeZero.ContainsKey(
+                                        legalPushesBeforeZero))
+                                {
+                                    diagnostics.UnsolvableCandidateLegalPushesBeforeZero[
+                                        legalPushesBeforeZero] = 0;
+                                }
+
+                                diagnostics.UnsolvableCandidateLegalPushesBeforeZero[
+                                    legalPushesBeforeZero]++;
+                            }
+
+                            if (minimumZeroPushDepth >= 0)
+                            {
+                                if (!diagnostics.UnsolvableCandidateMinimumZeroPushDepths.ContainsKey(
+                                        minimumZeroPushDepth))
+                                {
+                                    diagnostics.UnsolvableCandidateMinimumZeroPushDepths[
+                                        minimumZeroPushDepth] = 0;
+                                }
+
+                                diagnostics.UnsolvableCandidateMinimumZeroPushDepths[
+                                    minimumZeroPushDepth]++;
+                            }
+
+                            if (!diagnostics.InitialPlayerMobilityMaximumPushDistribution.ContainsKey(
+                                    initialPlayerPushMobility))
+                            {
+                                diagnostics.InitialPlayerMobilityMaximumPushDistribution[
+                                    initialPlayerPushMobility] =
+                                    new Dictionary<int, int>();
+                            }
+
+                            Dictionary<int, int> maximumPushDistribution =
+                                diagnostics.InitialPlayerMobilityMaximumPushDistribution[
+                                    initialPlayerPushMobility];
+
+                            if (!maximumPushDistribution.ContainsKey(
+                                    maximumLegalPushes))
+                            {
+                                maximumPushDistribution[
+                                    maximumLegalPushes] = 0;
+                            }
+
+                            maximumPushDistribution[
+                                maximumLegalPushes]++;
 
                             if (!diagnostics.UnsolvableCandidateMaximumPushCounts.ContainsKey(
                                     maximumLegalPushes))
@@ -304,8 +459,11 @@ namespace NovaWright.NumberPush.LevelGenerator
                         continue;
                     }
 
-
-                    //TODO: removed the below to force the generator to accept levels that are above the target maximum pushes. This is because the generator is not able to generate levels that are within the target range for some difficulties. This is a temporary fix until a better solution can be implemented.
+                    // TODO: removed the below to force the generator to accept
+                    // levels that are above the target maximum pushes. This is
+                    // because the generator is not able to generate levels that
+                    // are within the target range for some difficulties. This is
+                    // a temporary fix until a better solution can be implemented.
                     //if (minimumSolution >
                     //    difficulty.MaximumSolutionPushes)
                     //{
@@ -313,20 +471,9 @@ namespace NovaWright.NumberPush.LevelGenerator
                     //    {
                     //        diagnostics.AboveTargetCandidates++;
                     //    }
-
+                    //
                     //    continue;
                     //}
-
-                    if (minimumSolution <
-                        difficulty.MinimumSolutionPushes)
-                    {
-                        if (diagnostics != null)
-                        {
-                            diagnostics.BelowTargetCandidates++;
-                        }
-
-                        continue;
-                    }
 
                     if (diagnostics != null)
                     {
@@ -336,8 +483,8 @@ namespace NovaWright.NumberPush.LevelGenerator
                             solution.MinimumPushes;
 
                         for (int crateIndex = 0;
-     crateIndex < candidate.Crates.Count;
-     crateIndex++)
+                             crateIndex < candidate.Crates.Count;
+                             crateIndex++)
                         {
                             NumberPushCrate crate =
                                 candidate.Crates[crateIndex];
@@ -371,7 +518,7 @@ namespace NovaWright.NumberPush.LevelGenerator
                             solution.CratesMoved;
 
                         int previousCrateIndex =
-    -1;
+                            -1;
 
                         int currentConsecutivePushes =
                             0;
@@ -428,8 +575,8 @@ namespace NovaWright.NumberPush.LevelGenerator
                                 solution.CrateLastPushNumbers);
 
                         diagnostics.CrateGoalPositions =
-    new Dictionary<int, Point>(
-        solution.CrateGoalPositions);
+                            new Dictionary<int, Point>(
+                                solution.CrateGoalPositions);
 
                         diagnostics.SolutionPushSequence.Clear();
 
@@ -442,20 +589,19 @@ namespace NovaWright.NumberPush.LevelGenerator
                         }
 
                         CalculateSolutionOpportunities(
-    candidate,
-    solution,
-    diagnostics);
+                            candidate,
+                            solution,
+                            diagnostics);
 
                         CalculateSolutionPlayerAccessBlocks(
-    candidate,
-    solution,
-    diagnostics);
+                            candidate,
+                            solution,
+                            diagnostics);
 
                         CalculateTemporaryDisplacement(
-    candidate,
-    solution,
-    diagnostics);
-
+                            candidate,
+                            solution,
+                            diagnostics);
                     }
 
                     currentRows =
@@ -503,9 +649,9 @@ namespace NovaWright.NumberPush.LevelGenerator
         }
 
         private Dictionary<Point, int> GetCrateGoalPushDistances(
-    NumberPushLevel level,
-    Point startPosition,
-    int distance)
+            NumberPushLevel level,
+            Point startPosition,
+            int distance)
         {
             Dictionary<Point, int> goalDistances =
                 new Dictionary<Point, int>();
@@ -524,11 +670,11 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             Point[] directions =
             {
-        new Point(0, -1),
-        new Point(0, 1),
-        new Point(-1, 0),
-        new Point(1, 0)
-    };
+                new Point(0, -1),
+                new Point(0, 1),
+                new Point(-1, 0),
+                new Point(1, 0)
+            };
 
             while (queue.Count > 0)
             {
@@ -585,9 +731,9 @@ namespace NovaWright.NumberPush.LevelGenerator
         }
 
         private bool CanCratesReachDistinctGoals(
-    NumberPushLevel level,
-    out bool noReachableGoals,
-    out int failedCrateDistance)
+            NumberPushLevel level,
+            out bool noReachableGoals,
+            out int failedCrateDistance)
         {
             noReachableGoals = false;
             failedCrateDistance = 0;
@@ -631,9 +777,9 @@ namespace NovaWright.NumberPush.LevelGenerator
         }
 
         private HashSet<Point> GetReachablePositions(
-    NumberPushLevel level,
-    Point startPosition,
-    int distance)
+            NumberPushLevel level,
+            Point startPosition,
+            int distance)
         {
             HashSet<Point> reachable =
                 new();
@@ -652,10 +798,10 @@ namespace NovaWright.NumberPush.LevelGenerator
                 foreach (Point direction in
                          new[]
                          {
-                     new Point(1, 0),
-                     new Point(-1, 0),
-                     new Point(0, 1),
-                     new Point(0, -1)
+                             new Point(1, 0),
+                             new Point(-1, 0),
+                             new Point(0, 1),
+                             new Point(0, -1)
                          })
                 {
                     Point destination =
@@ -703,11 +849,11 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             Point[] directions =
             {
-        new Point(0, -1),
-        new Point(0, 1),
-        new Point(-1, 0),
-        new Point(1, 0)
-    };
+                new Point(0, -1),
+                new Point(0, 1),
+                new Point(-1, 0),
+                new Point(1, 0)
+            };
 
             while (queue.Count > 0)
             {
@@ -816,8 +962,8 @@ namespace NovaWright.NumberPush.LevelGenerator
         }
 
         private void CalculateCrateInteractions(
-    NumberPushLevel level,
-    NumberPushGenerationDiagnostics diagnostics)
+            NumberPushLevel level,
+            NumberPushGenerationDiagnostics diagnostics)
         {
             diagnostics.CrateInteractionPairs = 0;
             diagnostics.CrateInteractionBlocks = 0;
@@ -827,11 +973,11 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             Point[] directions =
             {
-        new Point(0, -1),
-        new Point(0, 1),
-        new Point(-1, 0),
-        new Point(1, 0)
-    };
+                new Point(0, -1),
+                new Point(0, 1),
+                new Point(-1, 0),
+                new Point(1, 0)
+            };
 
             for (int firstIndex = 0;
                  firstIndex < level.Crates.Count;
@@ -951,9 +1097,9 @@ namespace NovaWright.NumberPush.LevelGenerator
                     level);
 
             int crateCount =
-    difficulty.LevelNumber == 12
-        ? 4
-        : difficulty.MinimumCrates;
+                difficulty.LevelNumber == 12
+                    ? 4
+                    : difficulty.MinimumCrates;
 
             if (availableCells.Count <
                 crateCount * 2 + 1)
@@ -962,7 +1108,7 @@ namespace NovaWright.NumberPush.LevelGenerator
             }
 
             List<Point> cratePositions =
-    new List<Point>();
+                new List<Point>();
 
             for (int crateIndex = 0;
                  crateIndex < crateCount;
@@ -986,11 +1132,11 @@ namespace NovaWright.NumberPush.LevelGenerator
 
                     Point[] directions =
                     {
-            new Point(0, -1),
-            new Point(0, 1),
-            new Point(-1, 0),
-            new Point(1, 0)
-        };
+                        new Point(0, -1),
+                        new Point(0, 1),
+                        new Point(-1, 0),
+                        new Point(1, 0)
+                    };
 
                     foreach (Point direction in directions)
                     {
@@ -1045,7 +1191,7 @@ namespace NovaWright.NumberPush.LevelGenerator
             }
 
             HashSet<Point> assignedGoals =
-    new HashSet<Point>();
+                new HashSet<Point>();
 
             Dictionary<int, HashSet<Point>> crateReachableGoals =
                 new Dictionary<int, HashSet<Point>>();
@@ -1175,17 +1321,17 @@ namespace NovaWright.NumberPush.LevelGenerator
             }
 
             level.PlayerStart =
-    playerCandidates[
-        random.Next(
-            playerCandidates.Count)];
+                playerCandidates[
+                    random.Next(
+                        playerCandidates.Count)];
 
             return level;
         }
 
         private void CalculateSolutionOpportunities(
-    NumberPushLevel level,
-    NumberPushSolution solution,
-    NumberPushGenerationDiagnostics diagnostics)
+            NumberPushLevel level,
+            NumberPushSolution solution,
+            NumberPushGenerationDiagnostics diagnostics)
         {
             diagnostics.SolutionOpportunityPairs = 0;
             diagnostics.SolutionOpportunityBlocks = 0;
@@ -1321,8 +1467,8 @@ namespace NovaWright.NumberPush.LevelGenerator
         // criterion for level generation.
         private void CalculateSolutionPlayerAccessBlocks(
             NumberPushLevel level,
-    NumberPushSolution solution,
-    NumberPushGenerationDiagnostics diagnostics)
+            NumberPushSolution solution,
+            NumberPushGenerationDiagnostics diagnostics)
         {
             diagnostics.SolutionPlayerAccessBlockPairs = 0;
             diagnostics.SolutionPlayerAccessBlockMoves = 0;
@@ -1335,11 +1481,11 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             Point[] directions =
             {
-        new Point(0, -1),
-        new Point(0, 1),
-        new Point(-1, 0),
-        new Point(1, 0)
-    };
+                new Point(0, -1),
+                new Point(0, 1),
+                new Point(-1, 0),
+                new Point(1, 0)
+            };
 
             for (int solutionStepIndex = 0;
                  solutionStepIndex < solution.Steps.Count;
@@ -1459,9 +1605,9 @@ namespace NovaWright.NumberPush.LevelGenerator
         }
 
         private void CalculateTemporaryDisplacement(
-    NumberPushLevel level,
-    NumberPushSolution solution,
-    NumberPushGenerationDiagnostics diagnostics)
+            NumberPushLevel level,
+            NumberPushSolution solution,
+            NumberPushGenerationDiagnostics diagnostics)
         {
             diagnostics.SolutionTemporaryDisplacementCrates = 0;
             diagnostics.SolutionTemporaryDisplacementMoves = 0;
@@ -1520,8 +1666,7 @@ namespace NovaWright.NumberPush.LevelGenerator
                         displacementMoves++;
                     }
                     else if (hasMovedAway &&
-                             afterDistance <
-                             beforeDistance)
+                             afterDistance < beforeDistance)
                     {
                         hasRecovered = true;
                     }
@@ -1542,8 +1687,8 @@ namespace NovaWright.NumberPush.LevelGenerator
         }
 
         private int GetCrateDistance(
-    NumberPushDifficulty difficulty,
-    int crateIndex)
+            NumberPushDifficulty difficulty,
+            int crateIndex)
         {
             return difficulty.MinimumCrateDistance;
         }
@@ -1595,7 +1740,7 @@ namespace NovaWright.NumberPush.LevelGenerator
                         1));
 
                 if (!IsBoardConnected(
-                    level))
+                        level))
                 {
                     level.Walls.RemoveAt(
                         level.Walls.Count - 1);
@@ -1657,14 +1802,14 @@ namespace NovaWright.NumberPush.LevelGenerator
                             current.Y + direction.Y);
 
                     if (IsWall(
-                        level,
-                        next))
+                            level,
+                            next))
                     {
                         continue;
                     }
 
                     if (visited.Add(
-                        next))
+                            next))
                     {
                         queue.Enqueue(
                             next);
@@ -1738,11 +1883,10 @@ namespace NovaWright.NumberPush.LevelGenerator
                             y);
 
                     if (!IsWall(
-                        level,
-                        point))
+                            level,
+                            point))
                     {
-                        cells.Add(
-                            point);
+                        cells.Add(point);
                     }
                 }
             }
