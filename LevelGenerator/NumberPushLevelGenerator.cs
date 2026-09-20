@@ -1386,9 +1386,6 @@ namespace NovaWright.NumberPush.LevelGenerator
             Dictionary<int, HashSet<Point>> crateReachableGoals =
     new Dictionary<int, HashSet<Point>>();
 
-            currentCrateReachableGoals =
-                crateReachableGoals;
-
             for (int crateIndex = 0;
                  crateIndex < crateCount;
                  crateIndex++)
