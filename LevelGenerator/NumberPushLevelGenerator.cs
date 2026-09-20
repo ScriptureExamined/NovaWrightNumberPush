@@ -1420,6 +1420,9 @@ namespace NovaWright.NumberPush.LevelGenerator
                 }
             }
 
+            currentCrateReachableGoals =
+    crateReachableGoals;
+
             while (level.Goals.Count < crateCount)
             {
                 List<Point> goalCandidates =

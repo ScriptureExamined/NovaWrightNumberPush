@@ -473,9 +473,9 @@ Push 24: Crate 3 {X=4,Y=9} -> {X=5,Y=9}
 Push 25: Crate 3 {X=5,Y=9} -> {X=5,Y=10}
 
 TIMING
-Candidate generation: 291 ms
-Solver: 578 ms
-Average solver call: 0.44 ms
+Candidate generation: 351 ms
+Solver: 590 ms
+Average solver call: 0.45 ms
 Total time: 00:00:02
 Crate interaction pairs: 1
 Crate interaction blocks: 2
@@ -483,5 +483,5 @@ Crate interaction blocks: 2
 
 ========================================
 TOTAL CREATION TIME: 00:00:02
-START TIME:          2026-09-20 14:35:20
+START TIME:          2026-09-20 14:55:52
 ========================================

@@ -636,17 +636,22 @@ namespace NovaWrightNumberPush
                 true;
 
             Progress<int> generationProgress =
-                new Progress<int>(
-                    completed =>
-                    {
-                        statusLabel.Text =
-                            $"Generating level {completed} of {levelCount}...";
+    new Progress<int>(
+        completed =>
+        {
+            int currentLevel =
+                Math.Min(
+                    completed + 1,
+                    levelCount);
 
-                        progressBar.Value =
-                            Math.Min(
-                                completed,
-                                progressBar.Maximum);
-                    });
+            statusLabel.Text =
+                $"Generating level {currentLevel} of {levelCount}...";
+
+            progressBar.Value =
+                Math.Min(
+                    completed,
+                    progressBar.Maximum);
+        });
 
             try
             {
