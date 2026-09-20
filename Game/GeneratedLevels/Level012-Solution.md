@@ -12,148 +12,159 @@ complexity: 11
 - **Complexity:** 11
 - **Board:** 10 × 12
 - **Crates:** 4
-- **Interior Walls:** 27
-- **Minimum Solution:** 11 pushes
+- **Interior Walls:** 26
+- **Minimum Solution:** 12 pushes
 - **Generator Seed:** 12345
 
 ## Crates
 
-- **Crate 1:** Position (2, 2), Distance 1
-- **Crate 2:** Position (9, 4), Distance 1
-- **Crate 3:** Position (8, 3), Distance 1
-- **Crate 4:** Position (3, 2), Distance 1
+- **Crate 1:** Position (9, 6), Distance 1
+- **Crate 2:** Position (3, 5), Distance 1
+- **Crate 3:** Position (6, 6), Distance 1
+- **Crate 4:** Position (9, 3), Distance 1
 
 ## Goals
 
-- **Goal 1:** (10, 1)
-- **Goal 2:** (5, 3)
-- **Goal 3:** (3, 1)
-- **Goal 4:** (1, 2)
+- **Goal 1:** (3, 7)
+- **Goal 2:** (9, 2)
+- **Goal 3:** (7, 8)
+- **Goal 4:** (8, 3)
 
 ## Solution
 
-**Minimum pushes:** 11
+**Minimum pushes:** 12
 
 ### Push 1
 
-- **Crate:** 3
-- **Direction:** Right
+- **Crate:** 2
+- **Direction:** Down
 - **Distance:** 1
-- **Player Start:** (6, 3)
-- **Player Push Position:** (7, 3)
-- **Crate Start:** (8, 3)
-- **Crate End:** (9, 3)
-- **Player Walk:** (6, 3) → (7, 3)
+- **Player Start:** (7, 2)
+- **Player Push Position:** (3, 4)
+- **Crate Start:** (3, 5)
+- **Crate End:** (3, 6)
+- **Player Walk:** (7, 2) → (7, 1) → (6, 1) → (5, 1) → (4, 1) → (3, 1) → (3, 2) → (3, 3) → (3, 4)
 
 ### Push 2
 
 - **Crate:** 2
-- **Direction:** Right
+- **Direction:** Down
 - **Distance:** 1
-- **Player Start:** (8, 3)
-- **Player Push Position:** (8, 4)
-- **Crate Start:** (9, 4)
-- **Crate End:** (10, 4)
-- **Player Walk:** (8, 3) → (8, 4)
+- **Player Start:** (3, 5)
+- **Player Push Position:** (3, 5)
+- **Crate Start:** (3, 6)
+- **Crate End:** (3, 7)
+- **Player Walk:** (3, 5)
 
 ### Push 3
 
-- **Crate:** 2
+- **Crate:** 3
 - **Direction:** Up
 - **Distance:** 1
-- **Player Start:** (9, 4)
-- **Player Push Position:** (10, 5)
-- **Crate Start:** (10, 4)
-- **Crate End:** (10, 3)
-- **Player Walk:** (9, 4) → (9, 5) → (10, 5)
+- **Player Start:** (3, 6)
+- **Player Push Position:** (6, 7)
+- **Crate Start:** (6, 6)
+- **Crate End:** (6, 5)
+- **Player Walk:** (3, 6) → (3, 5) → (4, 5) → (5, 5) → (5, 6) → (5, 7) → (6, 7)
 
 ### Push 4
 
-- **Crate:** 2
-- **Direction:** Up
+- **Crate:** 1
+- **Direction:** Down
 - **Distance:** 1
-- **Player Start:** (10, 4)
-- **Player Push Position:** (10, 4)
-- **Crate Start:** (10, 3)
-- **Crate End:** (10, 2)
-- **Player Walk:** (10, 4)
+- **Player Start:** (6, 6)
+- **Player Push Position:** (9, 5)
+- **Crate Start:** (9, 6)
+- **Crate End:** (9, 7)
+- **Player Walk:** (6, 6) → (7, 6) → (8, 6) → (8, 5) → (9, 5)
 
 ### Push 5
 
-- **Crate:** 2
-- **Direction:** Up
+- **Crate:** 1
+- **Direction:** Down
 - **Distance:** 1
-- **Player Start:** (10, 3)
-- **Player Push Position:** (10, 3)
-- **Crate Start:** (10, 2)
-- **Crate End:** (10, 1)
-- **Player Walk:** (10, 3)
+- **Player Start:** (9, 6)
+- **Player Push Position:** (9, 6)
+- **Crate Start:** (9, 7)
+- **Crate End:** (9, 8)
+- **Player Walk:** (9, 6)
 
 ### Push 6
-
-- **Crate:** 3
-- **Direction:** Left
-- **Distance:** 1
-- **Player Start:** (10, 2)
-- **Player Push Position:** (10, 3)
-- **Crate Start:** (9, 3)
-- **Crate End:** (8, 3)
-- **Player Walk:** (10, 2) → (10, 3)
-
-### Push 7
-
-- **Crate:** 3
-- **Direction:** Left
-- **Distance:** 1
-- **Player Start:** (9, 3)
-- **Player Push Position:** (9, 3)
-- **Crate Start:** (8, 3)
-- **Crate End:** (7, 3)
-- **Player Walk:** (9, 3)
-
-### Push 8
-
-- **Crate:** 3
-- **Direction:** Left
-- **Distance:** 1
-- **Player Start:** (8, 3)
-- **Player Push Position:** (8, 3)
-- **Crate Start:** (7, 3)
-- **Crate End:** (6, 3)
-- **Player Walk:** (8, 3)
-
-### Push 9
-
-- **Crate:** 3
-- **Direction:** Left
-- **Distance:** 1
-- **Player Start:** (7, 3)
-- **Player Push Position:** (7, 3)
-- **Crate Start:** (6, 3)
-- **Crate End:** (5, 3)
-- **Player Walk:** (7, 3)
-
-### Push 10
-
-- **Crate:** 4
-- **Direction:** Up
-- **Distance:** 1
-- **Player Start:** (6, 3)
-- **Player Push Position:** (3, 3)
-- **Crate Start:** (3, 2)
-- **Crate End:** (3, 1)
-- **Player Walk:** (6, 3) → (7, 3) → (8, 3) → (8, 4) → (9, 4) → (9, 5) → (10, 5) → (10, 6) → (10, 7) → (9, 7) → (8, 7) → (8, 8) → (7, 8) → (6, 8) → (5, 8) → (4, 8) → (4, 7) → (4, 6) → (3, 6) → (3, 5) → (2, 5) → (1, 5) → (1, 4) → (1, 3) → (2, 3) → (3, 3)
-
-### Push 11
 
 - **Crate:** 1
 - **Direction:** Left
 - **Distance:** 1
-- **Player Start:** (3, 2)
-- **Player Push Position:** (3, 2)
-- **Crate Start:** (2, 2)
-- **Crate End:** (1, 2)
-- **Player Walk:** (3, 2)
+- **Player Start:** (9, 7)
+- **Player Push Position:** (10, 8)
+- **Crate Start:** (9, 8)
+- **Crate End:** (8, 8)
+- **Player Walk:** (9, 7) → (10, 7) → (10, 8)
+
+### Push 7
+
+- **Crate:** 1
+- **Direction:** Left
+- **Distance:** 1
+- **Player Start:** (9, 8)
+- **Player Push Position:** (9, 8)
+- **Crate Start:** (8, 8)
+- **Crate End:** (7, 8)
+- **Player Walk:** (9, 8)
+
+### Push 8
+
+- **Crate:** 3
+- **Direction:** Up
+- **Distance:** 1
+- **Player Start:** (8, 8)
+- **Player Push Position:** (6, 6)
+- **Crate Start:** (6, 5)
+- **Crate End:** (6, 4)
+- **Player Walk:** (8, 8) → (8, 7) → (8, 6) → (7, 6) → (6, 6)
+
+### Push 9
+
+- **Crate:** 3
+- **Direction:** Up
+- **Distance:** 1
+- **Player Start:** (6, 5)
+- **Player Push Position:** (6, 5)
+- **Crate Start:** (6, 4)
+- **Crate End:** (6, 3)
+- **Player Walk:** (6, 5)
+
+### Push 10
+
+- **Crate:** 3
+- **Direction:** Right
+- **Distance:** 1
+- **Player Start:** (6, 4)
+- **Player Push Position:** (5, 3)
+- **Crate Start:** (6, 3)
+- **Crate End:** (7, 3)
+- **Player Walk:** (6, 4) → (6, 5) → (5, 5) → (4, 5) → (3, 5) → (3, 4) → (3, 3) → (3, 2) → (3, 1) → (4, 1) → (5, 1) → (5, 2) → (5, 3)
+
+### Push 11
+
+- **Crate:** 3
+- **Direction:** Right
+- **Distance:** 1
+- **Player Start:** (6, 3)
+- **Player Push Position:** (6, 3)
+- **Crate Start:** (7, 3)
+- **Crate End:** (8, 3)
+- **Player Walk:** (6, 3)
+
+### Push 12
+
+- **Crate:** 4
+- **Direction:** Up
+- **Distance:** 1
+- **Player Start:** (7, 3)
+- **Player Push Position:** (9, 4)
+- **Crate Start:** (9, 3)
+- **Crate End:** (9, 2)
+- **Player Walk:** (7, 3) → (6, 3) → (6, 4) → (6, 5) → (6, 6) → (7, 6) → (8, 6) → (8, 5) → (9, 5) → (9, 4)
 
 ## Generation Settings
 

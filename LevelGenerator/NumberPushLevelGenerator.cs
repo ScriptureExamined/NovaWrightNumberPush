@@ -742,76 +742,68 @@ namespace NovaWright.NumberPush.LevelGenerator
                             !level.Goals.Contains(cell))
                     .ToList();
 
-            List<Point> reachableCandidates =
-                new List<Point>();
-
             Queue<Point> queue =
                 new Queue<Point>();
 
             HashSet<Point> visited =
                 new HashSet<Point>();
 
-            foreach (Point candidate in playerCandidates)
+            queue.Enqueue(
+                playerRequiredPosition);
+
+            visited.Add(
+                playerRequiredPosition);
+
+            Point[] directions =
             {
-                queue.Clear();
-                visited.Clear();
+        new Point(0, -1),
+        new Point(0, 1),
+        new Point(-1, 0),
+        new Point(1, 0)
+    };
 
-                queue.Enqueue(candidate);
-                visited.Add(candidate);
+            while (queue.Count > 0)
+            {
+                Point current =
+                    queue.Dequeue();
 
-                while (queue.Count > 0)
+                foreach (Point direction in directions)
                 {
-                    Point current =
-                        queue.Dequeue();
+                    Point next =
+                        new Point(
+                            current.X +
+                                direction.X,
+                            current.Y +
+                                direction.Y);
 
-                    if (current ==
-                        playerRequiredPosition)
+                    if (IsWall(
+                            level,
+                            next))
                     {
-                        reachableCandidates.Add(
-                            candidate);
-
-                        break;
+                        continue;
                     }
 
-                    Point[] directions =
-                    {
-                new Point(0, -1),
-                new Point(0, 1),
-                new Point(-1, 0),
-                new Point(1, 0)
-            };
-
-                    foreach (Point direction in directions)
-                    {
-                        Point next =
-                            new Point(
-                                current.X +
-                                    direction.X,
-                                current.Y +
-                                    direction.Y);
-
-                        if (IsWall(
-                                level,
+                    if (level.Crates.Any(
+                            crateAtCell =>
+                                crateAtCell.Position ==
                                 next))
-                        {
-                            continue;
-                        }
+                    {
+                        continue;
+                    }
 
-                        if (level.Crates.Any(
-                                crateAtCell =>
-                                    crateAtCell.Position ==
-                                    next))
-                        {
-                            continue;
-                        }
-
-                        if (visited.Add(next))
-                        {
-                            queue.Enqueue(next);
-                        }
+                    if (visited.Add(next))
+                    {
+                        queue.Enqueue(next);
                     }
                 }
             }
+
+            List<Point> reachableCandidates =
+                playerCandidates
+                    .Where(
+                        candidate =>
+                            visited.Contains(candidate))
+                    .ToList();
 
             if (reachableCandidates.Count == 0)
             {
