@@ -1504,10 +1504,142 @@ namespace NovaWright.NumberPush.LevelGenerator
                 return null;
             }
 
-            level.PlayerStart =
+            Point bestPlayerStart =
                 playerCandidates[0];
 
+            int bestPlayerPushCount =
+                -1;
+
+            foreach (Point playerCandidate in playerCandidates)
+            {
+                int playerPushCount =
+                    0;
+
+                HashSet<Point> reachablePositions =
+    GetPlayerReachablePositionsForGeneration(
+        level,
+        playerCandidate);
+
+                foreach (NumberPushCrate crate in level.Crates)
+                {
+                    Point[] directions =
+                    {
+                    new Point(0, -1),
+                    new Point(0, 1),
+                    new Point(-1, 0),
+                    new Point(1, 0)
+                };
+
+                    foreach (Point direction in directions)
+                    {
+                        Point requiredPlayerPosition =
+                            new Point(
+                                crate.Position.X -
+                                    direction.X,
+                                crate.Position.Y -
+                                    direction.Y);
+
+                        if (!reachablePositions.Contains(
+                                requiredPlayerPosition))
+                        {
+                            continue;
+                        }
+
+                        if (CanMoveCrateDistance(
+                                level,
+                                crate.Position,
+                                direction,
+                                crate.Distance))
+                        {
+                            playerPushCount++;
+                        }
+                    }
+                }
+
+                if (playerPushCount >
+                    bestPlayerPushCount)
+                {
+                    bestPlayerPushCount =
+                        playerPushCount;
+
+                    bestPlayerStart =
+                        playerCandidate;
+                }
+            }
+
+            if (bestPlayerPushCount == 0)
+            {
+                return null;
+            }
+
+            level.PlayerStart =
+                bestPlayerStart;
+
             return level;
+        }
+
+        private HashSet<Point> GetPlayerReachablePositionsForGeneration(
+    NumberPushLevel level,
+    Point startPosition)
+        {
+            HashSet<Point> reachable =
+                new HashSet<Point>();
+
+            Queue<Point> queue =
+                new Queue<Point>();
+
+            HashSet<Point> cratePositions =
+                level.Crates
+                    .Select(
+                        crate =>
+                            crate.Position)
+                    .ToHashSet();
+
+            reachable.Add(
+                startPosition);
+
+            queue.Enqueue(
+                startPosition);
+
+            Point[] directions =
+            {
+            new Point(0, -1),
+            new Point(0, 1),
+            new Point(-1, 0),
+            new Point(1, 0)
+        };
+
+            while (queue.Count > 0)
+            {
+                Point current =
+                    queue.Dequeue();
+
+                foreach (Point direction in directions)
+                {
+                    Point destination =
+                        new Point(
+                            current.X + direction.X,
+                            current.Y + direction.Y);
+
+                    if (IsWall(
+                            level,
+                            destination) ||
+                        cratePositions.Contains(
+                            destination))
+                    {
+                        continue;
+                    }
+
+                    if (reachable.Add(
+                            destination))
+                    {
+                        queue.Enqueue(
+                            destination);
+                    }
+                }
+            }
+
+            return reachable;
         }
 
         private void CalculateSolutionOpportunities(
