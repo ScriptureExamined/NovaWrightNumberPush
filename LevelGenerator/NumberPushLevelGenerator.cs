@@ -1914,15 +1914,52 @@ namespace NovaWright.NumberPush.LevelGenerator
         }
 
         private bool IsBoardConnected(
-            NumberPushLevel level)
+    NumberPushLevel level)
         {
-            List<Point> availableCells =
-                GetAvailableCells(
-                    level);
+            HashSet<Point> wallPositions =
+                level.Walls
+                    .Select(
+                        wall =>
+                            new Point(
+                                wall.X,
+                                wall.Y))
+                    .ToHashSet();
 
-            if (availableCells.Count == 0)
+            int availableCellCount =
+                (level.Rows - 2) *
+                (level.Columns - 2) -
+                wallPositions.Count(
+                    position =>
+                        position.X > 0 &&
+                        position.X < level.Columns - 1 &&
+                        position.Y > 0 &&
+                        position.Y < level.Rows - 1);
+
+            if (availableCellCount <= 0)
             {
                 return false;
+            }
+
+            Point start =
+                new Point(
+                    1,
+                    1);
+
+            while (wallPositions.Contains(
+                       start))
+            {
+                start.X++;
+
+                if (start.X >= level.Columns - 1)
+                {
+                    start.X = 1;
+                    start.Y++;
+                }
+
+                if (start.Y >= level.Rows - 1)
+                {
+                    return false;
+                }
             }
 
             HashSet<Point> visited =
@@ -1930,9 +1967,6 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             Queue<Point> queue =
                 new Queue<Point>();
-
-            Point start =
-                availableCells[0];
 
             visited.Add(
                 start);
@@ -1942,11 +1976,11 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             Point[] directions =
             {
-                new Point(0, -1),
-                new Point(0, 1),
-                new Point(-1, 0),
-                new Point(1, 0)
-            };
+        new Point(0, -1),
+        new Point(0, 1),
+        new Point(-1, 0),
+        new Point(1, 0)
+    };
 
             while (queue.Count > 0)
             {
@@ -1957,11 +1991,20 @@ namespace NovaWright.NumberPush.LevelGenerator
                 {
                     Point next =
                         new Point(
-                            current.X + direction.X,
-                            current.Y + direction.Y);
+                            current.X +
+                                direction.X,
+                            current.Y +
+                                direction.Y);
 
-                    if (IsWall(
-                            level,
+                    if (next.X <= 0 ||
+                        next.X >= level.Columns - 1 ||
+                        next.Y <= 0 ||
+                        next.Y >= level.Rows - 1)
+                    {
+                        continue;
+                    }
+
+                    if (wallPositions.Contains(
                             next))
                     {
                         continue;
@@ -1977,7 +2020,7 @@ namespace NovaWright.NumberPush.LevelGenerator
             }
 
             return visited.Count ==
-                   availableCells.Count;
+                   availableCellCount;
         }
 
         private void CreateOuterWalls(
