@@ -88,6 +88,16 @@
 
         public int FirstZeroPushRightBlocked { get; set; }
 
+        public int FirstZeroPushLastCratePlayerAccessBlocked { get; set; }
+
+        public int FirstZeroPushLastCrateWallBlocked { get; set; }
+
+        public int FirstZeroPushLastCrateCrateBlocked { get; set; }
+
+        public int FirstZeroPushLastCrateCornerDeadlocked { get; set; }
+
+        public int FirstZeroPushLastCrateLegalPushes { get; set; }
+
         public int MinimumPushes { get; set; }
 
         public int CratesMoved { get; set; }
@@ -282,6 +292,20 @@
                 $"{FirstZeroPushLeftBlocked}\r\n" +
                 "  Right: " +
                 $"{FirstZeroPushRightBlocked}\r\n";
+
+            report +=
+    "\r\n" +
+    "FIRST ZERO-PUSH STATE LAST-PUSHED CRATE FOUR-DIRECTION ANALYSIS\r\n" +
+    "  Player access blocked: " +
+    $"{FirstZeroPushLastCratePlayerAccessBlocked}\r\n" +
+    "  Wall blocked: " +
+    $"{FirstZeroPushLastCrateWallBlocked}\r\n" +
+    "  Another crate blocked: " +
+    $"{FirstZeroPushLastCrateCrateBlocked}\r\n" +
+    "  Static corner deadlock: " +
+    $"{FirstZeroPushLastCrateCornerDeadlocked}\r\n" +
+    "  Legal pushes: " +
+    $"{FirstZeroPushLastCrateLegalPushes}\r\n";
 
             report +=
                 "\r\n" +

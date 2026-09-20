@@ -54,6 +54,16 @@ namespace NovaWright.NumberPush.LevelGenerator
 
         public int FirstZeroPushRightBlocked { get; private set; }
 
+        public int FirstZeroPushLastCratePlayerAccessBlocked { get; private set; }
+
+        public int FirstZeroPushLastCrateWallBlocked { get; private set; }
+
+        public int FirstZeroPushLastCrateCrateBlocked { get; private set; }
+
+        public int FirstZeroPushLastCrateCornerDeadlocked { get; private set; }
+
+        public int FirstZeroPushLastCrateLegalPushes { get; private set; }
+
         public long DuplicateStates { get; private set; }
 
         public Dictionary<int, long> GoalProgressStates { get; } =
@@ -157,6 +167,16 @@ namespace NovaWright.NumberPush.LevelGenerator
             FirstZeroPushLeftBlocked = 0;
 
             FirstZeroPushRightBlocked = 0;
+
+            FirstZeroPushLastCratePlayerAccessBlocked = 0;
+
+            FirstZeroPushLastCrateWallBlocked = 0;
+
+            FirstZeroPushLastCrateCrateBlocked = 0;
+
+            FirstZeroPushLastCrateCornerDeadlocked = 0;
+
+            FirstZeroPushLastCrateLegalPushes = 0;
 
             DuplicateStates = 0;
 
@@ -888,6 +908,122 @@ namespace NovaWright.NumberPush.LevelGenerator
                 {
                     FirstZeroPushCornerDeadlockedCrates++;
                 }
+            }
+
+            AnalyzeLastPushedCrate(
+                state);
+        }
+
+        private void AnalyzeLastPushedCrate(
+    SolverState state)
+        {
+            if (state.Step == null)
+            {
+                return;
+            }
+
+            int crateIndex =
+                state.Step.CrateIndex;
+
+            if (crateIndex < 0 ||
+                crateIndex >= state.CratePositions.Length)
+            {
+                return;
+            }
+
+            Point cratePosition =
+                state.CratePositions[crateIndex];
+
+            Point[] directions =
+            {
+                new Point(0, -1),
+                new Point(0, 1),
+                new Point(-1, 0),
+                new Point(1, 0)
+            };
+
+            foreach (Point direction in directions)
+            {
+                Point playerRequiredPosition =
+                    new Point(
+                        cratePosition.X -
+                            direction.X,
+                        cratePosition.Y -
+                            direction.Y);
+
+                if (!IsReachable(
+                        playerRequiredPosition,
+                        MarkReachableCells(
+                            state.PlayerPosition)))
+                {
+                    FirstZeroPushLastCratePlayerAccessBlocked++;
+                    continue;
+                }
+
+                Point finalPosition =
+                    cratePosition;
+
+                bool wallBlocked =
+                    false;
+
+                bool crateBlocked =
+                    false;
+
+                for (int step = 1;
+                     step <= level.Crates[crateIndex].Distance;
+                     step++)
+                {
+                    int testX =
+                        cratePosition.X +
+                        direction.X * step;
+
+                    int testY =
+                        cratePosition.Y +
+                        direction.Y * step;
+
+                    Point testPosition =
+                        new Point(
+                            testX,
+                            testY);
+
+                    if (IsWall(
+                        testPosition))
+                    {
+                        wallBlocked = true;
+                        break;
+                    }
+
+                    if (IsOccupiedByAnyCrate(
+                        testPosition))
+                    {
+                        crateBlocked = true;
+                        break;
+                    }
+
+                    finalPosition =
+                        testPosition;
+                }
+
+                if (wallBlocked)
+                {
+                    FirstZeroPushLastCrateWallBlocked++;
+                    continue;
+                }
+
+                if (crateBlocked)
+                {
+                    FirstZeroPushLastCrateCrateBlocked++;
+                    continue;
+                }
+
+                if (IsStaticCornerDeadlock(
+                    finalPosition))
+                {
+                    FirstZeroPushLastCrateCornerDeadlocked++;
+                    continue;
+                }
+
+                FirstZeroPushLastCrateLegalPushes++;
             }
         }
 
