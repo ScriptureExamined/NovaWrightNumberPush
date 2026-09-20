@@ -13,6 +13,9 @@ namespace NovaWright.NumberPush.LevelGenerator
         private HashSet<Point> currentWallPositions =
     new HashSet<Point>();
 
+        private Dictionary<int, HashSet<Point>> currentCrateReachableGoals =
+    new Dictionary<int, HashSet<Point>>();
+
         public NumberPushLevelGenerator(int seed)
         {
             random =
@@ -139,9 +142,10 @@ namespace NovaWright.NumberPush.LevelGenerator
                     int failedCrateDistance;
 
                     if (!CanCratesReachDistinctGoals(
-                            candidate,
-                            out noReachableGoals,
-                            out failedCrateDistance))
+        candidate,
+        currentCrateReachableGoals,
+        out noReachableGoals,
+        out failedCrateDistance))
                     {
                         if (diagnostics != null)
                         {
@@ -904,9 +908,10 @@ namespace NovaWright.NumberPush.LevelGenerator
         }
 
         private bool CanCratesReachDistinctGoals(
-            NumberPushLevel level,
-            out bool noReachableGoals,
-            out int failedCrateDistance)
+    NumberPushLevel level,
+    Dictionary<int, HashSet<Point>> crateReachableGoals,
+    out bool noReachableGoals,
+    out int failedCrateDistance)
         {
             noReachableGoals = false;
             failedCrateDistance = 0;
@@ -914,18 +919,21 @@ namespace NovaWright.NumberPush.LevelGenerator
             List<HashSet<Point>> reachableGoals =
                 new List<HashSet<Point>>();
 
-            foreach (NumberPushCrate crate in level.Crates)
+            for (int crateIndex = 0;
+                 crateIndex < level.Crates.Count;
+                 crateIndex++)
             {
-                HashSet<Point> goals =
-                    GetReachableGoals(
-                        level,
-                        crate.Position,
-                        crate.Distance);
+                NumberPushCrate crate =
+                    level.Crates[crateIndex];
 
-                if (goals.Count == 0)
+                if (!crateReachableGoals.TryGetValue(
+                        crateIndex,
+                        out HashSet<Point>? goals) ||
+                    goals.Count == 0)
                 {
                     noReachableGoals = true;
                     failedCrateDistance = crate.Distance;
+
                     return false;
                 }
 
@@ -1376,7 +1384,10 @@ namespace NovaWright.NumberPush.LevelGenerator
     new HashSet<Point>();
 
             Dictionary<int, HashSet<Point>> crateReachableGoals =
-                new Dictionary<int, HashSet<Point>>();
+    new Dictionary<int, HashSet<Point>>();
+
+            currentCrateReachableGoals =
+                crateReachableGoals;
 
             for (int crateIndex = 0;
                  crateIndex < crateCount;
