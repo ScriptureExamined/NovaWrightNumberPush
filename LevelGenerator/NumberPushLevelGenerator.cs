@@ -1361,40 +1361,31 @@ namespace NovaWright.NumberPush.LevelGenerator
             }
 
             HashSet<Point> assignedGoals =
-                new HashSet<Point>();
+    new HashSet<Point>();
 
             Dictionary<int, HashSet<Point>> crateReachableGoals =
                 new Dictionary<int, HashSet<Point>>();
 
-            foreach (Point candidateGoal in availableCells)
+            for (int crateIndex = 0;
+                 crateIndex < crateCount;
+                 crateIndex++)
             {
-                for (int crateIndex = 0;
-                     crateIndex < crateCount;
-                     crateIndex++)
-                {
-                    NumberPushCrate crate =
-                        level.Crates[crateIndex];
+                NumberPushCrate crate =
+                    level.Crates[crateIndex];
 
-                    HashSet<Point> reachablePositions =
-                        GetReachablePositions(
-                            level,
-                            crate.Position,
-                            crate.Distance);
+                HashSet<Point> reachablePositions =
+                    GetReachablePositions(
+                        level,
+                        crate.Position,
+                        crate.Distance);
 
-                    if (reachablePositions.Contains(
-                            candidateGoal))
-                    {
-                        if (!crateReachableGoals.ContainsKey(
-                                crateIndex))
-                        {
-                            crateReachableGoals[crateIndex] =
-                                new HashSet<Point>();
-                        }
-
-                        crateReachableGoals[crateIndex].Add(
-                            candidateGoal);
-                    }
-                }
+                crateReachableGoals[crateIndex] =
+                    availableCells
+                        .Where(
+                            candidateGoal =>
+                                reachablePositions.Contains(
+                                    candidateGoal))
+                        .ToHashSet();
             }
 
             for (int crateIndex = 0;
