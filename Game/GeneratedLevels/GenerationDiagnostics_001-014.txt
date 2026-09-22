@@ -257,7 +257,7 @@ Push 10: Crate 1 {X=4,Y=1} -> {X=3,Y=1}
 Push 11: Crate 1 {X=3,Y=1} -> {X=2,Y=1}
 
 TIMING
-Candidate generation: 67 ms
+Candidate generation: 442 ms
 Solver: 1 ms
 Average solver call: 0.08 ms
 Total time: 00:00:00
@@ -408,7 +408,7 @@ Push 11: Crate 2 {X=8,Y=2} -> {X=9,Y=2}
 Push 12: Crate 2 {X=9,Y=2} -> {X=9,Y=1}
 
 TIMING
-Candidate generation: 9 ms
+Candidate generation: 10 ms
 Solver: 1 ms
 Average solver call: 0.25 ms
 Total time: 00:00:00
@@ -612,9 +612,9 @@ Push 13: Crate 2 {X=6,Y=2} -> {X=6,Y=1}
 Push 14: Crate 2 {X=6,Y=1} -> {X=5,Y=1}
 
 TIMING
-Candidate generation: 91 ms
-Solver: 30 ms
-Average solver call: 0.68 ms
+Candidate generation: 90 ms
+Solver: 31 ms
+Average solver call: 0.70 ms
 Total time: 00:00:00
 Crate interaction pairs: 0
 Crate interaction blocks: 0
@@ -1249,9 +1249,9 @@ Push 7: Crate 2 {X=7,Y=3} -> {X=8,Y=3}
 Push 8: Crate 3 {X=9,Y=3} -> {X=9,Y=2}
 
 TIMING
-Candidate generation: 67 ms
-Solver: 17 ms
-Average solver call: 0.44 ms
+Candidate generation: 73 ms
+Solver: 18 ms
+Average solver call: 0.46 ms
 Total time: 00:00:00
 Crate interaction pairs: 0
 Crate interaction blocks: 0
@@ -1653,9 +1653,9 @@ Push 50: Crate 2 {X=3,Y=3} -> {X=3,Y=2}
 Push 51: Crate 2 {X=3,Y=2} -> {X=3,Y=1}
 
 TIMING
-Candidate generation: 547 ms
-Solver: 269 ms
-Average solver call: 0.32 ms
+Candidate generation: 481 ms
+Solver: 256 ms
+Average solver call: 0.30 ms
 Total time: 00:00:01
 Crate interaction pairs: 0
 Crate interaction blocks: 0
@@ -2102,9 +2102,9 @@ Push 22: Crate 4 {X=10,Y=6} -> {X=10,Y=7}
 Push 23: Crate 4 {X=10,Y=7} -> {X=10,Y=8}
 
 TIMING
-Candidate generation: 231 ms
-Solver: 519 ms
-Average solver call: 0.58 ms
+Candidate generation: 227 ms
+Solver: 509 ms
+Average solver call: 0.57 ms
 Total time: 00:00:01
 Crate interaction pairs: 0
 Crate interaction blocks: 0
@@ -2514,8 +2514,8 @@ Push 18: Crate 4 {X=5,Y=4} -> {X=6,Y=4}
 Push 19: Crate 4 {X=6,Y=4} -> {X=6,Y=3}
 
 TIMING
-Candidate generation: 230 ms
-Solver: 279 ms
+Candidate generation: 216 ms
+Solver: 280 ms
 Average solver call: 0.26 ms
 Total time: 00:00:01
 Crate interaction pairs: 0
@@ -2992,9 +2992,9 @@ Push 11: Crate 4 {X=3,Y=4} -> {X=3,Y=5}
 Push 12: Crate 4 {X=3,Y=5} -> {X=3,Y=6}
 
 TIMING
-Candidate generation: 753 ms
-Solver: 1345 ms
-Average solver call: 0.76 ms
+Candidate generation: 752 ms
+Solver: 1364 ms
+Average solver call: 0.77 ms
 Total time: 00:00:03
 Crate interaction pairs: 0
 Crate interaction blocks: 0
@@ -3512,9 +3512,9 @@ Push 25: Crate 4 {X=10,Y=1} -> {X=9,Y=1}
 Push 26: Crate 4 {X=9,Y=1} -> {X=8,Y=1}
 
 TIMING
-Candidate generation: 1779 ms
-Solver: 3222 ms
-Average solver call: 3.05 ms
+Candidate generation: 1774 ms
+Solver: 3186 ms
+Average solver call: 3.01 ms
 Total time: 00:00:06
 Crate interaction pairs: 0
 Crate interaction blocks: 0
@@ -4163,9 +4163,9 @@ Required dependency blocks: 0
 SOLUTION PUSH SEQUENCE
 
 TIMING
-Candidate generation: 157989 ms
-Solver: 649170 ms
-Average solver call: 72.13 ms
+Candidate generation: 160343 ms
+Solver: 652358 ms
+Average solver call: 72.48 ms
 Total time: 00:00:00
 Crate interaction pairs: 0
 Crate interaction blocks: 0
@@ -4177,9 +4177,9 @@ Target pushes: 11-24
 Final board: 0x0
 
 CANDIDATES
-Total attempts: 0
+Total attempts: 1500
 Wall generation failures: 0
-Solver calls: 0
+Solver calls: 1500
 Pre-solver rejected: 0
 Pre-solver no reachable goals: 0
 Pre-solver failed crate distance 1: 0
@@ -4187,11 +4187,11 @@ Pre-solver failed crate distance 2: 0
 Pre-solver failed crate distance 3: 0
 Pre-solver failed crate distance 4+: 0
 Pre-solver no distinct goal matching: 0
-Unsolvable: 0
-  States explored: 0
-  Zero-legal-push states: 0
-  Maximum legal pushes: 0
-  Duplicate states: 0
+Unsolvable: 1500
+  States explored: 2286352
+  Zero-legal-push states: 4153
+  Maximum legal pushes: 3
+  Duplicate states: 2121716
 Below target: 0
 Above target: 0
 Accepted: 0
@@ -4199,28 +4199,146 @@ Accepted: 0
 SOLVABLE CANDIDATE PUSH DISTRIBUTION
 
 UNSOLVABLE CANDIDATE MAXIMUM PUSH DISTRIBUTION
+  2 maximum pushes: 1493
+  3 maximum pushes: 7
 
 UNSOLVABLE CANDIDATE MINIMUM ZERO-PUSH DEPTH DISTRIBUTION
+  Depth 19: 1
+  Depth 26: 1
+  Depth 32: 3
+  Depth 33: 1
+  Depth 35: 1
+  Depth 36: 1
+  Depth 37: 2
+  Depth 39: 3
+  Depth 41: 4
+  Depth 42: 1
+  Depth 43: 3
+  Depth 44: 2
+  Depth 45: 1
+  Depth 46: 1
+  Depth 47: 4
+  Depth 48: 6
+  Depth 49: 3
+  Depth 50: 5
+  Depth 51: 3
+  Depth 52: 3
+  Depth 53: 1
+  Depth 54: 5
+  Depth 55: 5
+  Depth 56: 9
+  Depth 57: 4
+  Depth 58: 2
+  Depth 59: 2
+  Depth 60: 6
+  Depth 61: 9
+  Depth 62: 7
+  Depth 63: 3
+  Depth 64: 3
+  Depth 65: 4
+  Depth 66: 2
+  Depth 67: 6
+  Depth 68: 6
+  Depth 69: 7
+  Depth 70: 7
+  Depth 71: 7
+  Depth 72: 4
+  Depth 73: 4
+  Depth 74: 6
+  Depth 75: 8
+  Depth 76: 3
+  Depth 77: 10
+  Depth 78: 4
+  Depth 79: 6
+  Depth 80: 6
+  Depth 81: 4
+  Depth 82: 2
+  Depth 83: 8
+  Depth 84: 1
+  Depth 85: 5
+  Depth 86: 1
+  Depth 87: 3
+  Depth 88: 4
+  Depth 89: 4
+  Depth 90: 2
+  Depth 91: 6
+  Depth 92: 2
+  Depth 93: 5
+  Depth 94: 4
+  Depth 95: 2
+  Depth 97: 3
+  Depth 98: 3
+  Depth 99: 5
+  Depth 100: 4
+  Depth 101: 4
+  Depth 102: 2
+  Depth 103: 2
+  Depth 104: 1
+  Depth 105: 1
+  Depth 106: 2
+  Depth 107: 1
+  Depth 108: 3
+  Depth 109: 1
+  Depth 110: 4
+  Depth 111: 2
+  Depth 112: 1
+  Depth 113: 1
+  Depth 114: 2
+  Depth 115: 1
+  Depth 116: 2
+  Depth 117: 2
+  Depth 118: 2
+  Depth 120: 2
+  Depth 122: 1
+  Depth 124: 2
+  Depth 125: 1
+  Depth 126: 1
+  Depth 127: 2
+  Depth 128: 2
+  Depth 129: 1
+  Depth 133: 1
+  Depth 135: 1
+  Depth 136: 1
+  Depth 137: 1
+  Depth 138: 1
+  Depth 139: 1
+  Depth 140: 2
+  Depth 154: 1
+  Depth 158: 1
+  Depth 160: 1
+  Depth 161: 1
+  Depth 171: 1
+  Depth 182: 1
+  Depth 184: 1
+  Depth 196: 1
+  Depth 259: 1
 
 UNSOLVABLE CANDIDATE LEGAL PUSHES BEFORE FIRST ZERO-PUSH STATE
+  1 legal pushes before zero: 31
+  2 legal pushes before zero: 211
+  3 legal pushes before zero: 4
+  4 legal pushes before zero: 71
+  5 legal pushes before zero: 1
+  6 legal pushes before zero: 7
+  7 legal pushes before zero: 1
 
 FIRST ZERO-PUSH STATE CRATE BLOCKING REASONS
-  Player access blocked: 0
-  Wall blocked: 0
-  Another crate blocked: 0
-  Static corner deadlock: 0
+  Player access blocked: 1630
+  Wall blocked: 1183
+  Another crate blocked: 642
+  Static corner deadlock: 328
 
 FIRST ZERO-PUSH STATE PLAYER ACCESS BLOCKED DIRECTIONS
-  Up: 0
-  Down: 0
-  Left: 0
-  Right: 0
+  Up: 906
+  Down: 1020
+  Left: 1157
+  Right: 1155
 
 FIRST ZERO-PUSH STATE LAST-PUSHED CRATE FOUR-DIRECTION ANALYSIS
-  Player access blocked: 0
-  Wall blocked: 0
-  Another crate blocked: 0
-  Static corner deadlock: 0
+  Player access blocked: 677
+  Wall blocked: 289
+  Another crate blocked: 274
+  Static corner deadlock: 64
   Legal pushes: 0
 
 SOLUTION
@@ -4230,12 +4348,98 @@ Crate push order changes: 0
 Maximum consecutive pushes: 0
 
 INITIAL CRATE MOBILITY DISTRIBUTION
+  20 legal pushes: 1500
 
 INITIAL PLAYER PUSH MOBILITY DISTRIBUTION
+  12 legal pushes: 3
+  13 legal pushes: 3
+  14 legal pushes: 7
+  15 legal pushes: 34
+  16 legal pushes: 97
+  17 legal pushes: 12
+  18 legal pushes: 105
+  19 legal pushes: 341
+  20 legal pushes: 898
 
 INITIAL PLAYER MOBILITY -> MAXIMUM PUSH DISTRIBUTION
+  Initial 12 legal pushes:
+    2 maximum pushes: 3
+  Initial 13 legal pushes:
+    2 maximum pushes: 3
+  Initial 14 legal pushes:
+    2 maximum pushes: 7
+  Initial 15 legal pushes:
+    2 maximum pushes: 34
+  Initial 16 legal pushes:
+    2 maximum pushes: 97
+  Initial 17 legal pushes:
+    2 maximum pushes: 12
+  Initial 18 legal pushes:
+    2 maximum pushes: 104
+    3 maximum pushes: 1
+  Initial 19 legal pushes:
+    2 maximum pushes: 340
+    3 maximum pushes: 1
+  Initial 20 legal pushes:
+    2 maximum pushes: 893
+    3 maximum pushes: 5
 
 INITIAL -> AFTER FIRST PUSH MOBILITY DISTRIBUTION
+  Initial 12 legal pushes:
+    16 legal pushes after first push: 3
+  Initial 13 legal pushes:
+    11 legal pushes after first push: 1
+    14 legal pushes after first push: 1
+    17 legal pushes after first push: 1
+  Initial 14 legal pushes:
+    14 legal pushes after first push: 3
+    16 legal pushes after first push: 1
+    18 legal pushes after first push: 3
+  Initial 15 legal pushes:
+    10 legal pushes after first push: 1
+    13 legal pushes after first push: 5
+    14 legal pushes after first push: 1
+    15 legal pushes after first push: 11
+    16 legal pushes after first push: 5
+    17 legal pushes after first push: 2
+    18 legal pushes after first push: 2
+    19 legal pushes after first push: 7
+  Initial 16 legal pushes:
+    13 legal pushes after first push: 1
+    14 legal pushes after first push: 9
+    15 legal pushes after first push: 4
+    16 legal pushes after first push: 37
+    17 legal pushes after first push: 2
+    18 legal pushes after first push: 9
+    19 legal pushes after first push: 1
+    20 legal pushes after first push: 34
+  Initial 17 legal pushes:
+    15 legal pushes after first push: 1
+    16 legal pushes after first push: 1
+    17 legal pushes after first push: 5
+    18 legal pushes after first push: 4
+    19 legal pushes after first push: 1
+  Initial 18 legal pushes:
+    14 legal pushes after first push: 3
+    15 legal pushes after first push: 1
+    16 legal pushes after first push: 16
+    17 legal pushes after first push: 9
+    18 legal pushes after first push: 61
+    19 legal pushes after first push: 9
+    20 legal pushes after first push: 6
+  Initial 19 legal pushes:
+    15 legal pushes after first push: 8
+    16 legal pushes after first push: 4
+    17 legal pushes after first push: 76
+    18 legal pushes after first push: 40
+    19 legal pushes after first push: 180
+    20 legal pushes after first push: 33
+  Initial 20 legal pushes:
+    16 legal pushes after first push: 34
+    17 legal pushes after first push: 11
+    18 legal pushes after first push: 197
+    19 legal pushes after first push: 20
+    20 legal pushes after first push: 636
 
 CRATE GEOMETRY
 
@@ -4256,15 +4460,15 @@ Required dependency blocks: 0
 SOLUTION PUSH SEQUENCE
 
 TIMING
-Candidate generation: 0 ms
-Solver: 0 ms
-Average solver call: 0.00 ms
+Candidate generation: 101165 ms
+Solver: 220171 ms
+Average solver call: 146.78 ms
 Total time: 00:00:00
 Crate interaction pairs: 0
 Crate interaction blocks: 0
 
 
 ========================================
-TOTAL CREATION TIME: 00:13:51
-START TIME:          2026-09-20 04:21:49 PM
+TOTAL CREATION TIME: 00:19:20
+START TIME:          2026-09-22 01:42:39 PM
 ========================================

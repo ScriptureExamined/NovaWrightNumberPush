@@ -86,13 +86,23 @@ namespace NovaWright.NumberPush.LevelGenerator
             }
 
             int rows =
-                currentRows.Value;
+    currentRows.Value;
 
             int columns =
                 currentColumns.Value;
 
-            while (rows <= difficulty.MaximumRows &&
-                   columns <= difficulty.MaximumColumns)
+            int maximumRows =
+                Math.Max(
+                    difficulty.MaximumRows,
+                    rows);
+
+            int maximumColumns =
+                Math.Max(
+                    difficulty.MaximumColumns,
+                    columns);
+
+            while (rows <= maximumRows &&
+                   columns <= maximumColumns)
             {
                 for (int attempt = 0;
                      attempt < difficulty.MaximumAttempts;
