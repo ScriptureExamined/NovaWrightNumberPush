@@ -115,7 +115,7 @@ Push 7: Crate 1 {X=3,Y=8} -> {X=2,Y=8}
 Push 8: Crate 1 {X=2,Y=8} -> {X=1,Y=8}
 
 TIMING
-Candidate generation: 13 ms
+Candidate generation: 14 ms
 Solver: 9 ms
 Average solver call: 9.00 ms
 Total time: 00:00:00
@@ -257,7 +257,7 @@ Push 10: Crate 1 {X=4,Y=1} -> {X=3,Y=1}
 Push 11: Crate 1 {X=3,Y=1} -> {X=2,Y=1}
 
 TIMING
-Candidate generation: 442 ms
+Candidate generation: 66 ms
 Solver: 1 ms
 Average solver call: 0.08 ms
 Total time: 00:00:00
@@ -612,9 +612,9 @@ Push 13: Crate 2 {X=6,Y=2} -> {X=6,Y=1}
 Push 14: Crate 2 {X=6,Y=1} -> {X=5,Y=1}
 
 TIMING
-Candidate generation: 90 ms
-Solver: 31 ms
-Average solver call: 0.70 ms
+Candidate generation: 97 ms
+Solver: 30 ms
+Average solver call: 0.68 ms
 Total time: 00:00:00
 Crate interaction pairs: 0
 Crate interaction blocks: 0
@@ -769,7 +769,7 @@ Push 16: Crate 2 {X=5,Y=6} -> {X=6,Y=6}
 Push 17: Crate 2 {X=6,Y=6} -> {X=6,Y=7}
 
 TIMING
-Candidate generation: 7 ms
+Candidate generation: 6 ms
 Solver: 5 ms
 Average solver call: 1.67 ms
 Total time: 00:00:00
@@ -992,9 +992,9 @@ Push 17: Crate 3 {X=10,Y=3} -> {X=10,Y=2}
 Push 18: Crate 3 {X=10,Y=2} -> {X=10,Y=1}
 
 TIMING
-Candidate generation: 31 ms
-Solver: 20 ms
-Average solver call: 1.18 ms
+Candidate generation: 32 ms
+Solver: 22 ms
+Average solver call: 1.29 ms
 Total time: 00:00:00
 Crate interaction pairs: 0
 Crate interaction blocks: 0
@@ -1249,7 +1249,7 @@ Push 7: Crate 2 {X=7,Y=3} -> {X=8,Y=3}
 Push 8: Crate 3 {X=9,Y=3} -> {X=9,Y=2}
 
 TIMING
-Candidate generation: 73 ms
+Candidate generation: 68 ms
 Solver: 18 ms
 Average solver call: 0.46 ms
 Total time: 00:00:00
@@ -1274,10 +1274,10 @@ Pre-solver failed crate distance 3: 0
 Pre-solver failed crate distance 4+: 0
 Pre-solver no distinct goal matching: 0
 Unsolvable: 842
-  States explored: 33628
-  Zero-legal-push states: 2679
-  Maximum legal pushes: 6
-  Duplicate states: 17712
+  States explored: 33568
+  Zero-legal-push states: 2629
+  Maximum legal pushes: 3
+  Duplicate states: 17683
 Below target: 0
 Above target: 0
 Accepted: 1
@@ -1287,25 +1287,24 @@ SOLVABLE CANDIDATE PUSH DISTRIBUTION
 
 UNSOLVABLE CANDIDATE MAXIMUM PUSH DISTRIBUTION
   0 maximum pushes: 41
-  1 maximum pushes: 196
-  2 maximum pushes: 578
+  1 maximum pushes: 197
+  2 maximum pushes: 581
   3 maximum pushes: 23
-  6 maximum pushes: 4
 
 UNSOLVABLE CANDIDATE MINIMUM ZERO-PUSH DEPTH DISTRIBUTION
   Depth 0: 41
   Depth 1: 61
-  Depth 2: 96
-  Depth 3: 72
+  Depth 2: 93
+  Depth 3: 73
   Depth 4: 80
   Depth 5: 70
-  Depth 6: 64
+  Depth 6: 65
   Depth 7: 55
   Depth 8: 49
   Depth 9: 34
   Depth 10: 33
   Depth 11: 28
-  Depth 12: 19
+  Depth 12: 20
   Depth 13: 14
   Depth 14: 10
   Depth 15: 8
@@ -1319,31 +1318,31 @@ UNSOLVABLE CANDIDATE MINIMUM ZERO-PUSH DEPTH DISTRIBUTION
 
 UNSOLVABLE CANDIDATE LEGAL PUSHES BEFORE FIRST ZERO-PUSH STATE
   0 legal pushes before zero: 41
-  1 legal pushes before zero: 340
-  2 legal pushes before zero: 225
+  1 legal pushes before zero: 343
+  2 legal pushes before zero: 226
   3 legal pushes before zero: 56
   4 legal pushes before zero: 78
   5 legal pushes before zero: 6
-  6 legal pushes before zero: 7
-  9 legal pushes before zero: 2
+  6 legal pushes before zero: 4
+  9 legal pushes before zero: 1
 
 FIRST ZERO-PUSH STATE CRATE BLOCKING REASONS
   Player access blocked: 2265
-  Wall blocked: 995
-  Another crate blocked: 481
-  Static corner deadlock: 1224
+  Wall blocked: 1004
+  Another crate blocked: 483
+  Static corner deadlock: 1232
 
 FIRST ZERO-PUSH STATE PLAYER ACCESS BLOCKED DIRECTIONS
-  Up: 1493
+  Up: 1483
   Down: 1521
-  Left: 1551
-  Right: 1589
+  Left: 1544
+  Right: 1586
 
 FIRST ZERO-PUSH STATE LAST-PUSHED CRATE FOUR-DIRECTION ANALYSIS
-  Player access blocked: 1746
-  Wall blocked: 448
-  Another crate blocked: 241
-  Static corner deadlock: 421
+  Player access blocked: 1740
+  Wall blocked: 450
+  Another crate blocked: 243
+  Static corner deadlock: 423
   Legal pushes: 0
 
 SOLUTION
@@ -1392,9 +1391,8 @@ INITIAL PLAYER MOBILITY -> MAXIMUM PUSH DISTRIBUTION
   Initial 0 legal pushes:
     0 maximum pushes: 41
   Initial 1 legal pushes:
-    1 maximum pushes: 88
-    2 maximum pushes: 14
-    6 maximum pushes: 2
+    1 maximum pushes: 89
+    2 maximum pushes: 15
   Initial 2 legal pushes:
     1 maximum pushes: 60
     2 maximum pushes: 48
@@ -1413,9 +1411,8 @@ INITIAL PLAYER MOBILITY -> MAXIMUM PUSH DISTRIBUTION
     3 maximum pushes: 1
   Initial 6 legal pushes:
     1 maximum pushes: 3
-    2 maximum pushes: 54
+    2 maximum pushes: 56
     3 maximum pushes: 5
-    6 maximum pushes: 2
   Initial 7 legal pushes:
     2 maximum pushes: 84
     3 maximum pushes: 3
@@ -1653,9 +1650,9 @@ Push 50: Crate 2 {X=3,Y=3} -> {X=3,Y=2}
 Push 51: Crate 2 {X=3,Y=2} -> {X=3,Y=1}
 
 TIMING
-Candidate generation: 481 ms
-Solver: 256 ms
-Average solver call: 0.30 ms
+Candidate generation: 532 ms
+Solver: 288 ms
+Average solver call: 0.34 ms
 Total time: 00:00:01
 Crate interaction pairs: 0
 Crate interaction blocks: 0
@@ -1678,10 +1675,10 @@ Pre-solver failed crate distance 3: 0
 Pre-solver failed crate distance 4+: 0
 Pre-solver no distinct goal matching: 0
 Unsolvable: 896
-  States explored: 56198
-  Zero-legal-push states: 3535
-  Maximum legal pushes: 8
-  Duplicate states: 28722
+  States explored: 55530
+  Zero-legal-push states: 3481
+  Maximum legal pushes: 4
+  Duplicate states: 28277
 Below target: 0
 Above target: 0
 Accepted: 1
@@ -1691,22 +1688,19 @@ SOLVABLE CANDIDATE PUSH DISTRIBUTION
 
 UNSOLVABLE CANDIDATE MAXIMUM PUSH DISTRIBUTION
   0 maximum pushes: 72
-  1 maximum pushes: 331
-  2 maximum pushes: 445
-  3 maximum pushes: 42
-  4 maximum pushes: 2
-  6 maximum pushes: 2
-  7 maximum pushes: 1
-  8 maximum pushes: 1
+  1 maximum pushes: 332
+  2 maximum pushes: 446
+  3 maximum pushes: 45
+  4 maximum pushes: 1
 
 UNSOLVABLE CANDIDATE MINIMUM ZERO-PUSH DEPTH DISTRIBUTION
   Depth 0: 72
   Depth 1: 101
-  Depth 2: 118
+  Depth 2: 116
   Depth 3: 105
-  Depth 4: 77
+  Depth 4: 78
   Depth 5: 62
-  Depth 6: 55
+  Depth 6: 56
   Depth 7: 52
   Depth 8: 45
   Depth 9: 30
@@ -1715,45 +1709,44 @@ UNSOLVABLE CANDIDATE MINIMUM ZERO-PUSH DEPTH DISTRIBUTION
   Depth 12: 11
   Depth 13: 11
   Depth 14: 17
-  Depth 15: 7
+  Depth 15: 9
   Depth 16: 4
   Depth 17: 2
-  Depth 18: 8
+  Depth 18: 7
   Depth 19: 1
-  Depth 20: 1
   Depth 22: 2
   Depth 24: 1
 
 UNSOLVABLE CANDIDATE LEGAL PUSHES BEFORE FIRST ZERO-PUSH STATE
   0 legal pushes before zero: 72
-  1 legal pushes before zero: 469
-  2 legal pushes before zero: 174
-  3 legal pushes before zero: 52
+  1 legal pushes before zero: 471
+  2 legal pushes before zero: 173
+  3 legal pushes before zero: 53
   4 legal pushes before zero: 52
   5 legal pushes before zero: 9
-  6 legal pushes before zero: 2
+  6 legal pushes before zero: 1
   7 legal pushes before zero: 1
-  8 legal pushes before zero: 3
+  8 legal pushes before zero: 2
   10 legal pushes before zero: 1
   13 legal pushes before zero: 1
 
 FIRST ZERO-PUSH STATE CRATE BLOCKING REASONS
   Player access blocked: 3344
-  Wall blocked: 1121
-  Another crate blocked: 678
-  Static corner deadlock: 1446
+  Wall blocked: 1122
+  Another crate blocked: 680
+  Static corner deadlock: 1449
 
 FIRST ZERO-PUSH STATE PLAYER ACCESS BLOCKED DIRECTIONS
-  Up: 2478
-  Down: 2413
-  Left: 2451
-  Right: 2569
+  Up: 2479
+  Down: 2411
+  Left: 2448
+  Right: 2567
 
 FIRST ZERO-PUSH STATE LAST-PUSHED CRATE FOUR-DIRECTION ANALYSIS
-  Player access blocked: 1969
+  Player access blocked: 1967
   Wall blocked: 422
-  Another crate blocked: 242
-  Static corner deadlock: 423
+  Another crate blocked: 243
+  Static corner deadlock: 424
   Legal pushes: 0
 
 SOLUTION
@@ -1813,38 +1806,33 @@ INITIAL PLAYER MOBILITY -> MAXIMUM PUSH DISTRIBUTION
   Initial 0 legal pushes:
     0 maximum pushes: 72
   Initial 1 legal pushes:
-    1 maximum pushes: 155
+    1 maximum pushes: 156
     2 maximum pushes: 16
-    6 maximum pushes: 1
   Initial 2 legal pushes:
     1 maximum pushes: 115
     2 maximum pushes: 42
   Initial 3 legal pushes:
     1 maximum pushes: 42
-    2 maximum pushes: 54
+    2 maximum pushes: 55
     3 maximum pushes: 3
-    7 maximum pushes: 1
   Initial 4 legal pushes:
     1 maximum pushes: 13
     2 maximum pushes: 59
-    3 maximum pushes: 6
-    6 maximum pushes: 1
+    3 maximum pushes: 7
   Initial 5 legal pushes:
     1 maximum pushes: 3
     2 maximum pushes: 65
     3 maximum pushes: 5
   Initial 6 legal pushes:
     2 maximum pushes: 43
-    3 maximum pushes: 1
-    4 maximum pushes: 1
+    3 maximum pushes: 2
   Initial 7 legal pushes:
     2 maximum pushes: 36
     3 maximum pushes: 4
     4 maximum pushes: 1
   Initial 8 legal pushes:
     2 maximum pushes: 23
-    3 maximum pushes: 5
-    8 maximum pushes: 1
+    3 maximum pushes: 6
   Initial 9 legal pushes:
     1 maximum pushes: 1
     2 maximum pushes: 24
@@ -2102,9 +2090,9 @@ Push 22: Crate 4 {X=10,Y=6} -> {X=10,Y=7}
 Push 23: Crate 4 {X=10,Y=7} -> {X=10,Y=8}
 
 TIMING
-Candidate generation: 227 ms
-Solver: 509 ms
-Average solver call: 0.57 ms
+Candidate generation: 240 ms
+Solver: 601 ms
+Average solver call: 0.67 ms
 Total time: 00:00:01
 Crate interaction pairs: 0
 Crate interaction blocks: 0
@@ -2127,10 +2115,10 @@ Pre-solver failed crate distance 3: 0
 Pre-solver failed crate distance 4+: 0
 Pre-solver no distinct goal matching: 0
 Unsolvable: 1078
-  States explored: 37528
-  Zero-legal-push states: 3183
-  Maximum legal pushes: 7
-  Duplicate states: 16619
+  States explored: 37531
+  Zero-legal-push states: 3176
+  Maximum legal pushes: 3
+  Duplicate states: 16612
 Below target: 0
 Above target: 0
 Accepted: 1
@@ -2141,10 +2129,8 @@ SOLVABLE CANDIDATE PUSH DISTRIBUTION
 UNSOLVABLE CANDIDATE MAXIMUM PUSH DISTRIBUTION
   0 maximum pushes: 123
   1 maximum pushes: 479
-  2 maximum pushes: 449
+  2 maximum pushes: 451
   3 maximum pushes: 25
-  6 maximum pushes: 1
-  7 maximum pushes: 1
 
 UNSOLVABLE CANDIDATE MINIMUM ZERO-PUSH DEPTH DISTRIBUTION
   Depth 0: 123
@@ -2156,7 +2142,7 @@ UNSOLVABLE CANDIDATE MINIMUM ZERO-PUSH DEPTH DISTRIBUTION
   Depth 6: 64
   Depth 7: 40
   Depth 8: 44
-  Depth 9: 33
+  Depth 9: 32
   Depth 10: 21
   Depth 11: 29
   Depth 12: 15
@@ -2177,23 +2163,23 @@ UNSOLVABLE CANDIDATE LEGAL PUSHES BEFORE FIRST ZERO-PUSH STATE
   3 legal pushes before zero: 45
   4 legal pushes before zero: 43
   5 legal pushes before zero: 7
-  6 legal pushes before zero: 5
+  6 legal pushes before zero: 4
   9 legal pushes before zero: 1
 
 FIRST ZERO-PUSH STATE CRATE BLOCKING REASONS
-  Player access blocked: 4148
+  Player access blocked: 4144
   Wall blocked: 1262
   Another crate blocked: 747
   Static corner deadlock: 1688
 
 FIRST ZERO-PUSH STATE PLAYER ACCESS BLOCKED DIRECTIONS
-  Up: 3218
-  Down: 3096
-  Left: 3189
-  Right: 3163
+  Up: 3214
+  Down: 3092
+  Left: 3185
+  Right: 3159
 
 FIRST ZERO-PUSH STATE LAST-PUSHED CRATE FOUR-DIRECTION ANALYSIS
-  Player access blocked: 2408
+  Player access blocked: 2404
   Wall blocked: 491
   Another crate blocked: 281
   Static corner deadlock: 476
@@ -2258,17 +2244,15 @@ INITIAL PLAYER MOBILITY -> MAXIMUM PUSH DISTRIBUTION
     0 maximum pushes: 123
   Initial 1 legal pushes:
     1 maximum pushes: 250
-    2 maximum pushes: 21
-    6 maximum pushes: 1
+    2 maximum pushes: 22
   Initial 2 legal pushes:
     1 maximum pushes: 163
     2 maximum pushes: 57
     3 maximum pushes: 1
   Initial 3 legal pushes:
     1 maximum pushes: 52
-    2 maximum pushes: 57
+    2 maximum pushes: 58
     3 maximum pushes: 2
-    7 maximum pushes: 1
   Initial 4 legal pushes:
     1 maximum pushes: 9
     2 maximum pushes: 59
@@ -2514,9 +2498,9 @@ Push 18: Crate 4 {X=5,Y=4} -> {X=6,Y=4}
 Push 19: Crate 4 {X=6,Y=4} -> {X=6,Y=3}
 
 TIMING
-Candidate generation: 216 ms
-Solver: 280 ms
-Average solver call: 0.26 ms
+Candidate generation: 228 ms
+Solver: 327 ms
+Average solver call: 0.30 ms
 Total time: 00:00:01
 Crate interaction pairs: 0
 Crate interaction blocks: 0
@@ -2539,10 +2523,10 @@ Pre-solver failed crate distance 3: 0
 Pre-solver failed crate distance 4+: 0
 Pre-solver no distinct goal matching: 0
 Unsolvable: 1780
-  States explored: 96008
-  Zero-legal-push states: 6032
-  Maximum legal pushes: 8
-  Duplicate states: 56016
+  States explored: 96464
+  Zero-legal-push states: 5893
+  Maximum legal pushes: 4
+  Duplicate states: 56100
 Below target: 0
 Above target: 0
 Accepted: 1
@@ -2552,40 +2536,37 @@ SOLVABLE CANDIDATE PUSH DISTRIBUTION
 
 UNSOLVABLE CANDIDATE MAXIMUM PUSH DISTRIBUTION
   0 maximum pushes: 227
-  1 maximum pushes: 769
-  2 maximum pushes: 726
-  3 maximum pushes: 47
-  4 maximum pushes: 3
-  6 maximum pushes: 3
-  7 maximum pushes: 2
-  8 maximum pushes: 3
+  1 maximum pushes: 770
+  2 maximum pushes: 730
+  3 maximum pushes: 51
+  4 maximum pushes: 2
 
 UNSOLVABLE CANDIDATE MINIMUM ZERO-PUSH DEPTH DISTRIBUTION
   Depth 0: 227
   Depth 1: 246
-  Depth 2: 220
+  Depth 2: 219
   Depth 3: 210
   Depth 4: 165
-  Depth 5: 119
-  Depth 6: 102
+  Depth 5: 118
+  Depth 6: 101
   Depth 7: 77
   Depth 8: 62
-  Depth 9: 45
-  Depth 10: 41
+  Depth 9: 46
+  Depth 10: 40
   Depth 11: 29
   Depth 12: 23
-  Depth 13: 28
-  Depth 14: 19
-  Depth 15: 12
+  Depth 13: 29
+  Depth 14: 20
+  Depth 15: 13
   Depth 16: 8
   Depth 17: 12
   Depth 18: 4
   Depth 19: 7
   Depth 20: 8
   Depth 21: 3
-  Depth 22: 3
+  Depth 22: 4
   Depth 23: 3
-  Depth 24: 5
+  Depth 24: 4
   Depth 25: 1
   Depth 26: 1
   Depth 27: 1
@@ -2594,35 +2575,33 @@ UNSOLVABLE CANDIDATE MINIMUM ZERO-PUSH DEPTH DISTRIBUTION
 
 UNSOLVABLE CANDIDATE LEGAL PUSHES BEFORE FIRST ZERO-PUSH STATE
   0 legal pushes before zero: 227
-  1 legal pushes before zero: 1014
-  2 legal pushes before zero: 280
-  3 legal pushes before zero: 61
-  4 legal pushes before zero: 73
+  1 legal pushes before zero: 1016
+  2 legal pushes before zero: 279
+  3 legal pushes before zero: 63
+  4 legal pushes before zero: 74
   5 legal pushes before zero: 7
   6 legal pushes before zero: 13
-  7 legal pushes before zero: 2
-  8 legal pushes before zero: 2
+  7 legal pushes before zero: 1
+  8 legal pushes before zero: 1
   9 legal pushes before zero: 2
-  10 legal pushes before zero: 1
-  12 legal pushes before zero: 1
 
 FIRST ZERO-PUSH STATE CRATE BLOCKING REASONS
   Player access blocked: 6732
-  Wall blocked: 1953
-  Another crate blocked: 1196
-  Static corner deadlock: 2815
+  Wall blocked: 1954
+  Another crate blocked: 1197
+  Static corner deadlock: 2825
 
 FIRST ZERO-PUSH STATE PLAYER ACCESS BLOCKED DIRECTIONS
-  Up: 5202
-  Down: 5037
-  Left: 5197
-  Right: 5185
+  Up: 5200
+  Down: 5034
+  Left: 5195
+  Right: 5178
 
 FIRST ZERO-PUSH STATE LAST-PUSHED CRATE FOUR-DIRECTION ANALYSIS
-  Player access blocked: 3877
-  Wall blocked: 738
+  Player access blocked: 3869
+  Wall blocked: 740
   Another crate blocked: 427
-  Static corner deadlock: 782
+  Static corner deadlock: 788
   Legal pushes: 0
 
 SOLUTION
@@ -2684,55 +2663,47 @@ INITIAL PLAYER MOBILITY -> MAXIMUM PUSH DISTRIBUTION
   Initial 0 legal pushes:
     0 maximum pushes: 227
   Initial 1 legal pushes:
-    1 maximum pushes: 414
+    1 maximum pushes: 415
     2 maximum pushes: 16
-    6 maximum pushes: 1
   Initial 2 legal pushes:
     1 maximum pushes: 253
-    2 maximum pushes: 83
+    2 maximum pushes: 84
     3 maximum pushes: 2
-    4 maximum pushes: 1
   Initial 3 legal pushes:
     1 maximum pushes: 68
-    2 maximum pushes: 87
-    3 maximum pushes: 5
+    2 maximum pushes: 86
+    3 maximum pushes: 6
   Initial 4 legal pushes:
     1 maximum pushes: 20
-    2 maximum pushes: 93
+    2 maximum pushes: 94
     3 maximum pushes: 6
-    7 maximum pushes: 1
   Initial 5 legal pushes:
     1 maximum pushes: 4
-    2 maximum pushes: 86
-    3 maximum pushes: 4
-    6 maximum pushes: 1
-    8 maximum pushes: 1
+    2 maximum pushes: 87
+    3 maximum pushes: 5
   Initial 6 legal pushes:
     1 maximum pushes: 4
     2 maximum pushes: 68
     3 maximum pushes: 6
   Initial 7 legal pushes:
-    2 maximum pushes: 55
-    3 maximum pushes: 4
-    8 maximum pushes: 2
+    2 maximum pushes: 56
+    3 maximum pushes: 5
   Initial 8 legal pushes:
     1 maximum pushes: 4
     2 maximum pushes: 40
     3 maximum pushes: 3
   Initial 9 legal pushes:
     1 maximum pushes: 1
-    2 maximum pushes: 45
+    2 maximum pushes: 46
     3 maximum pushes: 6
     4 maximum pushes: 1
-    6 maximum pushes: 1
   Initial 10 legal pushes:
     1 maximum pushes: 1
     2 maximum pushes: 34
     3 maximum pushes: 4
   Initial 11 legal pushes:
     2 maximum pushes: 36
-    3 maximum pushes: 3
-    7 maximum pushes: 1
+    3 maximum pushes: 4
   Initial 12 legal pushes:
     2 maximum pushes: 23
     3 maximum pushes: 4
@@ -2992,9 +2963,9 @@ Push 11: Crate 4 {X=3,Y=4} -> {X=3,Y=5}
 Push 12: Crate 4 {X=3,Y=5} -> {X=3,Y=6}
 
 TIMING
-Candidate generation: 752 ms
-Solver: 1364 ms
-Average solver call: 0.77 ms
+Candidate generation: 785 ms
+Solver: 1520 ms
+Average solver call: 0.85 ms
 Total time: 00:00:03
 Crate interaction pairs: 0
 Crate interaction blocks: 0
@@ -3017,10 +2988,10 @@ Pre-solver failed crate distance 3: 0
 Pre-solver failed crate distance 4+: 0
 Pre-solver no distinct goal matching: 0
 Unsolvable: 1057
-  States explored: 187815
-  Zero-legal-push states: 8075
-  Maximum legal pushes: 9
-  Duplicate states: 119943
+  States explored: 190736
+  Zero-legal-push states: 7791
+  Maximum legal pushes: 4
+  Duplicate states: 121809
 Below target: 0
 Above target: 0
 Accepted: 1
@@ -3031,13 +3002,9 @@ SOLVABLE CANDIDATE PUSH DISTRIBUTION
 UNSOLVABLE CANDIDATE MAXIMUM PUSH DISTRIBUTION
   0 maximum pushes: 7
   1 maximum pushes: 93
-  2 maximum pushes: 870
-  3 maximum pushes: 74
+  2 maximum pushes: 877
+  3 maximum pushes: 78
   4 maximum pushes: 2
-  6 maximum pushes: 6
-  7 maximum pushes: 1
-  8 maximum pushes: 3
-  9 maximum pushes: 1
 
 UNSOLVABLE CANDIDATE MINIMUM ZERO-PUSH DEPTH DISTRIBUTION
   Depth 0: 7
@@ -3045,23 +3012,23 @@ UNSOLVABLE CANDIDATE MINIMUM ZERO-PUSH DEPTH DISTRIBUTION
   Depth 2: 44
   Depth 3: 46
   Depth 4: 43
-  Depth 5: 66
-  Depth 6: 71
-  Depth 7: 63
+  Depth 5: 65
+  Depth 6: 70
+  Depth 7: 62
   Depth 8: 70
-  Depth 9: 45
-  Depth 10: 55
-  Depth 11: 37
+  Depth 9: 46
+  Depth 10: 56
+  Depth 11: 36
   Depth 12: 47
   Depth 13: 37
   Depth 14: 33
   Depth 15: 24
   Depth 16: 25
   Depth 17: 29
-  Depth 18: 18
+  Depth 18: 19
   Depth 19: 14
-  Depth 20: 6
-  Depth 21: 14
+  Depth 20: 7
+  Depth 21: 15
   Depth 22: 5
   Depth 23: 6
   Depth 24: 7
@@ -3079,36 +3046,35 @@ UNSOLVABLE CANDIDATE MINIMUM ZERO-PUSH DEPTH DISTRIBUTION
 
 UNSOLVABLE CANDIDATE LEGAL PUSHES BEFORE FIRST ZERO-PUSH STATE
   0 legal pushes before zero: 7
-  1 legal pushes before zero: 352
-  2 legal pushes before zero: 266
-  3 legal pushes before zero: 67
+  1 legal pushes before zero: 354
+  2 legal pushes before zero: 267
+  3 legal pushes before zero: 68
   4 legal pushes before zero: 123
   5 legal pushes before zero: 13
-  6 legal pushes before zero: 18
-  7 legal pushes before zero: 2
+  6 legal pushes before zero: 17
+  7 legal pushes before zero: 1
   8 legal pushes before zero: 3
   9 legal pushes before zero: 3
   10 legal pushes before zero: 1
   11 legal pushes before zero: 1
-  12 legal pushes before zero: 1
 
 FIRST ZERO-PUSH STATE CRATE BLOCKING REASONS
-  Player access blocked: 3427
-  Wall blocked: 1501
-  Another crate blocked: 838
-  Static corner deadlock: 1704
+  Player access blocked: 3431
+  Wall blocked: 1510
+  Another crate blocked: 843
+  Static corner deadlock: 1712
 
 FIRST ZERO-PUSH STATE PLAYER ACCESS BLOCKED DIRECTIONS
-  Up: 2205
-  Down: 2356
-  Left: 2391
-  Right: 2352
+  Up: 2199
+  Down: 2355
+  Left: 2392
+  Right: 2348
 
 FIRST ZERO-PUSH STATE LAST-PUSHED CRATE FOUR-DIRECTION ANALYSIS
-  Player access blocked: 2023
-  Wall blocked: 539
-  Another crate blocked: 329
-  Static corner deadlock: 509
+  Player access blocked: 2018
+  Wall blocked: 543
+  Another crate blocked: 331
+  Static corner deadlock: 512
   Legal pushes: 0
 
 SOLUTION
@@ -3182,27 +3148,20 @@ INITIAL PLAYER MOBILITY -> MAXIMUM PUSH DISTRIBUTION
     3 maximum pushes: 4
   Initial 5 legal pushes:
     1 maximum pushes: 4
-    2 maximum pushes: 78
+    2 maximum pushes: 79
     3 maximum pushes: 5
-    6 maximum pushes: 1
   Initial 6 legal pushes:
     1 maximum pushes: 2
-    2 maximum pushes: 59
+    2 maximum pushes: 61
     3 maximum pushes: 5
-    6 maximum pushes: 1
-    7 maximum pushes: 1
   Initial 7 legal pushes:
-    2 maximum pushes: 74
-    3 maximum pushes: 13
+    2 maximum pushes: 75
+    3 maximum pushes: 15
     4 maximum pushes: 1
-    6 maximum pushes: 2
-    8 maximum pushes: 1
   Initial 8 legal pushes:
     1 maximum pushes: 1
-    2 maximum pushes: 66
-    3 maximum pushes: 5
-    6 maximum pushes: 1
-    8 maximum pushes: 1
+    2 maximum pushes: 67
+    3 maximum pushes: 6
   Initial 9 legal pushes:
     1 maximum pushes: 1
     2 maximum pushes: 59
@@ -3213,18 +3172,15 @@ INITIAL PLAYER MOBILITY -> MAXIMUM PUSH DISTRIBUTION
     3 maximum pushes: 7
   Initial 11 legal pushes:
     1 maximum pushes: 2
-    2 maximum pushes: 78
+    2 maximum pushes: 79
     3 maximum pushes: 5
     4 maximum pushes: 1
-    8 maximum pushes: 1
   Initial 12 legal pushes:
     2 maximum pushes: 77
-    3 maximum pushes: 8
-    9 maximum pushes: 1
+    3 maximum pushes: 9
   Initial 13 legal pushes:
-    2 maximum pushes: 48
+    2 maximum pushes: 49
     3 maximum pushes: 5
-    6 maximum pushes: 1
   Initial 14 legal pushes:
     2 maximum pushes: 44
     3 maximum pushes: 4
@@ -3512,9 +3468,9 @@ Push 25: Crate 4 {X=10,Y=1} -> {X=9,Y=1}
 Push 26: Crate 4 {X=9,Y=1} -> {X=8,Y=1}
 
 TIMING
-Candidate generation: 1774 ms
-Solver: 3186 ms
-Average solver call: 3.01 ms
+Candidate generation: 1791 ms
+Solver: 3583 ms
+Average solver call: 3.39 ms
 Total time: 00:00:06
 Crate interaction pairs: 0
 Crate interaction blocks: 0
@@ -3537,10 +3493,10 @@ Pre-solver failed crate distance 3: 0
 Pre-solver failed crate distance 4+: 0
 Pre-solver no distinct goal matching: 0
 Unsolvable: 9000
-  States explored: 13161795
-  Zero-legal-push states: 119984
-  Maximum legal pushes: 9
-  Duplicate states: 11033525
+  States explored: 13256473
+  Zero-legal-push states: 113806
+  Maximum legal pushes: 4
+  Duplicate states: 11105375
 Below target: 0
 Above target: 0
 Accepted: 0
@@ -3550,58 +3506,54 @@ SOLVABLE CANDIDATE PUSH DISTRIBUTION
 UNSOLVABLE CANDIDATE MAXIMUM PUSH DISTRIBUTION
   0 maximum pushes: 44
   1 maximum pushes: 386
-  2 maximum pushes: 8151
-  3 maximum pushes: 371
-  4 maximum pushes: 14
-  6 maximum pushes: 12
-  7 maximum pushes: 2
-  8 maximum pushes: 19
-  9 maximum pushes: 1
+  2 maximum pushes: 8170
+  3 maximum pushes: 385
+  4 maximum pushes: 15
 
 UNSOLVABLE CANDIDATE MINIMUM ZERO-PUSH DEPTH DISTRIBUTION
   Depth 0: 44
   Depth 1: 87
   Depth 2: 125
-  Depth 3: 115
-  Depth 4: 125
+  Depth 3: 112
+  Depth 4: 124
   Depth 5: 120
-  Depth 6: 123
-  Depth 7: 120
-  Depth 8: 113
-  Depth 9: 103
-  Depth 10: 115
-  Depth 11: 108
+  Depth 6: 119
+  Depth 7: 123
+  Depth 8: 115
+  Depth 9: 102
+  Depth 10: 114
+  Depth 11: 107
   Depth 12: 121
-  Depth 13: 90
-  Depth 14: 87
+  Depth 13: 91
+  Depth 14: 86
   Depth 15: 96
   Depth 16: 89
   Depth 17: 78
-  Depth 18: 92
+  Depth 18: 94
   Depth 19: 81
-  Depth 20: 63
-  Depth 21: 84
-  Depth 22: 72
+  Depth 20: 64
+  Depth 21: 85
+  Depth 22: 71
   Depth 23: 64
   Depth 24: 65
   Depth 25: 73
   Depth 26: 56
   Depth 27: 55
-  Depth 28: 59
-  Depth 29: 58
+  Depth 28: 58
+  Depth 29: 57
   Depth 30: 58
   Depth 31: 58
   Depth 32: 49
   Depth 33: 53
-  Depth 34: 39
+  Depth 34: 40
   Depth 35: 41
   Depth 36: 62
   Depth 37: 47
-  Depth 38: 47
+  Depth 38: 46
   Depth 39: 44
   Depth 40: 41
   Depth 41: 40
-  Depth 42: 45
+  Depth 42: 46
   Depth 43: 42
   Depth 44: 48
   Depth 45: 35
@@ -3619,7 +3571,7 @@ UNSOLVABLE CANDIDATE MINIMUM ZERO-PUSH DEPTH DISTRIBUTION
   Depth 57: 31
   Depth 58: 25
   Depth 59: 18
-  Depth 60: 24
+  Depth 60: 25
   Depth 61: 23
   Depth 62: 22
   Depth 63: 24
@@ -3705,42 +3657,38 @@ UNSOLVABLE CANDIDATE MINIMUM ZERO-PUSH DEPTH DISTRIBUTION
 
 UNSOLVABLE CANDIDATE LEGAL PUSHES BEFORE FIRST ZERO-PUSH STATE
   0 legal pushes before zero: 44
-  1 legal pushes before zero: 1279
-  2 legal pushes before zero: 1824
-  3 legal pushes before zero: 299
-  4 legal pushes before zero: 743
-  5 legal pushes before zero: 55
-  6 legal pushes before zero: 125
+  1 legal pushes before zero: 1285
+  2 legal pushes before zero: 1829
+  3 legal pushes before zero: 300
+  4 legal pushes before zero: 746
+  5 legal pushes before zero: 56
+  6 legal pushes before zero: 122
   7 legal pushes before zero: 7
-  8 legal pushes before zero: 9
-  9 legal pushes before zero: 6
-  10 legal pushes before zero: 1
-  11 legal pushes before zero: 4
+  8 legal pushes before zero: 8
+  9 legal pushes before zero: 3
+  11 legal pushes before zero: 3
   12 legal pushes before zero: 1
-  13 legal pushes before zero: 4
-  14 legal pushes before zero: 6
-  15 legal pushes before zero: 1
-  16 legal pushes before zero: 2
+  13 legal pushes before zero: 2
+  14 legal pushes before zero: 2
   17 legal pushes before zero: 1
-  18 legal pushes before zero: 1
 
 FIRST ZERO-PUSH STATE CRATE BLOCKING REASONS
-  Player access blocked: 22059
-  Wall blocked: 11366
-  Another crate blocked: 7536
-  Static corner deadlock: 8359
+  Player access blocked: 22044
+  Wall blocked: 11402
+  Another crate blocked: 7561
+  Static corner deadlock: 8404
 
 FIRST ZERO-PUSH STATE PLAYER ACCESS BLOCKED DIRECTIONS
-  Up: 14158
-  Down: 14300
-  Left: 15032
-  Right: 15179
+  Up: 14101
+  Down: 14270
+  Left: 14993
+  Right: 15133
 
 FIRST ZERO-PUSH STATE LAST-PUSHED CRATE FOUR-DIRECTION ANALYSIS
-  Player access blocked: 9884
-  Wall blocked: 3156
-  Another crate blocked: 2461
-  Static corner deadlock: 1971
+  Player access blocked: 9838
+  Wall blocked: 3169
+  Another crate blocked: 2469
+  Static corner deadlock: 1984
   Legal pushes: 0
 
 SOLUTION
@@ -3785,80 +3733,61 @@ INITIAL PLAYER MOBILITY -> MAXIMUM PUSH DISTRIBUTION
     0 maximum pushes: 44
   Initial 1 legal pushes:
     1 maximum pushes: 125
-    2 maximum pushes: 16
-    6 maximum pushes: 1
+    2 maximum pushes: 17
   Initial 2 legal pushes:
     1 maximum pushes: 113
-    2 maximum pushes: 61
+    2 maximum pushes: 62
     3 maximum pushes: 5
-    6 maximum pushes: 1
   Initial 3 legal pushes:
     1 maximum pushes: 63
-    2 maximum pushes: 109
+    2 maximum pushes: 110
     3 maximum pushes: 3
-    6 maximum pushes: 1
   Initial 4 legal pushes:
     1 maximum pushes: 21
-    2 maximum pushes: 96
-    3 maximum pushes: 12
-    4 maximum pushes: 1
-    8 maximum pushes: 1
-  Initial 5 legal pushes:
-    1 maximum pushes: 11
-    2 maximum pushes: 86
-    3 maximum pushes: 11
-    6 maximum pushes: 1
-    7 maximum pushes: 1
-    8 maximum pushes: 1
-  Initial 6 legal pushes:
-    1 maximum pushes: 7
-    2 maximum pushes: 114
-    3 maximum pushes: 13
-    4 maximum pushes: 2
-    8 maximum pushes: 2
-  Initial 7 legal pushes:
-    1 maximum pushes: 2
-    2 maximum pushes: 110
-    3 maximum pushes: 12
-    6 maximum pushes: 1
-    8 maximum pushes: 1
-  Initial 8 legal pushes:
-    1 maximum pushes: 1
-    2 maximum pushes: 115
-    3 maximum pushes: 17
-    8 maximum pushes: 2
-  Initial 9 legal pushes:
-    1 maximum pushes: 3
-    2 maximum pushes: 120
+    2 maximum pushes: 95
     3 maximum pushes: 14
     4 maximum pushes: 1
-    8 maximum pushes: 1
+  Initial 5 legal pushes:
+    1 maximum pushes: 11
+    2 maximum pushes: 88
+    3 maximum pushes: 12
+  Initial 6 legal pushes:
+    1 maximum pushes: 7
+    2 maximum pushes: 115
+    3 maximum pushes: 14
+    4 maximum pushes: 2
+  Initial 7 legal pushes:
+    1 maximum pushes: 2
+    2 maximum pushes: 111
+    3 maximum pushes: 13
+  Initial 8 legal pushes:
+    1 maximum pushes: 1
+    2 maximum pushes: 116
+    3 maximum pushes: 18
+  Initial 9 legal pushes:
+    1 maximum pushes: 3
+    2 maximum pushes: 119
+    3 maximum pushes: 16
+    4 maximum pushes: 1
   Initial 10 legal pushes:
     1 maximum pushes: 2
-    2 maximum pushes: 127
-    3 maximum pushes: 17
+    2 maximum pushes: 128
+    3 maximum pushes: 18
     4 maximum pushes: 2
-    6 maximum pushes: 1
-    7 maximum pushes: 1
   Initial 11 legal pushes:
     1 maximum pushes: 3
-    2 maximum pushes: 167
+    2 maximum pushes: 169
     3 maximum pushes: 30
     4 maximum pushes: 2
-    6 maximum pushes: 1
-    8 maximum pushes: 1
   Initial 12 legal pushes:
     1 maximum pushes: 2
     2 maximum pushes: 234
-    3 maximum pushes: 23
-    8 maximum pushes: 1
+    3 maximum pushes: 24
   Initial 13 legal pushes:
     1 maximum pushes: 3
-    2 maximum pushes: 215
-    3 maximum pushes: 24
-    4 maximum pushes: 1
-    8 maximum pushes: 1
-    9 maximum pushes: 1
+    2 maximum pushes: 217
+    3 maximum pushes: 23
+    4 maximum pushes: 2
   Initial 14 legal pushes:
     1 maximum pushes: 7
     2 maximum pushes: 339
@@ -3866,39 +3795,29 @@ INITIAL PLAYER MOBILITY -> MAXIMUM PUSH DISTRIBUTION
     4 maximum pushes: 2
   Initial 15 legal pushes:
     1 maximum pushes: 3
-    2 maximum pushes: 606
-    3 maximum pushes: 25
-    6 maximum pushes: 1
-    8 maximum pushes: 3
+    2 maximum pushes: 608
+    3 maximum pushes: 27
   Initial 16 legal pushes:
     1 maximum pushes: 3
     2 maximum pushes: 854
-    3 maximum pushes: 33
+    3 maximum pushes: 35
     4 maximum pushes: 1
-    6 maximum pushes: 1
-    8 maximum pushes: 1
   Initial 17 legal pushes:
     1 maximum pushes: 4
     2 maximum pushes: 421
-    3 maximum pushes: 26
-    8 maximum pushes: 1
+    3 maximum pushes: 27
   Initial 18 legal pushes:
     1 maximum pushes: 4
-    2 maximum pushes: 835
+    2 maximum pushes: 837
     3 maximum pushes: 24
     4 maximum pushes: 2
-    6 maximum pushes: 1
-    8 maximum pushes: 1
   Initial 19 legal pushes:
     1 maximum pushes: 9
-    2 maximum pushes: 1377
-    3 maximum pushes: 31
-    6 maximum pushes: 2
-    8 maximum pushes: 1
+    2 maximum pushes: 1381
+    3 maximum pushes: 30
   Initial 20 legal pushes:
     2 maximum pushes: 2149
-    3 maximum pushes: 22
-    8 maximum pushes: 1
+    3 maximum pushes: 23
 
 INITIAL -> AFTER FIRST PUSH MOBILITY DISTRIBUTION
   Initial 1 legal pushes:
@@ -4163,9 +4082,9 @@ Required dependency blocks: 0
 SOLUTION PUSH SEQUENCE
 
 TIMING
-Candidate generation: 160343 ms
-Solver: 652358 ms
-Average solver call: 72.48 ms
+Candidate generation: 157634 ms
+Solver: 686221 ms
+Average solver call: 76.25 ms
 Total time: 00:00:00
 Crate interaction pairs: 0
 Crate interaction blocks: 0
@@ -4188,10 +4107,10 @@ Pre-solver failed crate distance 3: 0
 Pre-solver failed crate distance 4+: 0
 Pre-solver no distinct goal matching: 0
 Unsolvable: 1500
-  States explored: 2286352
-  Zero-legal-push states: 4153
+  States explored: 2288732
+  Zero-legal-push states: 4178
   Maximum legal pushes: 3
-  Duplicate states: 2121716
+  Duplicate states: 2123926
 Below target: 0
 Above target: 0
 Accepted: 0
@@ -4460,15 +4379,15 @@ Required dependency blocks: 0
 SOLUTION PUSH SEQUENCE
 
 TIMING
-Candidate generation: 101165 ms
-Solver: 220171 ms
-Average solver call: 146.78 ms
+Candidate generation: 100833 ms
+Solver: 225074 ms
+Average solver call: 150.05 ms
 Total time: 00:00:00
 Crate interaction pairs: 0
 Crate interaction blocks: 0
 
 
 ========================================
-TOTAL CREATION TIME: 00:19:20
-START TIME:          2026-09-22 01:42:39 PM
+TOTAL CREATION TIME: 00:19:56
+START TIME:          2026-09-22 03:42:01 PM
 ========================================

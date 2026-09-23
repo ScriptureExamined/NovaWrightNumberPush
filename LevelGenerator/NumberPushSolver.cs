@@ -585,6 +585,10 @@ namespace NovaWright.NumberPush.LevelGenerator
             Queue<SolverState> queue,
             HashSet<SolverStateKey> visited)
         {
+
+            BuildCrateOccupancy(
+    state.CratePositions);
+
             Point cratePosition =
                 state.CratePositions[crateIndex];
 
