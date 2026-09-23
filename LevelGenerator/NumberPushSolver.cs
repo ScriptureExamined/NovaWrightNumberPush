@@ -64,6 +64,8 @@ namespace NovaWright.NumberPush.LevelGenerator
 
         public int FirstZeroPushLastCrateLegalPushes { get; private set; }
 
+        public int InitialTryPushLegalPushes { get; private set; }
+
         public long DuplicateStates { get; private set; }
 
         public Dictionary<int, long> GoalProgressStates { get; } =
@@ -190,6 +192,8 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             DuplicateCrateConfigurations = 0;
 
+            InitialTryPushLegalPushes = 0;
+
             SolverState startState =
                 new SolverState(
                     level.PlayerStart,
@@ -240,6 +244,11 @@ namespace NovaWright.NumberPush.LevelGenerator
                 }
 
                 legalPushesForState = 0;
+
+                if (StatesExplored == 1)
+                {
+                    InitialTryPushLegalPushes = 0;
+                }
 
                 if (IsComplete(state.CratePositions))
                 {
@@ -298,6 +307,12 @@ namespace NovaWright.NumberPush.LevelGenerator
                         currentReachableVisitId,
                         queue,
                         visited);
+                }
+
+                if (StatesExplored == 1)
+                {
+                    InitialTryPushLegalPushes =
+                        legalPushesForState;
                 }
 
                 TotalLegalPushes +=

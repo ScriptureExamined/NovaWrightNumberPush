@@ -11,6 +11,7 @@ CANDIDATES
 Total attempts: 1
 Wall generation failures: 0
 Solver calls: 1
+Initial try-push legal pushes: 2
 Pre-solver rejected: 0
 Pre-solver no reachable goals: 0
 Pre-solver failed crate distance 1: 0
@@ -132,6 +133,7 @@ CANDIDATES
 Total attempts: 12
 Wall generation failures: 0
 Solver calls: 12
+Initial try-push legal pushes: 2
 Pre-solver rejected: 0
 Pre-solver no reachable goals: 0
 Pre-solver failed crate distance 1: 0
@@ -257,7 +259,7 @@ Push 10: Crate 1 {X=4,Y=1} -> {X=3,Y=1}
 Push 11: Crate 1 {X=3,Y=1} -> {X=2,Y=1}
 
 TIMING
-Candidate generation: 59 ms
+Candidate generation: 40 ms
 Solver: 1 ms
 Average solver call: 0.08 ms
 Total time: 00:00:00
@@ -274,6 +276,7 @@ CANDIDATES
 Total attempts: 4
 Wall generation failures: 0
 Solver calls: 4
+Initial try-push legal pushes: 1
 Pre-solver rejected: 0
 Pre-solver no reachable goals: 0
 Pre-solver failed crate distance 1: 0
@@ -408,7 +411,7 @@ Push 11: Crate 2 {X=8,Y=2} -> {X=9,Y=2}
 Push 12: Crate 2 {X=9,Y=2} -> {X=9,Y=1}
 
 TIMING
-Candidate generation: 10 ms
+Candidate generation: 11 ms
 Solver: 1 ms
 Average solver call: 0.25 ms
 Total time: 00:00:00
@@ -425,6 +428,7 @@ CANDIDATES
 Total attempts: 44
 Wall generation failures: 0
 Solver calls: 44
+Initial try-push legal pushes: 1
 Pre-solver rejected: 0
 Pre-solver no reachable goals: 0
 Pre-solver failed crate distance 1: 0
@@ -612,7 +616,7 @@ Push 13: Crate 2 {X=6,Y=2} -> {X=6,Y=1}
 Push 14: Crate 2 {X=6,Y=1} -> {X=5,Y=1}
 
 TIMING
-Candidate generation: 92 ms
+Candidate generation: 106 ms
 Solver: 29 ms
 Average solver call: 0.66 ms
 Total time: 00:00:00
@@ -629,6 +633,7 @@ CANDIDATES
 Total attempts: 3
 Wall generation failures: 0
 Solver calls: 3
+Initial try-push legal pushes: 2
 Pre-solver rejected: 0
 Pre-solver no reachable goals: 0
 Pre-solver failed crate distance 1: 0
@@ -786,6 +791,7 @@ CANDIDATES
 Total attempts: 17
 Wall generation failures: 0
 Solver calls: 17
+Initial try-push legal pushes: 2
 Pre-solver rejected: 0
 Pre-solver no reachable goals: 0
 Pre-solver failed crate distance 1: 0
@@ -992,9 +998,9 @@ Push 17: Crate 3 {X=10,Y=3} -> {X=10,Y=2}
 Push 18: Crate 3 {X=10,Y=2} -> {X=10,Y=1}
 
 TIMING
-Candidate generation: 32 ms
-Solver: 19 ms
-Average solver call: 1.12 ms
+Candidate generation: 35 ms
+Solver: 21 ms
+Average solver call: 1.24 ms
 Total time: 00:00:00
 Crate interaction pairs: 0
 Crate interaction blocks: 0
@@ -1009,6 +1015,7 @@ CANDIDATES
 Total attempts: 39
 Wall generation failures: 0
 Solver calls: 39
+Initial try-push legal pushes: 2
 Pre-solver rejected: 0
 Pre-solver no reachable goals: 0
 Pre-solver failed crate distance 1: 0
@@ -1249,9 +1256,9 @@ Push 7: Crate 2 {X=7,Y=3} -> {X=8,Y=3}
 Push 8: Crate 3 {X=9,Y=3} -> {X=9,Y=2}
 
 TIMING
-Candidate generation: 65 ms
-Solver: 18 ms
-Average solver call: 0.46 ms
+Candidate generation: 70 ms
+Solver: 19 ms
+Average solver call: 0.49 ms
 Total time: 00:00:00
 Crate interaction pairs: 0
 Crate interaction blocks: 0
@@ -1266,6 +1273,7 @@ CANDIDATES
 Total attempts: 843
 Wall generation failures: 0
 Solver calls: 843
+Initial try-push legal pushes: 2
 Pre-solver rejected: 0
 Pre-solver no reachable goals: 0
 Pre-solver failed crate distance 1: 0
@@ -1650,9 +1658,9 @@ Push 50: Crate 2 {X=3,Y=3} -> {X=3,Y=2}
 Push 51: Crate 2 {X=3,Y=2} -> {X=3,Y=1}
 
 TIMING
-Candidate generation: 532 ms
-Solver: 297 ms
-Average solver call: 0.35 ms
+Candidate generation: 465 ms
+Solver: 279 ms
+Average solver call: 0.33 ms
 Total time: 00:00:01
 Crate interaction pairs: 0
 Crate interaction blocks: 0
@@ -1667,6 +1675,7 @@ CANDIDATES
 Total attempts: 897
 Wall generation failures: 0
 Solver calls: 897
+Initial try-push legal pushes: 2
 Pre-solver rejected: 0
 Pre-solver no reachable goals: 0
 Pre-solver failed crate distance 1: 0
@@ -2090,9 +2099,9 @@ Push 22: Crate 4 {X=10,Y=6} -> {X=10,Y=7}
 Push 23: Crate 4 {X=10,Y=7} -> {X=10,Y=8}
 
 TIMING
-Candidate generation: 225 ms
-Solver: 589 ms
-Average solver call: 0.66 ms
+Candidate generation: 234 ms
+Solver: 587 ms
+Average solver call: 0.65 ms
 Total time: 00:00:01
 Crate interaction pairs: 0
 Crate interaction blocks: 0
@@ -2107,6 +2116,7 @@ CANDIDATES
 Total attempts: 1082
 Wall generation failures: 3
 Solver calls: 1079
+Initial try-push legal pushes: 1
 Pre-solver rejected: 0
 Pre-solver no reachable goals: 0
 Pre-solver failed crate distance 1: 0
@@ -2498,8 +2508,8 @@ Push 18: Crate 4 {X=5,Y=4} -> {X=6,Y=4}
 Push 19: Crate 4 {X=6,Y=4} -> {X=6,Y=3}
 
 TIMING
-Candidate generation: 224 ms
-Solver: 320 ms
+Candidate generation: 236 ms
+Solver: 322 ms
 Average solver call: 0.30 ms
 Total time: 00:00:01
 Crate interaction pairs: 0
@@ -2515,6 +2525,7 @@ CANDIDATES
 Total attempts: 1823
 Wall generation failures: 42
 Solver calls: 1781
+Initial try-push legal pushes: 2
 Pre-solver rejected: 0
 Pre-solver no reachable goals: 0
 Pre-solver failed crate distance 1: 0
@@ -2963,8 +2974,8 @@ Push 11: Crate 4 {X=3,Y=4} -> {X=3,Y=5}
 Push 12: Crate 4 {X=3,Y=5} -> {X=3,Y=6}
 
 TIMING
-Candidate generation: 776 ms
-Solver: 1495 ms
+Candidate generation: 771 ms
+Solver: 1490 ms
 Average solver call: 0.84 ms
 Total time: 00:00:03
 Crate interaction pairs: 0
@@ -2980,6 +2991,7 @@ CANDIDATES
 Total attempts: 1058
 Wall generation failures: 0
 Solver calls: 1058
+Initial try-push legal pushes: 2
 Pre-solver rejected: 0
 Pre-solver no reachable goals: 0
 Pre-solver failed crate distance 1: 0
@@ -3468,9 +3480,9 @@ Push 25: Crate 4 {X=10,Y=1} -> {X=9,Y=1}
 Push 26: Crate 4 {X=9,Y=1} -> {X=8,Y=1}
 
 TIMING
-Candidate generation: 1808 ms
-Solver: 3536 ms
-Average solver call: 3.34 ms
+Candidate generation: 1789 ms
+Solver: 3502 ms
+Average solver call: 3.31 ms
 Total time: 00:00:06
 Crate interaction pairs: 0
 Crate interaction blocks: 0
@@ -3485,6 +3497,7 @@ CANDIDATES
 Total attempts: 9000
 Wall generation failures: 0
 Solver calls: 9000
+Initial try-push legal pushes: 2
 Pre-solver rejected: 0
 Pre-solver no reachable goals: 0
 Pre-solver failed crate distance 1: 0
@@ -4082,9 +4095,9 @@ Required dependency blocks: 0
 SOLUTION PUSH SEQUENCE
 
 TIMING
-Candidate generation: 157701 ms
-Solver: 683110 ms
-Average solver call: 75.90 ms
+Candidate generation: 159877 ms
+Solver: 682401 ms
+Average solver call: 75.82 ms
 Total time: 00:00:00
 Crate interaction pairs: 0
 Crate interaction blocks: 0
@@ -4099,6 +4112,7 @@ CANDIDATES
 Total attempts: 1500
 Wall generation failures: 0
 Solver calls: 1500
+Initial try-push legal pushes: 2
 Pre-solver rejected: 0
 Pre-solver no reachable goals: 0
 Pre-solver failed crate distance 1: 0
@@ -4379,15 +4393,15 @@ Required dependency blocks: 0
 SOLUTION PUSH SEQUENCE
 
 TIMING
-Candidate generation: 100677 ms
-Solver: 223766 ms
-Average solver call: 149.18 ms
+Candidate generation: 101040 ms
+Solver: 224115 ms
+Average solver call: 149.41 ms
 Total time: 00:00:00
 Crate interaction pairs: 0
 Crate interaction blocks: 0
 
 
 ========================================
-TOTAL CREATION TIME: 00:19:52
-START TIME:          2026-09-23 02:40:08 PM
+TOTAL CREATION TIME: 00:19:54
+START TIME:          2026-09-23 04:32:26 PM
 ========================================

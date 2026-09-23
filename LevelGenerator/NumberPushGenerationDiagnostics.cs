@@ -48,6 +48,8 @@
 
         public int AcceptedCandidates { get; set; }
 
+        public int InitialTryPushLegalPushes { get; set; }
+
         public Dictionary<int, int> SolvableCandidatePushCounts { get; set; } =
             new();
 
@@ -201,6 +203,7 @@
                 $"Total attempts: {TotalAttempts}\r\n" +
                 $"Wall generation failures: {WallGenerationFailures}\r\n" +
                 $"Solver calls: {TotalSolverCalls}\r\n" +
+                $"Initial try-push legal pushes: {InitialTryPushLegalPushes}\r\n" +
                 $"Pre-solver rejected: {PreSolverRejectedCandidates}\r\n" +
                 $"Pre-solver no reachable goals: {PreSolverNoReachableGoals}\r\n" +
                 $"Pre-solver failed crate distance 1: {PreSolverFailedCrateDistance1}\r\n" +

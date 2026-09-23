@@ -349,6 +349,12 @@ namespace NovaWright.NumberPush.LevelGenerator
                     NumberPushSolution solution =
                         solver.FindSolution();
 
+                    if (diagnostics != null)
+                    {
+                        diagnostics.InitialTryPushLegalPushes =
+                            solver.InitialTryPushLegalPushes;
+                    }
+
                     if (solution.MinimumPushes >= 0 &&
     solution.Steps.Count > 0)
                     {
