@@ -13,9 +13,13 @@ namespace NovaWright.NumberPush.LevelGenerator
         private readonly HashSet<Point> wallPositions;
         private readonly HashSet<Point> goalPositions;
 
-        // Reusable arrays for player reachability.
+        // Reusable arrays for current-state player reachability.
         private readonly int[] reachableVisit;
         private readonly int[] reachableQueue;
+
+        // Reusable arrays for successor-state player reachability.
+        private readonly int[] successorReachableVisit;
+        private readonly int[] successorReachableQueue;
 
         // Reusable array for crate occupancy.
         private readonly int[] crateOccupancyVisit;
@@ -23,6 +27,8 @@ namespace NovaWright.NumberPush.LevelGenerator
         private int crateOccupancyVisitId;
 
         private int reachableVisitId;
+
+        private int successorReachableVisitId;
 
         private int legalPushesForState;
 
@@ -84,6 +90,7 @@ namespace NovaWright.NumberPush.LevelGenerator
             this.level = level;
 
             rows = level.Rows;
+
             columns = level.Columns;
 
             wallPositions =
@@ -107,10 +114,18 @@ namespace NovaWright.NumberPush.LevelGenerator
             reachableQueue =
                 new int[cellCount];
 
+            successorReachableVisit =
+                new int[cellCount];
+
+            successorReachableQueue =
+                new int[cellCount];
+
             crateOccupancyVisit =
                 new int[cellCount];
 
             reachableVisitId = 0;
+
+            successorReachableVisitId = 0;
 
             crateOccupancyVisitId = 0;
         }
@@ -250,9 +265,11 @@ namespace NovaWright.NumberPush.LevelGenerator
                     InitialTryPushLegalPushes = 0;
                 }
 
-                if (IsComplete(state.CratePositions))
+                if (IsComplete(
+                    state.CratePositions))
                 {
-                    return BuildSolution(state);
+                    return BuildSolution(
+                        state);
                 }
 
                 // Build the reusable crate occupancy map for this state.
@@ -600,9 +617,8 @@ namespace NovaWright.NumberPush.LevelGenerator
             Queue<SolverState> queue,
             HashSet<SolverStateKey> visited)
         {
-
             BuildCrateOccupancy(
-    state.CratePositions);
+                state.CratePositions);
 
             Point cratePosition =
                 state.CratePositions[crateIndex];
@@ -693,22 +709,22 @@ namespace NovaWright.NumberPush.LevelGenerator
             // The crate configuration has changed, so the player's
             // reachable region may also have changed.
             //
-            // The player is now standing at the crate's former position.
-            // Rebuild occupancy using the successor crate configuration
-            // and determine the canonical region identifier for that state.
+            // Use the separate successor reachability buffer so that
+            // calculating this region does not overwrite the current
+            // state's reachable region used by the remaining TryPush calls.
             BuildCrateOccupancy(
                 newCratePositions);
 
             int newReachableVisitId =
-                MarkReachableCells(
+                MarkSuccessorReachableCells(
                     newPlayerPosition);
 
             int newPlayerRegion =
-                GetPlayerRegionKey(
+                GetSuccessorPlayerRegionKey(
                     newReachableVisitId);
 
             BuildCrateOccupancy(
-    state.CratePositions);
+                state.CratePositions);
 
             SolverStateKey newStateKey =
                 CreateStateKey(
@@ -785,15 +801,15 @@ namespace NovaWright.NumberPush.LevelGenerator
         }
 
         private void AnalyzeFirstZeroPushState(
-    SolverState state)
+            SolverState state)
         {
             Point[] directions =
             {
-        new Point(0, -1),
-        new Point(0, 1),
-        new Point(-1, 0),
-        new Point(1, 0)
-    };
+                new Point(0, -1),
+                new Point(0, 1),
+                new Point(-1, 0),
+                new Point(1, 0)
+            };
 
             BuildCrateOccupancy(
                 state.CratePositions);
@@ -831,8 +847,8 @@ namespace NovaWright.NumberPush.LevelGenerator
                                 direction.Y);
 
                     if (!IsReachable(
-    playerRequiredPosition,
-    currentReachableVisitId))
+                        playerRequiredPosition,
+                        currentReachableVisitId))
                     {
                         playerAccessBlocked = true;
 
@@ -937,7 +953,7 @@ namespace NovaWright.NumberPush.LevelGenerator
         }
 
         private void AnalyzeLastPushedCrate(
-    SolverState state)
+            SolverState state)
         {
             if (state.Step == null)
             {
@@ -973,10 +989,13 @@ namespace NovaWright.NumberPush.LevelGenerator
                         cratePosition.Y -
                             direction.Y);
 
+                int currentReachableVisitId =
+                    MarkReachableCells(
+                        state.PlayerPosition);
+
                 if (!IsReachable(
-                        playerRequiredPosition,
-                        MarkReachableCells(
-                            state.PlayerPosition)))
+                    playerRequiredPosition,
+                    currentReachableVisitId))
                 {
                     FirstZeroPushLastCratePlayerAccessBlocked++;
                     continue;
@@ -1082,10 +1101,34 @@ namespace NovaWright.NumberPush.LevelGenerator
             return regionKey;
         }
 
+        private int GetSuccessorPlayerRegionKey(
+            int currentReachableVisitId)
+        {
+            int regionKey =
+                int.MaxValue;
+
+            for (int index = 0;
+                 index < successorReachableVisit.Length;
+                 index++)
+            {
+                if (successorReachableVisit[index] ==
+                    currentReachableVisitId)
+                {
+                    regionKey =
+                        index;
+
+                    break;
+                }
+            }
+
+            return regionKey;
+        }
+
         private bool IsStaticCornerDeadlock(
             Point position)
         {
-            if (goalPositions.Contains(position))
+            if (goalPositions.Contains(
+                position))
             {
                 return false;
             }
@@ -1144,10 +1187,12 @@ namespace NovaWright.NumberPush.LevelGenerator
                             step.PlayerPushPosition,
                             current.Parent.CratePositions);
 
-                    steps.Add(step);
+                    steps.Add(
+                        step);
                 }
 
-                current = current.Parent;
+                current =
+                    current.Parent;
             }
 
             steps.Reverse();
@@ -1212,15 +1257,20 @@ namespace NovaWright.NumberPush.LevelGenerator
                 };
             }
 
-            Queue<Point> queue = new();
+            Queue<Point> queue =
+                new();
 
-            HashSet<Point> visited = new();
+            HashSet<Point> visited =
+                new();
 
             Dictionary<Point, Point> parents =
                 new();
 
-            queue.Enqueue(startPosition);
-            visited.Add(startPosition);
+            queue.Enqueue(
+                startPosition);
+
+            visited.Add(
+                startPosition);
 
             Point[] directions =
             {
@@ -1239,10 +1289,13 @@ namespace NovaWright.NumberPush.LevelGenerator
                 {
                     Point next =
                         new Point(
-                            current.X + direction.X,
-                            current.Y + direction.Y);
+                            current.X +
+                                direction.X,
+                            current.Y +
+                                direction.Y);
 
-                    if (IsWall(next))
+                    if (IsWall(
+                        next))
                     {
                         continue;
                     }
@@ -1254,7 +1307,8 @@ namespace NovaWright.NumberPush.LevelGenerator
                         continue;
                     }
 
-                    if (!visited.Add(next))
+                    if (!visited.Add(
+                        next))
                     {
                         continue;
                     }
@@ -1270,7 +1324,8 @@ namespace NovaWright.NumberPush.LevelGenerator
                             parents);
                     }
 
-                    queue.Enqueue(next);
+                    queue.Enqueue(
+                        next);
                 }
             }
 
@@ -1288,7 +1343,8 @@ namespace NovaWright.NumberPush.LevelGenerator
             Point current =
                 targetPosition;
 
-            path.Add(current);
+            path.Add(
+                current);
 
             while (current != startPosition)
             {
@@ -1299,8 +1355,11 @@ namespace NovaWright.NumberPush.LevelGenerator
                     return new List<Point>();
                 }
 
-                current = parent;
-                path.Add(current);
+                current =
+                    parent;
+
+                path.Add(
+                    current);
             }
 
             path.Reverse();
@@ -1338,7 +1397,8 @@ namespace NovaWright.NumberPush.LevelGenerator
                 }
 
                 int index =
-                    GetCellIndex(cratePosition);
+                    GetCellIndex(
+                        cratePosition);
 
                 crateOccupancyVisit[index] =
                     crateOccupancyVisitId;
@@ -1366,7 +1426,8 @@ namespace NovaWright.NumberPush.LevelGenerator
                 reachableVisitId = 1;
             }
 
-            if (IsWall(startPosition) ||
+            if (IsWall(
+                startPosition) ||
                 IsOccupiedByAnyCrate(
                     startPosition))
             {
@@ -1374,9 +1435,11 @@ namespace NovaWright.NumberPush.LevelGenerator
             }
 
             int startIndex =
-                GetCellIndex(startPosition);
+                GetCellIndex(
+                    startPosition);
 
             int head = 0;
+
             int tail = 0;
 
             reachableQueue[tail++] =
@@ -1420,6 +1483,78 @@ namespace NovaWright.NumberPush.LevelGenerator
             return reachableVisitId;
         }
 
+        private int MarkSuccessorReachableCells(
+            Point startPosition)
+        {
+            successorReachableVisitId++;
+
+            if (successorReachableVisitId == int.MaxValue)
+            {
+                Array.Clear(
+                    successorReachableVisit,
+                    0,
+                    successorReachableVisit.Length);
+
+                successorReachableVisitId = 1;
+            }
+
+            if (IsWall(
+                startPosition) ||
+                IsOccupiedByAnyCrate(
+                    startPosition))
+            {
+                return successorReachableVisitId;
+            }
+
+            int startIndex =
+                GetCellIndex(
+                    startPosition);
+
+            int head = 0;
+
+            int tail = 0;
+
+            successorReachableQueue[tail++] =
+                startIndex;
+
+            successorReachableVisit[startIndex] =
+                successorReachableVisitId;
+
+            while (head < tail)
+            {
+                int currentIndex =
+                    successorReachableQueue[head++];
+
+                int currentX =
+                    currentIndex % columns;
+
+                int currentY =
+                    currentIndex / columns;
+
+                MarkSuccessorReachableNeighbor(
+                    currentX,
+                    currentY - 1,
+                    ref tail);
+
+                MarkSuccessorReachableNeighbor(
+                    currentX,
+                    currentY + 1,
+                    ref tail);
+
+                MarkSuccessorReachableNeighbor(
+                    currentX - 1,
+                    currentY,
+                    ref tail);
+
+                MarkSuccessorReachableNeighbor(
+                    currentX + 1,
+                    currentY,
+                    ref tail);
+            }
+
+            return successorReachableVisitId;
+        }
+
         private void MarkReachableNeighbor(
             int x,
             int y,
@@ -1443,9 +1578,12 @@ namespace NovaWright.NumberPush.LevelGenerator
             }
 
             Point position =
-                new Point(x, y);
+                new Point(
+                    x,
+                    y);
 
-            if (IsWall(position))
+            if (IsWall(
+                position))
             {
                 return;
             }
@@ -1463,6 +1601,52 @@ namespace NovaWright.NumberPush.LevelGenerator
                 index;
         }
 
+        private void MarkSuccessorReachableNeighbor(
+            int x,
+            int y,
+            ref int tail)
+        {
+            if (x < 0 ||
+                x >= columns ||
+                y < 0 ||
+                y >= rows)
+            {
+                return;
+            }
+
+            int index =
+                y * columns + x;
+
+            if (successorReachableVisit[index] ==
+                successorReachableVisitId)
+            {
+                return;
+            }
+
+            Point position =
+                new Point(
+                    x,
+                    y);
+
+            if (IsWall(
+                position))
+            {
+                return;
+            }
+
+            if (crateOccupancyVisit[index] ==
+                crateOccupancyVisitId)
+            {
+                return;
+            }
+
+            successorReachableVisit[index] =
+                successorReachableVisitId;
+
+            successorReachableQueue[tail++] =
+                index;
+        }
+
         private bool IsReachable(
             Point position,
             int currentReachableVisitId)
@@ -1476,7 +1660,8 @@ namespace NovaWright.NumberPush.LevelGenerator
             }
 
             int index =
-                GetCellIndex(position);
+                GetCellIndex(
+                    position);
 
             return
                 reachableVisit[index] ==
@@ -1506,7 +1691,8 @@ namespace NovaWright.NumberPush.LevelGenerator
             return true;
         }
 
-        private bool IsWall(Point position)
+        private bool IsWall(
+            Point position)
         {
             if (position.X < 0 ||
                 position.X >= columns ||
@@ -1516,7 +1702,8 @@ namespace NovaWright.NumberPush.LevelGenerator
                 return true;
             }
 
-            return wallPositions.Contains(position);
+            return wallPositions.Contains(
+                position);
         }
 
         /// <summary>
@@ -1535,7 +1722,8 @@ namespace NovaWright.NumberPush.LevelGenerator
             }
 
             int index =
-                GetCellIndex(position);
+                GetCellIndex(
+                    position);
 
             return
                 crateOccupancyVisit[index] ==
@@ -1550,7 +1738,8 @@ namespace NovaWright.NumberPush.LevelGenerator
             Point position,
             IReadOnlyList<Point> cratePositions)
         {
-            return cratePositions.Contains(position);
+            return cratePositions.Contains(
+                position);
         }
 
         private bool IsOccupiedByAnotherCrate(
