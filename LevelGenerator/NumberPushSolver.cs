@@ -692,6 +692,9 @@ namespace NovaWright.NumberPush.LevelGenerator
                 GetPlayerRegionKey(
                     newReachableVisitId);
 
+            BuildCrateOccupancy(
+    state.CratePositions);
+
             SolverStateKey newStateKey =
                 CreateStateKey(
                     newPlayerRegion,
