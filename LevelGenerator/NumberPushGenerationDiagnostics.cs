@@ -42,6 +42,8 @@
 
         public long UnsolvableDuplicateStates { get; set; }
 
+        public long UniqueSuccessorStates { get; set; }
+
         public int BelowTargetCandidates { get; set; }
 
         public int AboveTargetCandidates { get; set; }
@@ -216,6 +218,7 @@
                 $"  Zero-legal-push states: {UnsolvableZeroLegalPushStates}\r\n" +
                 $"  Maximum legal pushes: {UnsolvableMaximumLegalPushes}\r\n" +
                 $"  Duplicate states: {UnsolvableDuplicateStates}\r\n" +
+                $"Unique successor states: {UniqueSuccessorStates}\r\n" +
                 $"Below target: {BelowTargetCandidates}\r\n" +
                 $"Above target: {AboveTargetCandidates}\r\n" +
                 $"Accepted: {AcceptedCandidates}\r\n";

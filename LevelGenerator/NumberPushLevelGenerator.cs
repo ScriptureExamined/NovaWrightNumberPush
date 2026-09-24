@@ -353,6 +353,8 @@ namespace NovaWright.NumberPush.LevelGenerator
                     {
                         diagnostics.InitialTryPushLegalPushes =
                             solver.InitialTryPushLegalPushes;
+                        diagnostics.UniqueSuccessorStates =
+                            solver.UniqueSuccessorStates;
                     }
 
                     if (solution.MinimumPushes >= 0 &&

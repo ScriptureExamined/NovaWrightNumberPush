@@ -74,6 +74,8 @@ namespace NovaWright.NumberPush.LevelGenerator
 
         public long DuplicateStates { get; private set; }
 
+        public long UniqueSuccessorStates { get; private set; }
+
         public Dictionary<int, long> GoalProgressStates { get; } =
             new Dictionary<int, long>();
 
@@ -197,6 +199,8 @@ namespace NovaWright.NumberPush.LevelGenerator
             FirstZeroPushLastCrateLegalPushes = 0;
 
             DuplicateStates = 0;
+
+            UniqueSuccessorStates = 0;
 
             GoalProgressStates.Clear();
 
@@ -704,6 +708,8 @@ namespace NovaWright.NumberPush.LevelGenerator
                 DuplicateStates++;
                 return;
             }
+
+            UniqueSuccessorStates++;
 
             // Only the pushed crate changes position, so we can determine
             // goal progress by comparing its old and new positions.
