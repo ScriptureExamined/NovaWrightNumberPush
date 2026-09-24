@@ -154,8 +154,9 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             Queue<SolverState> queue = new();
 
-            HashSet<SolverStateKey> visited =
-                new();
+            HashSet<SolverState> visited =
+                new(
+                    new SolverStateComparer());
 
             StatesExplored = 0;
 
@@ -232,10 +233,11 @@ namespace NovaWright.NumberPush.LevelGenerator
                 GetPlayerRegionKey(
                     startReachableVisitId);
 
+            startState.PlayerRegion =
+                startPlayerRegion;
+
             visited.Add(
-                CreateStateKey(
-                    startPlayerRegion,
-                    crateStartPositions));
+                startState);
 
             while (queue.Count > 0)
             {
@@ -444,48 +446,6 @@ namespace NovaWright.NumberPush.LevelGenerator
             return key.ToString();
         }
 
-        // Creates the unique key used to determine whether a solver state
-        // has already been visited.
-        //
-        // The player is represented by the lowest cell index in the
-        // player's currently reachable region rather than by the exact
-        // player position.
-        //
-        // This means two states with:
-        // - the same crate positions
-        // - and the player somewhere in the same reachable region
-        //
-        // are treated as the same solver state.
-        private SolverStateKey CreateStateKey(
-            int playerRegion,
-            IReadOnlyList<Point> cratePositions)
-        {
-            int[] crateIndexes =
-                new int[cratePositions.Count];
-
-            for (
-                int crateIndex = 0;
-                crateIndex < cratePositions.Count;
-                crateIndex++)
-            {
-                Point position =
-                    cratePositions[crateIndex];
-
-                crateIndexes[crateIndex] =
-                    position.Y * columns +
-                    position.X;
-            }
-
-            // Preserve the exact canonical ordering used by
-            // the previous string-based state key.
-            Array.Sort(
-                crateIndexes);
-
-            return new SolverStateKey(
-                playerRegion,
-                crateIndexes);
-        }
-
         public List<(int CrateIndex, Point Direction)> GetLegalPushes(
             Point playerPosition,
             List<Point> cratePositions)
@@ -615,7 +575,7 @@ namespace NovaWright.NumberPush.LevelGenerator
             Point direction,
             int currentReachableVisitId,
             Queue<SolverState> queue,
-            HashSet<SolverStateKey> visited)
+            HashSet<SolverState> visited)
         {
             BuildCrateOccupancy(
                 state.CratePositions);
@@ -726,12 +686,20 @@ namespace NovaWright.NumberPush.LevelGenerator
             BuildCrateOccupancy(
                 state.CratePositions);
 
-            SolverStateKey newStateKey =
-                CreateStateKey(
-                    newPlayerRegion,
-                    newCratePositions);
+            SolverState newState =
+                new SolverState(
+                    newPlayerPosition,
+                    newCratePositions,
+                    state.Pushes + 1,
+                    state,
+                    null)
+                {
+                    PlayerRegion =
+                        newPlayerRegion
+                };
 
-            if (!visited.Add(newStateKey))
+            if (!visited.Add(
+                newState))
             {
                 DuplicateStates++;
                 return;
@@ -789,15 +757,11 @@ namespace NovaWright.NumberPush.LevelGenerator
                         new List<Point>()
                 };
 
-            SolverState newState =
-                new SolverState(
-                    newPlayerPosition,
-                    newCratePositions,
-                    state.Pushes + 1,
-                    state,
-                    stepData);
+            newState.Step =
+                stepData;
 
-            queue.Enqueue(newState);
+            queue.Enqueue(
+                newState);
         }
 
         private void AnalyzeFirstZeroPushState(
@@ -1775,7 +1739,9 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             public SolverState? Parent { get; }
 
-            public NumberPushSolutionStep? Step { get; }
+            public int PlayerRegion { get; set; }
+
+            public NumberPushSolutionStep? Step { get; set; }
 
             public SolverState(
                 Point playerPosition,
@@ -1801,46 +1767,58 @@ namespace NovaWright.NumberPush.LevelGenerator
             }
         }
 
-        private readonly struct SolverStateKey :
-            IEquatable<SolverStateKey>
+        private sealed class SolverStateComparer :
+            IEqualityComparer<SolverState>
         {
-            private readonly int playerRegion;
-
-            private readonly int[] cratePositions;
-
-            public SolverStateKey(
-                int playerRegion,
-                int[] cratePositions)
-            {
-                this.playerRegion =
-                    playerRegion;
-
-                this.cratePositions =
-                    cratePositions;
-            }
-
             public bool Equals(
-                SolverStateKey other)
+                SolverState? left,
+                SolverState? right)
             {
-                if (playerRegion !=
-                    other.playerRegion)
+                if (ReferenceEquals(
+                    left,
+                    right))
+                {
+                    return true;
+                }
+
+                if (left == null ||
+                    right == null)
                 {
                     return false;
                 }
 
-                if (cratePositions.Length !=
-                    other.cratePositions.Length)
+                if (left.PlayerRegion !=
+                    right.PlayerRegion)
                 {
                     return false;
                 }
 
-                for (
-                    int index = 0;
-                    index < cratePositions.Length;
-                    index++)
+                if (left.CratePositions.Length !=
+                    right.CratePositions.Length)
                 {
-                    if (cratePositions[index] !=
-                        other.cratePositions[index])
+                    return false;
+                }
+
+                for (int leftIndex = 0;
+                     leftIndex < left.CratePositions.Length;
+                     leftIndex++)
+                {
+                    bool found =
+                        false;
+
+                    for (int rightIndex = 0;
+                         rightIndex < right.CratePositions.Length;
+                         rightIndex++)
+                    {
+                        if (left.CratePositions[leftIndex] ==
+                            right.CratePositions[rightIndex])
+                        {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (!found)
                     {
                         return false;
                     }
@@ -1849,29 +1827,28 @@ namespace NovaWright.NumberPush.LevelGenerator
                 return true;
             }
 
-            public override bool Equals(
-                object? obj)
-            {
-                return obj is SolverStateKey other &&
-                       Equals(other);
-            }
-
-            public override int GetHashCode()
+            public int GetHashCode(
+                SolverState state)
             {
                 HashCode hash =
                     new HashCode();
 
                 hash.Add(
-                    playerRegion);
+                    state.PlayerRegion);
 
-                for (
-                    int index = 0;
-                    index < cratePositions.Length;
-                    index++)
+                int combinedHash = 0;
+
+                foreach (Point position in
+                         state.CratePositions)
                 {
-                    hash.Add(
-                        cratePositions[index]);
+                    combinedHash ^=
+                        HashCode.Combine(
+                            position.X,
+                            position.Y);
                 }
+
+                hash.Add(
+                    combinedHash);
 
                 return hash.ToHashCode();
             }

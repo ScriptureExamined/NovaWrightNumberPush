@@ -117,8 +117,8 @@ Push 8: Crate 1 {X=2,Y=8} -> {X=1,Y=8}
 
 TIMING
 Candidate generation: 13 ms
-Solver: 12 ms
-Average solver call: 12.00 ms
+Solver: 10 ms
+Average solver call: 10.00 ms
 Total time: 00:00:00
 Crate interaction pairs: 0
 Crate interaction blocks: 0
@@ -538,9 +538,9 @@ Push 8: Crate 2 {X=5,Y=7} -> {X=4,Y=7}
 Push 9: Crate 2 {X=4,Y=7} -> {X=4,Y=8}
 
 TIMING
-Candidate generation: 10 ms
-Solver: 112 ms
-Average solver call: 28.00 ms
+Candidate generation: 7 ms
+Solver: 111 ms
+Average solver call: 27.75 ms
 Total time: 00:00:00
 Crate interaction pairs: 0
 Crate interaction blocks: 0
@@ -708,9 +708,9 @@ Push 13: Crate 2 {X=4,Y=8} -> {X=3,Y=8}
 Push 14: Crate 2 {X=3,Y=8} -> {X=2,Y=8}
 
 TIMING
-Candidate generation: 12 ms
-Solver: 116 ms
-Average solver call: 23.20 ms
+Candidate generation: 10 ms
+Solver: 112 ms
+Average solver call: 22.40 ms
 Total time: 00:00:00
 Crate interaction pairs: 0
 Crate interaction blocks: 0
@@ -890,9 +890,9 @@ Push 17: Crate 3 {X=8,Y=5} -> {X=9,Y=5}
 Push 18: Crate 3 {X=9,Y=5} -> {X=9,Y=6}
 
 TIMING
-Candidate generation: 8 ms
-Solver: 616 ms
-Average solver call: 154.00 ms
+Candidate generation: 9 ms
+Solver: 645 ms
+Average solver call: 161.25 ms
 Total time: 00:00:01
 Crate interaction pairs: 0
 Crate interaction blocks: 0
@@ -1045,9 +1045,9 @@ Push 6: Crate 2 {X=5,Y=7} -> {X=5,Y=6}
 Push 7: Crate 3 {X=8,Y=4} -> {X=8,Y=3}
 
 TIMING
-Candidate generation: 2 ms
-Solver: 67 ms
-Average solver call: 67.00 ms
+Candidate generation: 1 ms
+Solver: 73 ms
+Average solver call: 73.00 ms
 Total time: 00:00:00
 Crate interaction pairs: 0
 Crate interaction blocks: 0
@@ -1213,9 +1213,9 @@ Push 9: Crate 3 {X=6,Y=2} -> {X=6,Y=3}
 Push 10: Crate 3 {X=6,Y=3} -> {X=7,Y=3}
 
 TIMING
-Candidate generation: 2 ms
-Solver: 157 ms
-Average solver call: 78.50 ms
+Candidate generation: 1 ms
+Solver: 154 ms
+Average solver call: 77.00 ms
 Total time: 00:00:00
 Crate interaction pairs: 1
 Crate interaction blocks: 2
@@ -1465,9 +1465,9 @@ Push 12: Crate 4 {X=9,Y=4} -> {X=9,Y=3}
 Push 13: Crate 4 {X=9,Y=3} -> {X=10,Y=3}
 
 TIMING
-Candidate generation: 6 ms
-Solver: 1917 ms
-Average solver call: 127.80 ms
+Candidate generation: 1 ms
+Solver: 1908 ms
+Average solver call: 127.20 ms
 Total time: 00:00:03
 Crate interaction pairs: 0
 Crate interaction blocks: 0
@@ -1761,9 +1761,9 @@ Push 22: Crate 4 {X=8,Y=6} -> {X=8,Y=7}
 Push 23: Crate 4 {X=8,Y=7} -> {X=7,Y=7}
 
 TIMING
-Candidate generation: 11 ms
-Solver: 5389 ms
-Average solver call: 119.76 ms
+Candidate generation: 13 ms
+Solver: 5425 ms
+Average solver call: 120.56 ms
 Total time: 00:00:06
 Crate interaction pairs: 1
 Crate interaction blocks: 2
@@ -2013,9 +2013,9 @@ Push 21: Crate 4 {X=8,Y=3} -> {X=9,Y=3}
 Push 22: Crate 4 {X=9,Y=3} -> {X=9,Y=2}
 
 TIMING
-Candidate generation: 7 ms
-Solver: 3379 ms
-Average solver call: 211.19 ms
+Candidate generation: 2 ms
+Solver: 3367 ms
+Average solver call: 210.44 ms
 Total time: 00:00:06
 Crate interaction pairs: 1
 Crate interaction blocks: 2
@@ -2226,9 +2226,9 @@ Push 9: Crate 4 {X=8,Y=6} -> {X=8,Y=5}
 Push 10: Crate 4 {X=8,Y=5} -> {X=8,Y=4}
 
 TIMING
-Candidate generation: 6 ms
-Solver: 665 ms
-Average solver call: 51.15 ms
+Candidate generation: 8 ms
+Solver: 666 ms
+Average solver call: 51.23 ms
 Total time: 00:00:01
 Crate interaction pairs: 0
 Crate interaction blocks: 0
@@ -2519,9 +2519,9 @@ Push 17: Crate 1 {X=5,Y=6} -> {X=4,Y=6}
 Push 18: Crate 1 {X=4,Y=6} -> {X=3,Y=6}
 
 TIMING
-Candidate generation: 11 ms
-Solver: 213 ms
-Average solver call: 6.09 ms
+Candidate generation: 22 ms
+Solver: 215 ms
+Average solver call: 6.14 ms
 Total time: 00:00:00
 Crate interaction pairs: 2
 Crate interaction blocks: 4
@@ -2958,15 +2958,15 @@ Push 27: Crate 2 {X=6,Y=2} -> {X=7,Y=2}
 Push 28: Crate 2 {X=7,Y=2} -> {X=8,Y=2}
 
 TIMING
-Candidate generation: 343 ms
-Solver: 2256821 ms
-Average solver call: 2172.11 ms
-Total time: 00:37:56
+Candidate generation: 289 ms
+Solver: 2202508 ms
+Average solver call: 2119.83 ms
+Total time: 00:37:01
 Crate interaction pairs: 2
 Crate interaction blocks: 4
 
 
 ========================================
-TOTAL CREATION TIME: 00:38:16
-START TIME:          2026-09-23 07:38:28 PM
+TOTAL CREATION TIME: 00:37:21
+START TIME:          2026-09-24 03:36:05 PM
 ========================================
