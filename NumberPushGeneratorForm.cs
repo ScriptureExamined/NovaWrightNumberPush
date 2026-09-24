@@ -172,7 +172,7 @@ namespace NovaWrightNumberPush
                 1000;
 
             firstLevelInput.Value =
-                9;
+                1;
 
             firstLevelInput.Font =
                 new Font(
@@ -202,7 +202,7 @@ namespace NovaWrightNumberPush
                 1000;
 
             lastLevelInput.Value =
-                9;
+                14;
 
             lastLevelInput.Font =
                 new Font(
