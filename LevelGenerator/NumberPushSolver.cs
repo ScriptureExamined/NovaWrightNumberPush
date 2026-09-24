@@ -1834,29 +1834,34 @@ namespace NovaWright.NumberPush.LevelGenerator
             }
 
             public int GetHashCode(
-                SolverState state)
+    SolverState state)
             {
-                HashCode hash =
-                    new HashCode();
-
-                hash.Add(
-                    state.PlayerRegion);
-
-                int combinedHash = 0;
-
-                foreach (Point position in
-                         state.CratePositions)
+                unchecked
                 {
-                    combinedHash ^=
-                        HashCode.Combine(
-                            position.X,
-                            position.Y);
+                    int positionHashSum = 0;
+                    int positionHashSquareSum = 0;
+
+                    foreach (Point position in
+                             state.CratePositions)
+                    {
+                        int positionHash =
+                            HashCode.Combine(
+                                position.X,
+                                position.Y);
+
+                        positionHashSum +=
+                            positionHash;
+
+                        positionHashSquareSum +=
+                            positionHash *
+                            positionHash;
+                    }
+
+                    return HashCode.Combine(
+                        state.PlayerRegion,
+                        positionHashSum,
+                        positionHashSquareSum);
                 }
-
-                hash.Add(
-                    combinedHash);
-
-                return hash.ToHashCode();
             }
         }
     }
