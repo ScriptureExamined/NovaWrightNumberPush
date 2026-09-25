@@ -33,8 +33,6 @@ namespace NovaWright.NumberPush.LevelGenerator
 
         private int successorReachableVisitId;
 
-        private int successorPlayerRegionKey;
-
         private int legalPushesForState;
 
         public int StatesExplored { get; private set; }
@@ -1640,8 +1638,80 @@ namespace NovaWright.NumberPush.LevelGenerator
             return reachableVisitId;
         }
 
+        //private int MarkSuccessorReachableCells(
+        //    Point startPosition)
+        //{
+        //    successorReachableVisitId++;
+
+        //    if (successorReachableVisitId == int.MaxValue)
+        //    {
+        //        Array.Clear(
+        //            successorReachableVisit,
+        //            0,
+        //            successorReachableVisit.Length);
+
+        //        successorReachableVisitId = 1;
+        //    }
+
+        //    if (IsWall(
+        //        startPosition) ||
+        //        IsOccupiedByAnyCrate(
+        //            startPosition))
+        //    {
+        //        return successorReachableVisitId;
+        //    }
+
+        //    int startIndex =
+        //        GetCellIndex(
+        //            startPosition);
+
+        //    int head = 0;
+
+        //    int tail = 0;
+
+        //    successorReachableQueue[tail++] =
+        //        startIndex;
+
+        //    successorReachableVisit[startIndex] =
+        //        successorReachableVisitId;
+
+        //    while (head < tail)
+        //    {
+        //        int currentIndex =
+        //            successorReachableQueue[head++];
+
+        //        int currentX =
+        //            currentIndex % columns;
+
+        //        int currentY =
+        //            currentIndex / columns;
+
+        //        MarkSuccessorReachableNeighbor(
+        //            currentX,
+        //            currentY - 1,
+        //            ref tail);
+
+        //        MarkSuccessorReachableNeighbor(
+        //            currentX,
+        //            currentY + 1,
+        //            ref tail);
+
+        //        MarkSuccessorReachableNeighbor(
+        //            currentX - 1,
+        //            currentY,
+        //            ref tail);
+
+        //        MarkSuccessorReachableNeighbor(
+        //            currentX + 1,
+        //            currentY,
+        //            ref tail);
+        //    }
+
+        //    return successorReachableVisitId;
+        //}
+
         private int MarkSuccessorReachableCells(
-            Point startPosition)
+    Point startPosition)
         {
             successorReachableVisitId++;
 
@@ -1685,28 +1755,82 @@ namespace NovaWright.NumberPush.LevelGenerator
                 int currentX =
                     currentIndex % columns;
 
-                int currentY =
-                    currentIndex / columns;
+                if (currentX > 0)
+                {
+                    int index =
+                        currentIndex - 1;
 
-                MarkSuccessorReachableNeighbor(
-                    currentX,
-                    currentY - 1,
-                    ref tail);
+                    if (successorReachableVisit[index] !=
+                        successorReachableVisitId &&
+                        !blockedCells[index] &&
+                        crateOccupancyVisit[index] !=
+                            crateOccupancyVisitId)
+                    {
+                        successorReachableVisit[index] =
+                            successorReachableVisitId;
 
-                MarkSuccessorReachableNeighbor(
-                    currentX,
-                    currentY + 1,
-                    ref tail);
+                        successorReachableQueue[tail++] =
+                            index;
+                    }
+                }
 
-                MarkSuccessorReachableNeighbor(
-                    currentX - 1,
-                    currentY,
-                    ref tail);
+                if (currentX < columns - 1)
+                {
+                    int index =
+                        currentIndex + 1;
 
-                MarkSuccessorReachableNeighbor(
-                    currentX + 1,
-                    currentY,
-                    ref tail);
+                    if (successorReachableVisit[index] !=
+                        successorReachableVisitId &&
+                        !blockedCells[index] &&
+                        crateOccupancyVisit[index] !=
+                            crateOccupancyVisitId)
+                    {
+                        successorReachableVisit[index] =
+                            successorReachableVisitId;
+
+                        successorReachableQueue[tail++] =
+                            index;
+                    }
+                }
+
+                if (currentIndex >= columns)
+                {
+                    int index =
+                        currentIndex - columns;
+
+                    if (successorReachableVisit[index] !=
+                        successorReachableVisitId &&
+                        !blockedCells[index] &&
+                        crateOccupancyVisit[index] !=
+                            crateOccupancyVisitId)
+                    {
+                        successorReachableVisit[index] =
+                            successorReachableVisitId;
+
+                        successorReachableQueue[tail++] =
+                            index;
+                    }
+                }
+
+                if (currentIndex <
+                    successorReachableVisit.Length - columns)
+                {
+                    int index =
+                        currentIndex + columns;
+
+                    if (successorReachableVisit[index] !=
+                        successorReachableVisitId &&
+                        !blockedCells[index] &&
+                        crateOccupancyVisit[index] !=
+                            crateOccupancyVisitId)
+                    {
+                        successorReachableVisit[index] =
+                            successorReachableVisitId;
+
+                        successorReachableQueue[tail++] =
+                            index;
+                    }
+                }
             }
 
             return successorReachableVisitId;
