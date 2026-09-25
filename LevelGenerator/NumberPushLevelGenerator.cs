@@ -351,34 +351,34 @@ namespace NovaWright.NumberPush.LevelGenerator
 
                     if (diagnostics != null)
                     {
-                        diagnostics.InitialTryPushLegalPushes =
+                        diagnostics.InitialTryPushLegalPushes +=
                             solver.InitialTryPushLegalPushes;
 
-                        diagnostics.UniqueSuccessorStates =
+                        diagnostics.UniqueSuccessorStates +=
                             solver.UniqueSuccessorStates;
 
-                        diagnostics.OccupancyMilliseconds =
+                        diagnostics.OccupancyMilliseconds +=
                             solver.OccupancyMillisecondsValue;
 
-                        diagnostics.CurrentReachabilityMilliseconds =
+                        diagnostics.CurrentReachabilityMilliseconds +=
                             solver.CurrentReachabilityMillisecondsValue;
 
-                        diagnostics.SuccessorReachabilityMilliseconds =
+                        diagnostics.SuccessorReachabilityMilliseconds +=
                             solver.SuccessorReachabilityMillisecondsValue;
 
-                        diagnostics.PushValidationMilliseconds =
+                        diagnostics.PushValidationMilliseconds +=
                             solver.PushValidationMillisecondsValue;
 
-                        diagnostics.ArrayCopyMilliseconds =
+                        diagnostics.ArrayCopyMilliseconds +=
                             solver.ArrayCopyMillisecondsValue;
 
-                        diagnostics.StateConstructionMilliseconds =
+                        diagnostics.StateConstructionMilliseconds +=
                             solver.StateConstructionMillisecondsValue;
 
-                        diagnostics.HashSetLookupMilliseconds =
+                        diagnostics.HashSetLookupMilliseconds +=
                             solver.HashSetLookupMillisecondsValue;
 
-                        diagnostics.StaticDeadlockMilliseconds =
+                        diagnostics.StaticDeadlockMilliseconds +=
                             solver.StaticDeadlockMillisecondsValue;
                     }
 
