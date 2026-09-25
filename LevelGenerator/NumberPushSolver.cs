@@ -157,8 +157,10 @@ namespace NovaWright.NumberPush.LevelGenerator
             Queue<SolverState> queue = new();
 
             HashSet<SolverState> visited =
-                new(
-                    new SolverStateComparer());
+    new(
+        new SolverStateComparer(
+            rows,
+            columns));
 
             StatesExplored = 0;
 
@@ -1774,8 +1776,24 @@ namespace NovaWright.NumberPush.LevelGenerator
         }
 
         private sealed class SolverStateComparer :
-            IEqualityComparer<SolverState>
+    IEqualityComparer<SolverState>
         {
+            private readonly int columns;
+            private readonly int[] cratePositionMarks;
+
+            private int cratePositionMarkId;
+
+            public SolverStateComparer(
+                int rows,
+                int columns)
+            {
+                this.columns =
+                    columns;
+
+                cratePositionMarks =
+                    new int[rows * columns];
+            }
+
             public bool Equals(
                 SolverState? left,
                 SolverState? right)
@@ -1805,26 +1823,40 @@ namespace NovaWright.NumberPush.LevelGenerator
                     return false;
                 }
 
-                for (int leftIndex = 0;
-                     leftIndex < left.CratePositions.Length;
-                     leftIndex++)
+                if (cratePositionMarkId ==
+                    int.MaxValue)
                 {
-                    bool found =
-                        false;
+                    Array.Clear(
+                        cratePositionMarks,
+                        0,
+                        cratePositionMarks.Length);
 
-                    for (int rightIndex = 0;
-                         rightIndex < right.CratePositions.Length;
-                         rightIndex++)
-                    {
-                        if (left.CratePositions[leftIndex] ==
-                            right.CratePositions[rightIndex])
-                        {
-                            found = true;
-                            break;
-                        }
-                    }
+                    cratePositionMarkId = 0;
+                }
 
-                    if (!found)
+                int markId =
+                    ++cratePositionMarkId;
+
+                foreach (Point position in
+                         right.CratePositions)
+                {
+                    int cellIndex =
+                        position.Y * columns +
+                        position.X;
+
+                    cratePositionMarks[cellIndex] =
+                        markId;
+                }
+
+                foreach (Point position in
+                         left.CratePositions)
+                {
+                    int cellIndex =
+                        position.Y * columns +
+                        position.X;
+
+                    if (cratePositionMarks[cellIndex] !=
+                        markId)
                     {
                         return false;
                     }
@@ -1834,7 +1866,7 @@ namespace NovaWright.NumberPush.LevelGenerator
             }
 
             public int GetHashCode(
-    SolverState state)
+                SolverState state)
             {
                 unchecked
                 {
