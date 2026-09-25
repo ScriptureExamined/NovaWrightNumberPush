@@ -14,6 +14,8 @@ namespace NovaWright.NumberPush.LevelGenerator
         private readonly HashSet<Point> wallPositions;
         private readonly HashSet<Point> goalPositions;
 
+        private readonly bool[] blockedCells;
+
         // Reusable arrays for current-state player reachability.
         private readonly int[] reachableVisit;
         private readonly int[] reachableQueue;
@@ -112,6 +114,9 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             columns = level.Columns;
 
+            int cellCount =
+                rows * columns;
+
             wallPositions =
                 level.Walls
                     .Select(
@@ -124,8 +129,22 @@ namespace NovaWright.NumberPush.LevelGenerator
             goalPositions =
                 level.Goals.ToHashSet();
 
-            int cellCount =
-                rows * columns;
+            blockedCells =
+                new bool[cellCount];
+
+            foreach (Rectangle wall in level.Walls)
+            {
+                if (wall.X < 0 ||
+                    wall.X >= columns ||
+                    wall.Y < 0 ||
+                    wall.Y >= rows)
+                {
+                    continue;
+                }
+
+                blockedCells[
+                    wall.Y * columns + wall.X] = true;
+            }
 
             reachableVisit =
                 new int[cellCount];
@@ -1738,9 +1757,9 @@ namespace NovaWright.NumberPush.LevelGenerator
         }
 
         private void MarkSuccessorReachableNeighbor(
-            int x,
-            int y,
-            ref int tail)
+    int x,
+    int y,
+    ref int tail)
         {
             if (x < 0 ||
                 x >= columns ||
@@ -1759,13 +1778,7 @@ namespace NovaWright.NumberPush.LevelGenerator
                 return;
             }
 
-            Point position =
-                new Point(
-                    x,
-                    y);
-
-            if (IsWall(
-                position))
+            if (blockedCells[index])
             {
                 return;
             }
