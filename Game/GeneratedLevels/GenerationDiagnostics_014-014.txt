@@ -432,15 +432,23 @@ Push 15: Crate 4 {X=3,Y=6} -> {X=3,Y=7}
 Push 16: Crate 4 {X=3,Y=7} -> {X=4,Y=7}
 
 TIMING
-Candidate generation: 638 ms
-Solver: 1821978 ms
-Average solver call: 1750.22 ms
-Total time: 00:31:41
+Candidate generation: 695 ms
+Solver: 1865017 ms
+Average solver call: 1791.56 ms
+  Occupancy: 2528 ms
+  Current reachability: 6334 ms
+  Successor reachability: 58073 ms
+  Push validation: 1385 ms
+  Array copy: 711 ms
+  State construction: 2226 ms
+  HashSet lookup: 4841 ms
+  Static deadlock: 1518 ms
+Total time: 00:32:26
 Crate interaction pairs: 1
 Crate interaction blocks: 2
 
 
 ========================================
-TOTAL CREATION TIME: 00:31:41
-START TIME:          2026-09-25 08:08:00
+TOTAL CREATION TIME: 00:32:26
+START TIME:          2026-09-25 09:05:16
 ========================================

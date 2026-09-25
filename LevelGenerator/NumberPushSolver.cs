@@ -1,4 +1,5 @@
 ﻿using NovaWrightNumberPush;
+using System.Diagnostics;
 using System.Text;
 
 namespace NovaWright.NumberPush.LevelGenerator
@@ -75,6 +76,22 @@ namespace NovaWright.NumberPush.LevelGenerator
         public long DuplicateStates { get; private set; }
 
         public long UniqueSuccessorStates { get; private set; }
+
+        public long OccupancyMilliseconds { get; private set; }
+
+        public long CurrentReachabilityMilliseconds { get; private set; }
+
+        public long SuccessorReachabilityMilliseconds { get; private set; }
+
+        public long PushValidationMilliseconds { get; private set; }
+
+        public long ArrayCopyMilliseconds { get; private set; }
+
+        public long StateConstructionMilliseconds { get; private set; }
+
+        public long HashSetLookupMilliseconds { get; private set; }
+
+        public long StaticDeadlockMilliseconds { get; private set; }
 
         public Dictionary<int, long> GoalProgressStates { get; } =
             new Dictionary<int, long>();
@@ -202,6 +219,22 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             UniqueSuccessorStates = 0;
 
+            OccupancyMilliseconds = 0;
+
+            CurrentReachabilityMilliseconds = 0;
+
+            SuccessorReachabilityMilliseconds = 0;
+
+            PushValidationMilliseconds = 0;
+
+            ArrayCopyMilliseconds = 0;
+
+            StateConstructionMilliseconds = 0;
+
+            HashSetLookupMilliseconds = 0;
+
+            StaticDeadlockMilliseconds = 0;
+
             GoalProgressStates.Clear();
 
             GoalProgressIncreases = 0;
@@ -301,14 +334,28 @@ namespace NovaWright.NumberPush.LevelGenerator
                 }
 
                 // Build the reusable crate occupancy map for this state.
+                long timingStart =
+                    Stopwatch.GetTimestamp();
+
                 BuildCrateOccupancy(
                     state.CratePositions);
 
+                OccupancyMilliseconds +=
+                    Stopwatch.GetElapsedTime(
+                        timingStart).Ticks;
+
                 // Mark every position the player can reach without
                 // moving any crates.
+                timingStart =
+                    Stopwatch.GetTimestamp();
+
                 int currentReachableVisitId =
                     MarkReachableCells(
                         state.PlayerPosition);
+
+                CurrentReachabilityMilliseconds +=
+                    Stopwatch.GetElapsedTime(
+                        timingStart).Ticks;
 
                 for (int crateIndex = 0;
                      crateIndex < state.CratePositions.Length;
@@ -611,10 +658,17 @@ namespace NovaWright.NumberPush.LevelGenerator
                     cratePosition.X - direction.X,
                     cratePosition.Y - direction.Y);
 
+            long timingStart =
+                Stopwatch.GetTimestamp();
+
             if (!IsReachable(
                 playerRequiredPosition,
                 currentReachableVisitId))
             {
+                PushValidationMilliseconds +=
+                    Stopwatch.GetElapsedTime(
+                        timingStart).Ticks;
+
                 return;
             }
 
@@ -638,6 +692,10 @@ namespace NovaWright.NumberPush.LevelGenerator
                     testY < 0 ||
                     testY >= rows)
                 {
+                    PushValidationMilliseconds +=
+                        Stopwatch.GetElapsedTime(
+                            timingStart).Ticks;
+
                     return;
                 }
 
@@ -650,12 +708,20 @@ namespace NovaWright.NumberPush.LevelGenerator
                         testX,
                         testY)))
                 {
+                    PushValidationMilliseconds +=
+                        Stopwatch.GetElapsedTime(
+                            timingStart).Ticks;
+
                     return;
                 }
 
                 if (crateOccupancyVisit[testIndex] ==
                     crateOccupancyVisitId)
                 {
+                    PushValidationMilliseconds +=
+                        Stopwatch.GetElapsedTime(
+                            timingStart).Ticks;
+
                     return;
                 }
 
@@ -665,7 +731,13 @@ namespace NovaWright.NumberPush.LevelGenerator
                         testY);
             }
 
-            // Create an independent array snapshot for the successor state.
+            PushValidationMilliseconds +=
+                Stopwatch.GetElapsedTime(
+                    timingStart).Ticks;
+
+            timingStart =
+                Stopwatch.GetTimestamp();
+
             Point[] newCratePositions =
                 new Point[
                     state.CratePositions.Length];
@@ -678,41 +750,71 @@ namespace NovaWright.NumberPush.LevelGenerator
             newCratePositions[crateIndex] =
                 finalPosition;
 
+            ArrayCopyMilliseconds +=
+                Stopwatch.GetElapsedTime(
+                    timingStart).Ticks;
+
+            timingStart =
+                Stopwatch.GetTimestamp();
+
             if (IsStaticCornerDeadlock(
                 finalPosition))
             {
+                StaticDeadlockMilliseconds +=
+                    Stopwatch.GetElapsedTime(
+                        timingStart).Ticks;
+
                 return;
             }
+
+            StaticDeadlockMilliseconds +=
+                Stopwatch.GetElapsedTime(
+                    timingStart).Ticks;
 
             legalPushesForState++;
 
             Point newPlayerPosition =
                 cratePosition;
 
-            // The crate configuration has changed, so the player's
-            // reachable region may also have changed.
-            //
-            // Use the separate successor reachability buffer so that
-            // calculating this region does not overwrite the current
-            // state's reachable region used by the remaining TryPush calls.
+            timingStart =
+                Stopwatch.GetTimestamp();
+
             BuildCrateOccupancy(
                 newCratePositions);
+
+            OccupancyMilliseconds +=
+                Stopwatch.GetElapsedTime(
+                    timingStart).Ticks;
+
+            timingStart =
+                Stopwatch.GetTimestamp();
 
             int newReachableVisitId =
                 MarkSuccessorReachableCells(
                     newPlayerPosition);
 
+            SuccessorReachabilityMilliseconds +=
+                Stopwatch.GetElapsedTime(
+                    timingStart).Ticks;
+
             int newPlayerRegion =
                 GetSuccessorPlayerRegionKey(
                     newReachableVisitId);
 
+            timingStart =
+                Stopwatch.GetTimestamp();
+
             BuildCrateOccupancy(
                 state.CratePositions);
 
+            OccupancyMilliseconds +=
+                Stopwatch.GetElapsedTime(
+                    timingStart).Ticks;
+
             int oldPositionHash =
-    HashCode.Combine(
-        cratePosition.X,
-        cratePosition.Y);
+                HashCode.Combine(
+                    cratePosition.X,
+                    cratePosition.Y);
 
             int newPositionHash =
                 HashCode.Combine(
@@ -729,26 +831,49 @@ namespace NovaWright.NumberPush.LevelGenerator
                 oldPositionHash * oldPositionHash +
                 newPositionHash * newPositionHash;
 
+            StateConstructionMilliseconds +=
+                Stopwatch.GetElapsedTime(
+                    timingStart).Ticks;
+
+            timingStart =
+                Stopwatch.GetTimestamp();
+
             SolverState newState =
-    new SolverState(
-        newPlayerPosition,
-        newCratePositions,
-        state.Pushes + 1,
-        state,
-        null,
-        newPositionHashSum,
-        newPositionHashSquareSum)
-    {
-        PlayerRegion =
-            newPlayerRegion
-    };
+                new SolverState(
+                    newPlayerPosition,
+                    newCratePositions,
+                    state.Pushes + 1,
+                    state,
+                    null,
+                    newPositionHashSum,
+                    newPositionHashSquareSum)
+                {
+                    PlayerRegion =
+                        newPlayerRegion
+                };
+
+            StateConstructionMilliseconds +=
+                Stopwatch.GetElapsedTime(
+                    timingStart).Ticks;
+
+            timingStart =
+                Stopwatch.GetTimestamp();
 
             if (!visited.Add(
                 newState))
             {
+                HashSetLookupMilliseconds +=
+                    Stopwatch.GetElapsedTime(
+                        timingStart).Ticks;
+
                 DuplicateStates++;
+
                 return;
             }
+
+            HashSetLookupMilliseconds +=
+                Stopwatch.GetElapsedTime(
+                    timingStart).Ticks;
 
             UniqueSuccessorStates++;
 
@@ -1776,6 +1901,14 @@ namespace NovaWright.NumberPush.LevelGenerator
             return false;
         }
 
+        private static long ToMilliseconds(
+    long timeSpanTicks)
+        {
+            return
+                timeSpanTicks /
+                TimeSpan.TicksPerMillisecond;
+        }
+
         private class SolverState
         {
             public Point PlayerPosition { get; }
@@ -1825,6 +1958,38 @@ namespace NovaWright.NumberPush.LevelGenerator
                     positionHashSquareSum;
             }
         }
+
+        public long OccupancyMillisecondsValue =>
+    ToMilliseconds(
+        OccupancyMilliseconds);
+
+        public long CurrentReachabilityMillisecondsValue =>
+            ToMilliseconds(
+                CurrentReachabilityMilliseconds);
+
+        public long SuccessorReachabilityMillisecondsValue =>
+            ToMilliseconds(
+                SuccessorReachabilityMilliseconds);
+
+        public long PushValidationMillisecondsValue =>
+            ToMilliseconds(
+                PushValidationMilliseconds);
+
+        public long ArrayCopyMillisecondsValue =>
+            ToMilliseconds(
+                ArrayCopyMilliseconds);
+
+        public long StateConstructionMillisecondsValue =>
+            ToMilliseconds(
+                StateConstructionMilliseconds);
+
+        public long HashSetLookupMillisecondsValue =>
+            ToMilliseconds(
+                HashSetLookupMilliseconds);
+
+        public long StaticDeadlockMillisecondsValue =>
+            ToMilliseconds(
+                StaticDeadlockMilliseconds);
 
         private sealed class SolverStateComparer :
             IEqualityComparer<SolverState>

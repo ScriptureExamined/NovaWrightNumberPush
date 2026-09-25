@@ -44,6 +44,22 @@
 
         public long UniqueSuccessorStates { get; set; }
 
+        public long OccupancyMilliseconds { get; set; }
+
+        public long CurrentReachabilityMilliseconds { get; set; }
+
+        public long SuccessorReachabilityMilliseconds { get; set; }
+
+        public long PushValidationMilliseconds { get; set; }
+
+        public long ArrayCopyMilliseconds { get; set; }
+
+        public long StateConstructionMilliseconds { get; set; }
+
+        public long HashSetLookupMilliseconds { get; set; }
+
+        public long StaticDeadlockMilliseconds { get; set; }
+
         public int BelowTargetCandidates { get; set; }
 
         public int AboveTargetCandidates { get; set; }
@@ -618,6 +634,14 @@
                 $"Candidate generation: {CandidateGenerationMilliseconds} ms\r\n" +
                 $"Solver: {SolverMilliseconds} ms\r\n" +
                 $"Average solver call: {AverageSolverMilliseconds:F2} ms\r\n" +
+                $"  Occupancy: {OccupancyMilliseconds} ms\r\n" +
+                $"  Current reachability: {CurrentReachabilityMilliseconds} ms\r\n" +
+                $"  Successor reachability: {SuccessorReachabilityMilliseconds} ms\r\n" +
+                $"  Push validation: {PushValidationMilliseconds} ms\r\n" +
+                $"  Array copy: {ArrayCopyMilliseconds} ms\r\n" +
+                $"  State construction: {StateConstructionMilliseconds} ms\r\n" +
+                $"  HashSet lookup: {HashSetLookupMilliseconds} ms\r\n" +
+                $"  Static deadlock: {StaticDeadlockMilliseconds} ms\r\n" +
                 $"Total time: {totalTime:hh\\:mm\\:ss}\r\n" +
                 $"Crate interaction pairs: {CrateInteractionPairs}\r\n" +
                 $"Crate interaction blocks: {CrateInteractionBlocks}\r\n";

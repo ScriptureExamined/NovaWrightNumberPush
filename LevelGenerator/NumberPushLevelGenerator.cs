@@ -353,8 +353,33 @@ namespace NovaWright.NumberPush.LevelGenerator
                     {
                         diagnostics.InitialTryPushLegalPushes =
                             solver.InitialTryPushLegalPushes;
+
                         diagnostics.UniqueSuccessorStates =
                             solver.UniqueSuccessorStates;
+
+                        diagnostics.OccupancyMilliseconds =
+                            solver.OccupancyMillisecondsValue;
+
+                        diagnostics.CurrentReachabilityMilliseconds =
+                            solver.CurrentReachabilityMillisecondsValue;
+
+                        diagnostics.SuccessorReachabilityMilliseconds =
+                            solver.SuccessorReachabilityMillisecondsValue;
+
+                        diagnostics.PushValidationMilliseconds =
+                            solver.PushValidationMillisecondsValue;
+
+                        diagnostics.ArrayCopyMilliseconds =
+                            solver.ArrayCopyMillisecondsValue;
+
+                        diagnostics.StateConstructionMilliseconds =
+                            solver.StateConstructionMillisecondsValue;
+
+                        diagnostics.HashSetLookupMilliseconds =
+                            solver.HashSetLookupMillisecondsValue;
+
+                        diagnostics.StaticDeadlockMilliseconds =
+                            solver.StaticDeadlockMillisecondsValue;
                     }
 
                     if (solution.MinimumPushes >= 0 &&
