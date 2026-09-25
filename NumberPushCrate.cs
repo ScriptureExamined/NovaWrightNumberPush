@@ -6,9 +6,7 @@
 
         public int Distance { get; set; }
 
-        public NumberPushCrate(
-            Point position,
-            int distance)
+        public NumberPushCrate(Point position, int distance)
         {
             Position = position;
             Distance = distance;

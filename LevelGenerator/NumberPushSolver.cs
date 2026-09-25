@@ -1,6 +1,6 @@
-﻿using NovaWrightNumberPush;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Text;
+using NovaWrightNumberPush;
 
 namespace NovaWright.NumberPush.LevelGenerator
 {
@@ -99,8 +99,7 @@ namespace NovaWright.NumberPush.LevelGenerator
 
         public long StaticDeadlockMilliseconds { get; private set; }
 
-        public Dictionary<int, long> GoalProgressStates { get; } =
-            new Dictionary<int, long>();
+        public Dictionary<int, long> GoalProgressStates { get; } = new Dictionary<int, long>();
 
         public long GoalProgressIncreases { get; private set; }
 
@@ -118,66 +117,40 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             columns = level.Columns;
 
-            int cellCount =
-                rows * columns;
+            int cellCount = rows * columns;
 
-            wallPositions =
-                level.Walls
-                    .Select(
-                        wall =>
-                            new Point(
-                                wall.X,
-                                wall.Y))
-                    .ToHashSet();
+            wallPositions = level.Walls.Select(wall => new Point(wall.X, wall.Y)).ToHashSet();
 
-            goalPositions =
-                level.Goals.ToHashSet();
+            goalPositions = level.Goals.ToHashSet();
 
-            blockedCells =
-                new bool[cellCount];
+            blockedCells = new bool[cellCount];
 
-            for (int index = 0;
-            index < cellCount;
-            index++)
+            for (int index = 0; index < cellCount; index++)
             {
-                int x =
-                index % columns;
+                int x = index % columns;
 
-                int y =
-                    index / columns;
-
-
+                int y = index / columns;
             }
-
 
             foreach (Rectangle wall in level.Walls)
             {
-                if (wall.X < 0 ||
-                    wall.X >= columns ||
-                    wall.Y < 0 ||
-                    wall.Y >= rows)
+                if (wall.X < 0 || wall.X >= columns || wall.Y < 0 || wall.Y >= rows)
                 {
                     continue;
                 }
 
-                blockedCells[
-                    wall.Y * columns + wall.X] = true;
+                blockedCells[wall.Y * columns + wall.X] = true;
             }
 
-            reachableVisit =
-                new int[cellCount];
+            reachableVisit = new int[cellCount];
 
-            reachableQueue =
-                new int[cellCount];
+            reachableQueue = new int[cellCount];
 
-            successorReachableVisit =
-                new int[cellCount];
+            successorReachableVisit = new int[cellCount];
 
-            successorReachableQueue =
-                new int[cellCount];
+            successorReachableQueue = new int[cellCount];
 
-            crateOccupancyVisit =
-                new int[cellCount];
+            crateOccupancyVisit = new int[cellCount];
 
             reachableVisitId = 0;
 
@@ -198,21 +171,13 @@ namespace NovaWright.NumberPush.LevelGenerator
         /// </summary>
         public NumberPushSolution FindSolution()
         {
-            Point[] crateStartPositions =
-                level.Crates
-                    .Select(crate => crate.Position)
-                    .ToArray();
+            Point[] crateStartPositions = level.Crates.Select(crate => crate.Position).ToArray();
 
-            List<int> crateDistances =
-                level.Crates
-                    .Select(crate => crate.Distance)
-                    .ToList();
+            List<int> crateDistances = level.Crates.Select(crate => crate.Distance).ToList();
 
             Queue<SolverState> queue = new();
 
-            HashSet<SolverState> visited =
-                new(
-                    new SolverStateComparer());
+            HashSet<SolverState> visited = new(new SolverStateComparer());
 
             StatesExplored = 0;
 
@@ -292,65 +257,54 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             int startPositionHashSquareSum = 0;
 
-            foreach (Point position in
-                     crateStartPositions)
+            foreach (Point position in crateStartPositions)
             {
-                int positionHash =
-                    HashCode.Combine(
-                        position.X,
-                        position.Y);
+                int positionHash = HashCode.Combine(position.X, position.Y);
 
-                startPositionHashSum +=
-                    positionHash;
+                startPositionHashSum += positionHash;
 
-                startPositionHashSquareSum +=
-                    positionHash *
-                    positionHash;
+                startPositionHashSquareSum += positionHash * positionHash;
             }
 
             long[] startCanonicalCrateKeys = CreateCanonicalCrateKeys(crateStartPositions);
 
-            int startCanonicalCrateHash =
-CreateCanonicalCrateHash(
-startCanonicalCrateKeys);
+            int startCanonicalCrateHash = CreateCanonicalCrateHash(startCanonicalCrateKeys);
 
-            SolverState startState = new SolverState(level.PlayerStart, crateStartPositions, 0, null, null,
-                startPositionHashSum, startPositionHashSquareSum, startCanonicalCrateKeys, startCanonicalCrateHash);
+            SolverState startState = new SolverState(
+                level.PlayerStart,
+                crateStartPositions,
+                0,
+                null,
+                null,
+                startPositionHashSum,
+                startPositionHashSquareSum,
+                startCanonicalCrateKeys,
+                startCanonicalCrateHash
+            );
 
             queue.Enqueue(startState);
 
             // Build the initial player's reachable region using
             // the initial crate configuration.
-            BuildCrateOccupancy(
-                crateStartPositions);
+            BuildCrateOccupancy(crateStartPositions);
 
-            int startReachableVisitId =
-                MarkReachableCells(
-                    level.PlayerStart);
+            int startReachableVisitId = MarkReachableCells(level.PlayerStart);
 
-            int startPlayerRegion =
-                GetPlayerRegionKey(
-                    startReachableVisitId);
+            int startPlayerRegion = GetPlayerRegionKey(startReachableVisitId);
 
-            startState.PlayerRegion =
-                startPlayerRegion;
+            startState.PlayerRegion = startPlayerRegion;
 
-            visited.Add(
-                startState);
+            visited.Add(startState);
 
             while (queue.Count > 0)
             {
-                SolverState state =
-                    queue.Dequeue();
+                SolverState state = queue.Dequeue();
 
                 StatesExplored++;
 
-                int cratesOnGoals =
-                    CountCratesOnGoals(
-                        state.CratePositions);
+                int cratesOnGoals = CountCratesOnGoals(state.CratePositions);
 
-                if (GoalProgressStates.ContainsKey(
-                    cratesOnGoals))
+                if (GoalProgressStates.ContainsKey(cratesOnGoals))
                 {
                     GoalProgressStates[cratesOnGoals]++;
                 }
@@ -366,43 +320,29 @@ startCanonicalCrateKeys);
                     InitialTryPushLegalPushes = 0;
                 }
 
-                if (IsComplete(
-                    state.CratePositions))
+                if (IsComplete(state.CratePositions))
                 {
-                    return BuildSolution(
-                        state);
+                    return BuildSolution(state);
                 }
 
                 // Build the reusable crate occupancy map for this state.
-                long timingStart =
-                    Stopwatch.GetTimestamp();
+                long timingStart = Stopwatch.GetTimestamp();
 
-                BuildCrateOccupancy(
-                    state.CratePositions);
+                BuildCrateOccupancy(state.CratePositions);
 
-                OccupancyMilliseconds +=
-                    Stopwatch.GetElapsedTime(
-                        timingStart).Ticks;
+                OccupancyMilliseconds += Stopwatch.GetElapsedTime(timingStart).Ticks;
 
                 // Mark every position the player can reach without
                 // moving any crates.
-                timingStart =
-                    Stopwatch.GetTimestamp();
+                timingStart = Stopwatch.GetTimestamp();
 
-                int currentReachableVisitId =
-                    MarkReachableCells(
-                        state.PlayerPosition);
+                int currentReachableVisitId = MarkReachableCells(state.PlayerPosition);
 
-                CurrentReachabilityMilliseconds +=
-                    Stopwatch.GetElapsedTime(
-                        timingStart).Ticks;
+                CurrentReachabilityMilliseconds += Stopwatch.GetElapsedTime(timingStart).Ticks;
 
-                for (int crateIndex = 0;
-                     crateIndex < state.CratePositions.Length;
-                     crateIndex++)
+                for (int crateIndex = 0; crateIndex < state.CratePositions.Length; crateIndex++)
                 {
-                    int distance =
-                        crateDistances[crateIndex];
+                    int distance = crateDistances[crateIndex];
 
                     TryPush(
                         state,
@@ -411,7 +351,8 @@ startCanonicalCrateKeys);
                         new Point(0, -1),
                         currentReachableVisitId,
                         queue,
-                        visited);
+                        visited
+                    );
 
                     TryPush(
                         state,
@@ -420,7 +361,8 @@ startCanonicalCrateKeys);
                         new Point(0, 1),
                         currentReachableVisitId,
                         queue,
-                        visited);
+                        visited
+                    );
 
                     TryPush(
                         state,
@@ -429,7 +371,8 @@ startCanonicalCrateKeys);
                         new Point(-1, 0),
                         currentReachableVisitId,
                         queue,
-                        visited);
+                        visited
+                    );
 
                     TryPush(
                         state,
@@ -438,22 +381,18 @@ startCanonicalCrateKeys);
                         new Point(1, 0),
                         currentReachableVisitId,
                         queue,
-                        visited);
+                        visited
+                    );
                 }
 
                 if (StatesExplored == 1)
                 {
-                    InitialTryPushLegalPushes =
-                        legalPushesForState;
+                    InitialTryPushLegalPushes = legalPushesForState;
                 }
 
-                TotalLegalPushes +=
-                    legalPushesForState;
+                TotalLegalPushes += legalPushesForState;
 
-                MaximumLegalPushes =
-                    Math.Max(
-                        MaximumLegalPushes,
-                        legalPushesForState);
+                MaximumLegalPushes = Math.Max(MaximumLegalPushes, legalPushesForState);
 
                 if (legalPushesForState == 0)
                 {
@@ -461,74 +400,53 @@ startCanonicalCrateKeys);
 
                     if (MinimumZeroLegalPushDepth == -1)
                     {
-                        MinimumZeroLegalPushDepth =
-                            state.Pushes;
+                        MinimumZeroLegalPushDepth = state.Pushes;
 
                         if (state.Parent == null)
                         {
-                            LegalPushesBeforeMinimumZeroPushDepth =
-                                0;
+                            LegalPushesBeforeMinimumZeroPushDepth = 0;
                         }
                         else
                         {
-                            List<Point> parentCratePositions =
-                                state.Parent.CratePositions.ToList();
+                            List<Point> parentCratePositions = state.Parent.CratePositions.ToList();
 
-                            LegalPushesBeforeMinimumZeroPushDepth =
-                                GetLegalPushes(
-                                    state.Parent.PlayerPosition,
-                                    parentCratePositions).Count;
+                            LegalPushesBeforeMinimumZeroPushDepth = GetLegalPushes(
+                                state.Parent.PlayerPosition,
+                                parentCratePositions
+                            ).Count;
                         }
 
-                        AnalyzeFirstZeroPushState(
-                            state);
+                        AnalyzeFirstZeroPushState(state);
                     }
                 }
             }
 
-            return new NumberPushSolution
-            {
-                IsSolved = false,
-                MinimumPushes = -1
-            };
+            return new NumberPushSolution { IsSolved = false, MinimumPushes = -1 };
         }
 
-        private long[] CreateCanonicalCrateKeys(
-    IReadOnlyList<Point> cratePositions)
+        private long[] CreateCanonicalCrateKeys(IReadOnlyList<Point> cratePositions)
         {
-            long[] keys =
-                new long[cratePositions.Count];
+            long[] keys = new long[cratePositions.Count];
 
-            for (int index = 0;
-                 index < cratePositions.Count;
-                 index++)
+            for (int index = 0; index < cratePositions.Count; index++)
             {
-                Point position =
-                    cratePositions[index];
+                Point position = cratePositions[index];
 
-                int cellIndex =
-                    position.Y * columns +
-                    position.X;
+                int cellIndex = position.Y * columns + position.X;
 
-                int distance =
-                    level.Crates[index].Distance;
+                int distance = level.Crates[index].Distance;
 
-                keys[index] =
-                    ((long)distance << 32) |
-                    (uint)cellIndex;
+                keys[index] = ((long)distance << 32) | (uint)cellIndex;
             }
 
-            Array.Sort(
-                keys);
+            Array.Sort(keys);
 
             return keys;
         }
 
-        private static int CreateCanonicalCrateHash(
-IReadOnlyList<long> canonicalCrateKeys)
+        private static int CreateCanonicalCrateHash(IReadOnlyList<long> canonicalCrateKeys)
         {
-            HashCode hash =
-            new HashCode();
+            HashCode hash = new HashCode();
 
             foreach (long key in canonicalCrateKeys)
             {
@@ -538,67 +456,51 @@ IReadOnlyList<long> canonicalCrateKeys)
             return hash.ToHashCode();
         }
 
-        private string CreateCrateConfigurationKey(
-            List<Point> cratePositions)
+        private string CreateCrateConfigurationKey(List<Point> cratePositions)
         {
-            List<(int Distance, int Position)> crateKeys =
-                new List<(int Distance, int Position)>(
-                    cratePositions.Count);
+            List<(int Distance, int Position)> crateKeys = new List<(int Distance, int Position)>(
+                cratePositions.Count
+            );
 
-            for (int i = 0;
-                 i < cratePositions.Count;
-                 i++)
+            for (int i = 0; i < cratePositions.Count; i++)
             {
-                Point position =
-                    cratePositions[i];
+                Point position = cratePositions[i];
 
-                int cellIndex =
-                    position.Y * columns +
-                    position.X;
+                int cellIndex = position.Y * columns + position.X;
 
-                int distance =
-                    level.Crates[i].Distance;
+                int distance = level.Crates[i].Distance;
 
-                crateKeys.Add(
-                    (distance, cellIndex));
+                crateKeys.Add((distance, cellIndex));
             }
 
             crateKeys.Sort(
                 (left, right) =>
                 {
-                    int distanceComparison =
-                        left.Distance.CompareTo(
-                            right.Distance);
+                    int distanceComparison = left.Distance.CompareTo(right.Distance);
 
                     if (distanceComparison != 0)
                     {
                         return distanceComparison;
                     }
 
-                    return left.Position.CompareTo(
-                        right.Position);
-                });
+                    return left.Position.CompareTo(right.Position);
+                }
+            );
 
-            StringBuilder key =
-                new StringBuilder(
-                    crateKeys.Count * 8);
+            StringBuilder key = new StringBuilder(crateKeys.Count * 8);
 
-            for (int i = 0;
-                 i < crateKeys.Count;
-                 i++)
+            for (int i = 0; i < crateKeys.Count; i++)
             {
                 if (i > 0)
                 {
                     key.Append(',');
                 }
 
-                key.Append(
-                    crateKeys[i].Distance);
+                key.Append(crateKeys[i].Distance);
 
                 key.Append(':');
 
-                key.Append(
-                    crateKeys[i].Position);
+                key.Append(crateKeys[i].Position);
             }
 
             return key.ToString();
@@ -606,77 +508,59 @@ IReadOnlyList<long> canonicalCrateKeys)
 
         public List<(int CrateIndex, Point Direction)> GetLegalPushes(
             Point playerPosition,
-            List<Point> cratePositions)
+            List<Point> cratePositions
+        )
         {
-            List<(int CrateIndex, Point Direction)> legalPushes =
-                new();
+            List<(int CrateIndex, Point Direction)> legalPushes = new();
 
-            BuildCrateOccupancy(
-                cratePositions);
+            BuildCrateOccupancy(cratePositions);
 
-            int currentReachableVisitId =
-                MarkReachableCells(
-                    playerPosition);
+            int currentReachableVisitId = MarkReachableCells(playerPosition);
 
             Point[] directions =
             {
                 new Point(0, -1),
                 new Point(0, 1),
                 new Point(-1, 0),
-                new Point(1, 0)
+                new Point(1, 0),
             };
 
-            for (int crateIndex = 0;
-                 crateIndex < cratePositions.Count;
-                 crateIndex++)
+            for (int crateIndex = 0; crateIndex < cratePositions.Count; crateIndex++)
             {
-                Point cratePosition =
-                    cratePositions[crateIndex];
+                Point cratePosition = cratePositions[crateIndex];
 
-                int distance =
-                    level.Crates[crateIndex].Distance;
+                int distance = level.Crates[crateIndex].Distance;
 
                 foreach (Point direction in directions)
                 {
-                    Point playerRequiredPosition =
-                        new Point(
-                            cratePosition.X - direction.X,
-                            cratePosition.Y - direction.Y);
+                    Point playerRequiredPosition = new Point(
+                        cratePosition.X - direction.X,
+                        cratePosition.Y - direction.Y
+                    );
 
-                    if (!IsReachable(
-                        playerRequiredPosition,
-                        currentReachableVisitId))
+                    if (!IsReachable(playerRequiredPosition, currentReachableVisitId))
                     {
                         continue;
                     }
 
-                    Point finalPosition =
-                        cratePosition;
+                    Point finalPosition = cratePosition;
 
-                    bool blocked =
-                        false;
+                    bool blocked = false;
 
-                    for (int step = 1;
-                         step <= distance;
-                         step++)
+                    for (int step = 1; step <= distance; step++)
                     {
-                        Point testPosition =
-                            new Point(
-                                cratePosition.X +
-                                    direction.X * step,
-                                cratePosition.Y +
-                                    direction.Y * step);
+                        Point testPosition = new Point(
+                            cratePosition.X + direction.X * step,
+                            cratePosition.Y + direction.Y * step
+                        );
 
-                        if (IsWall(testPosition) ||
-                            IsOccupiedByAnyCrate(
-                                testPosition))
+                        if (IsWall(testPosition) || IsOccupiedByAnyCrate(testPosition))
                         {
                             blocked = true;
                             break;
                         }
 
-                        finalPosition =
-                            testPosition;
+                        finalPosition = testPosition;
                     }
 
                     if (blocked)
@@ -684,14 +568,12 @@ IReadOnlyList<long> canonicalCrateKeys)
                         continue;
                     }
 
-                    if (IsStaticCornerDeadlock(
-                        finalPosition))
+                    if (IsStaticCornerDeadlock(finalPosition))
                     {
                         continue;
                     }
 
-                    legalPushes.Add(
-                        (crateIndex, direction));
+                    legalPushes.Add((crateIndex, direction));
                 }
             }
 
@@ -703,21 +585,18 @@ IReadOnlyList<long> canonicalCrateKeys)
         /// </summary>
         public int FindMinimumPushes()
         {
-            NumberPushSolution solution =
-                FindSolution();
+            NumberPushSolution solution = FindSolution();
 
             return solution.MinimumPushes;
         }
 
-        private int CountCratesOnGoals(
-            IReadOnlyList<Point> cratePositions)
+        private int CountCratesOnGoals(IReadOnlyList<Point> cratePositions)
         {
             int count = 0;
 
             foreach (Point cratePosition in cratePositions)
             {
-                if (level.Goals.Contains(
-                    cratePosition))
+                if (level.Goals.Contains(cratePosition))
                 {
                     count++;
                 }
@@ -727,173 +606,116 @@ IReadOnlyList<long> canonicalCrateKeys)
         }
 
         private void TryPush(
-    SolverState state,
-    int crateIndex,
-    int distance,
-    Point direction,
-    int currentReachableVisitId,
-    Queue<SolverState> queue,
-    HashSet<SolverState> visited)
+            SolverState state,
+            int crateIndex,
+            int distance,
+            Point direction,
+            int currentReachableVisitId,
+            Queue<SolverState> queue,
+            HashSet<SolverState> visited
+        )
         {
-            Point cratePosition =
-                state.CratePositions[crateIndex];
+            Point cratePosition = state.CratePositions[crateIndex];
 
-            Point playerRequiredPosition =
-                new Point(
-                    cratePosition.X - direction.X,
-                    cratePosition.Y - direction.Y);
+            Point playerRequiredPosition = new Point(
+                cratePosition.X - direction.X,
+                cratePosition.Y - direction.Y
+            );
 
-            long timingStart =
-                Stopwatch.GetTimestamp();
+            long timingStart = Stopwatch.GetTimestamp();
 
-            if (!IsReachable(
-                playerRequiredPosition,
-                currentReachableVisitId))
+            if (!IsReachable(playerRequiredPosition, currentReachableVisitId))
             {
-                PushValidationMilliseconds +=
-                    Stopwatch.GetElapsedTime(
-                        timingStart).Ticks;
+                PushValidationMilliseconds += Stopwatch.GetElapsedTime(timingStart).Ticks;
 
                 return;
             }
 
-            Point finalPosition =
-                cratePosition;
+            Point finalPosition = cratePosition;
 
-            for (int step = 1;
-                 step <= distance;
-                 step++)
+            for (int step = 1; step <= distance; step++)
             {
-                int testX =
-                    cratePosition.X +
-                    direction.X * step;
+                int testX = cratePosition.X + direction.X * step;
 
-                int testY =
-                    cratePosition.Y +
-                    direction.Y * step;
+                int testY = cratePosition.Y + direction.Y * step;
 
-                if (testX < 0 ||
-                    testX >= columns ||
-                    testY < 0 ||
-                    testY >= rows)
+                if (testX < 0 || testX >= columns || testY < 0 || testY >= rows)
                 {
-                    PushValidationMilliseconds +=
-                        Stopwatch.GetElapsedTime(
-                            timingStart).Ticks;
+                    PushValidationMilliseconds += Stopwatch.GetElapsedTime(timingStart).Ticks;
 
                     return;
                 }
 
-                int testIndex =
-                    testY * columns +
-                    testX;
+                int testIndex = testY * columns + testX;
 
-                if (wallPositions.Contains(
-                    new Point(
-                        testX,
-                        testY)))
+                if (wallPositions.Contains(new Point(testX, testY)))
                 {
-                    PushValidationMilliseconds +=
-                        Stopwatch.GetElapsedTime(
-                            timingStart).Ticks;
+                    PushValidationMilliseconds += Stopwatch.GetElapsedTime(timingStart).Ticks;
 
                     return;
                 }
 
-                if (crateOccupancyVisit[testIndex] ==
-                    crateOccupancyVisitId)
+                if (crateOccupancyVisit[testIndex] == crateOccupancyVisitId)
                 {
-                    PushValidationMilliseconds +=
-                        Stopwatch.GetElapsedTime(
-                            timingStart).Ticks;
+                    PushValidationMilliseconds += Stopwatch.GetElapsedTime(timingStart).Ticks;
 
                     return;
                 }
 
-                finalPosition =
-                    new Point(
-                        testX,
-                        testY);
+                finalPosition = new Point(testX, testY);
             }
 
-            PushValidationMilliseconds +=
-                Stopwatch.GetElapsedTime(
-                    timingStart).Ticks;
+            PushValidationMilliseconds += Stopwatch.GetElapsedTime(timingStart).Ticks;
 
-            timingStart =
-                Stopwatch.GetTimestamp();
+            timingStart = Stopwatch.GetTimestamp();
 
-            Point[] newCratePositions =
-                new Point[
-                    state.CratePositions.Length];
+            Point[] newCratePositions = new Point[state.CratePositions.Length];
 
-            Array.Copy(
-                state.CratePositions,
-                newCratePositions,
-                state.CratePositions.Length);
+            Array.Copy(state.CratePositions, newCratePositions, state.CratePositions.Length);
 
-            newCratePositions[crateIndex] =
-                finalPosition;
+            newCratePositions[crateIndex] = finalPosition;
 
-            ArrayCopyMilliseconds +=
-                Stopwatch.GetElapsedTime(
-                    timingStart).Ticks;
+            ArrayCopyMilliseconds += Stopwatch.GetElapsedTime(timingStart).Ticks;
 
-            timingStart =
-                Stopwatch.GetTimestamp();
+            timingStart = Stopwatch.GetTimestamp();
 
-            if (IsStaticCornerDeadlock(
-                finalPosition))
+            if (IsStaticCornerDeadlock(finalPosition))
             {
-                StaticDeadlockMilliseconds +=
-                    Stopwatch.GetElapsedTime(
-                        timingStart).Ticks;
+                StaticDeadlockMilliseconds += Stopwatch.GetElapsedTime(timingStart).Ticks;
 
                 return;
             }
 
-            StaticDeadlockMilliseconds +=
-                Stopwatch.GetElapsedTime(
-                    timingStart).Ticks;
+            StaticDeadlockMilliseconds += Stopwatch.GetElapsedTime(timingStart).Ticks;
 
             legalPushesForState++;
 
-            Point newPlayerPosition =
-                cratePosition;
+            Point newPlayerPosition = cratePosition;
 
-            timingStart =
-                Stopwatch.GetTimestamp();
+            timingStart = Stopwatch.GetTimestamp();
 
-            BuildCrateOccupancy(
-                newCratePositions);
+            BuildCrateOccupancy(newCratePositions);
 
-            OccupancyMilliseconds +=
-                Stopwatch.GetElapsedTime(
-                    timingStart).Ticks;
+            OccupancyMilliseconds += Stopwatch.GetElapsedTime(timingStart).Ticks;
 
-            timingStart =
-                Stopwatch.GetTimestamp();
+            timingStart = Stopwatch.GetTimestamp();
 
-            int newReachableVisitId =
-                MarkSuccessorReachableCells(
-                    newPlayerPosition);
+            int newReachableVisitId = MarkSuccessorReachableCells(newPlayerPosition);
 
-            SuccessorReachabilityMilliseconds +=
-                Stopwatch.GetElapsedTime(
-                    timingStart).Ticks;
+            SuccessorReachabilityMilliseconds += Stopwatch.GetElapsedTime(timingStart).Ticks;
 
-            int newPlayerRegion =
-                GetSuccessorPlayerRegionKey(
-                    newReachableVisitId);
+            int newPlayerRegion = GetSuccessorPlayerRegionKey(newReachableVisitId);
 
-            if (state.Parent != null &&
-    state.Step != null &&
-    state.Step.CrateIndex == crateIndex &&
-    state.Step.Direction.X == -direction.X &&
-    state.Step.Direction.Y == -direction.Y &&
-    cratePosition == state.Step.CrateEnd &&
-    finalPosition == state.Step.CrateStart &&
-    newPlayerRegion == state.Parent.PlayerRegion)
+            if (
+                state.Parent != null
+                && state.Step != null
+                && state.Step.CrateIndex == crateIndex
+                && state.Step.Direction.X == -direction.X
+                && state.Step.Direction.Y == -direction.Y
+                && cratePosition == state.Step.CrateEnd
+                && finalPosition == state.Step.CrateStart
+                && newPlayerRegion == state.Parent.PlayerRegion
+            )
             {
                 ExactParentReversalStates++;
 
@@ -902,66 +724,53 @@ IReadOnlyList<long> canonicalCrateKeys)
                 return;
             }
 
-            timingStart =
-                Stopwatch.GetTimestamp();
+            timingStart = Stopwatch.GetTimestamp();
 
-            BuildCrateOccupancy(
-                state.CratePositions);
+            BuildCrateOccupancy(state.CratePositions);
 
-            OccupancyMilliseconds +=
-                Stopwatch.GetElapsedTime(
-                    timingStart).Ticks;
+            OccupancyMilliseconds += Stopwatch.GetElapsedTime(timingStart).Ticks;
 
-            int oldPositionHash =
-                HashCode.Combine(
-                    cratePosition.X,
-                    cratePosition.Y);
+            int oldPositionHash = HashCode.Combine(cratePosition.X, cratePosition.Y);
 
-            int newPositionHash =
-                HashCode.Combine(
-                    finalPosition.X,
-                    finalPosition.Y);
+            int newPositionHash = HashCode.Combine(finalPosition.X, finalPosition.Y);
 
-            int newPositionHashSum =
-                state.PositionHashSum -
-                oldPositionHash +
-                newPositionHash;
+            int newPositionHashSum = state.PositionHashSum - oldPositionHash + newPositionHash;
 
             int newPositionHashSquareSum =
-                state.PositionHashSquareSum -
-                oldPositionHash * oldPositionHash +
-                newPositionHash * newPositionHash;
+                state.PositionHashSquareSum
+                - oldPositionHash * oldPositionHash
+                + newPositionHash * newPositionHash;
 
-            StateConstructionMilliseconds +=
-                Stopwatch.GetElapsedTime(
-                    timingStart).Ticks;
+            StateConstructionMilliseconds += Stopwatch.GetElapsedTime(timingStart).Ticks;
 
-            timingStart =
-                Stopwatch.GetTimestamp();
+            timingStart = Stopwatch.GetTimestamp();
 
             long[] newCanonicalCrateKeys = CreateCanonicalCrateKeys(newCratePositions);
 
-            int newCanonicalCrateHash =
-CreateCanonicalCrateHash(
-newCanonicalCrateKeys);
+            int newCanonicalCrateHash = CreateCanonicalCrateHash(newCanonicalCrateKeys);
 
-            SolverState newState = new SolverState(newPlayerPosition, newCratePositions, state.Pushes + 1,
-                state, null, newPositionHashSum, newPositionHashSquareSum, newCanonicalCrateKeys, newCanonicalCrateHash)
-            { PlayerRegion = newPlayerRegion };
-
-            StateConstructionMilliseconds +=
-                Stopwatch.GetElapsedTime(
-                    timingStart).Ticks;
-
-            timingStart =
-                Stopwatch.GetTimestamp();
-
-            if (!visited.Add(
-    newState))
+            SolverState newState = new SolverState(
+                newPlayerPosition,
+                newCratePositions,
+                state.Pushes + 1,
+                state,
+                null,
+                newPositionHashSum,
+                newPositionHashSquareSum,
+                newCanonicalCrateKeys,
+                newCanonicalCrateHash
+            )
             {
-                HashSetLookupMilliseconds +=
-                    Stopwatch.GetElapsedTime(
-                        timingStart).Ticks;
+                PlayerRegion = newPlayerRegion,
+            };
+
+            StateConstructionMilliseconds += Stopwatch.GetElapsedTime(timingStart).Ticks;
+
+            timingStart = Stopwatch.GetTimestamp();
+
+            if (!visited.Add(newState))
+            {
+                HashSetLookupMilliseconds += Stopwatch.GetElapsedTime(timingStart).Ticks;
 
                 HashSetDuplicateStates++;
 
@@ -970,29 +779,21 @@ newCanonicalCrateKeys);
                 return;
             }
 
-            HashSetLookupMilliseconds +=
-                Stopwatch.GetElapsedTime(
-                    timingStart).Ticks;
+            HashSetLookupMilliseconds += Stopwatch.GetElapsedTime(timingStart).Ticks;
 
             UniqueSuccessorStates++;
 
             // Only the pushed crate changes position, so we can determine
             // goal progress by comparing its old and new positions.
-            bool crateStartedOnGoal =
-                goalPositions.Contains(
-                    cratePosition);
+            bool crateStartedOnGoal = goalPositions.Contains(cratePosition);
 
-            bool crateEndedOnGoal =
-                goalPositions.Contains(
-                    finalPosition);
+            bool crateEndedOnGoal = goalPositions.Contains(finalPosition);
 
-            if (crateEndedOnGoal &&
-                !crateStartedOnGoal)
+            if (crateEndedOnGoal && !crateStartedOnGoal)
             {
                 GoalProgressIncreases++;
             }
-            else if (!crateEndedOnGoal &&
-                     crateStartedOnGoal)
+            else if (!crateEndedOnGoal && crateStartedOnGoal)
             {
                 GoalProgressDecreases++;
             }
@@ -1001,89 +802,64 @@ newCanonicalCrateKeys);
                 GoalProgressUnchanged++;
             }
 
-            NumberPushSolutionStep stepData =
-                new NumberPushSolutionStep
-                {
-                    CrateIndex = crateIndex,
+            NumberPushSolutionStep stepData = new NumberPushSolutionStep
+            {
+                CrateIndex = crateIndex,
 
-                    PlayerStart =
-                        state.PlayerPosition,
+                PlayerStart = state.PlayerPosition,
 
-                    PlayerPushPosition =
-                        playerRequiredPosition,
+                PlayerPushPosition = playerRequiredPosition,
 
-                    CrateStart =
-                        cratePosition,
+                CrateStart = cratePosition,
 
-                    CrateEnd =
-                        finalPosition,
+                CrateEnd = finalPosition,
 
-                    Direction =
-                        direction,
+                Direction = direction,
 
-                    Distance =
-                        distance,
+                Distance = distance,
 
-                    PlayerPath =
-                        new List<Point>()
-                };
+                PlayerPath = new List<Point>(),
+            };
 
-            newState.Step =
-                stepData;
+            newState.Step = stepData;
 
-            queue.Enqueue(
-                newState);
+            queue.Enqueue(newState);
         }
 
-        private void AnalyzeFirstZeroPushState(
-            SolverState state)
+        private void AnalyzeFirstZeroPushState(SolverState state)
         {
             Point[] directions =
             {
                 new Point(0, -1),
                 new Point(0, 1),
                 new Point(-1, 0),
-                new Point(1, 0)
+                new Point(1, 0),
             };
 
-            BuildCrateOccupancy(
-                state.CratePositions);
+            BuildCrateOccupancy(state.CratePositions);
 
-            int currentReachableVisitId =
-                MarkReachableCells(
-                    state.PlayerPosition);
+            int currentReachableVisitId = MarkReachableCells(state.PlayerPosition);
 
-            for (int crateIndex = 0;
-                 crateIndex < state.CratePositions.Length;
-                 crateIndex++)
+            for (int crateIndex = 0; crateIndex < state.CratePositions.Length; crateIndex++)
             {
-                Point cratePosition =
-                    state.CratePositions[crateIndex];
+                Point cratePosition = state.CratePositions[crateIndex];
 
-                bool playerAccessBlocked =
-                    false;
+                bool playerAccessBlocked = false;
 
-                bool wallBlocked =
-                    false;
+                bool wallBlocked = false;
 
-                bool crateBlocked =
-                    false;
+                bool crateBlocked = false;
 
-                bool cornerDeadlocked =
-                    false;
+                bool cornerDeadlocked = false;
 
                 foreach (Point direction in directions)
                 {
-                    Point playerRequiredPosition =
-                        new Point(
-                            cratePosition.X -
-                                direction.X,
-                            cratePosition.Y -
-                                direction.Y);
+                    Point playerRequiredPosition = new Point(
+                        cratePosition.X - direction.X,
+                        cratePosition.Y - direction.Y
+                    );
 
-                    if (!IsReachable(
-                        playerRequiredPosition,
-                        currentReachableVisitId))
+                    if (!IsReachable(playerRequiredPosition, currentReachableVisitId))
                     {
                         playerAccessBlocked = true;
 
@@ -1107,47 +883,33 @@ newCanonicalCrateKeys);
                         continue;
                     }
 
-                    Point finalPosition =
-                        cratePosition;
+                    Point finalPosition = cratePosition;
 
-                    bool pathBlocked =
-                        false;
+                    bool pathBlocked = false;
 
-                    for (int step = 1;
-                         step <= level.Crates[crateIndex].Distance;
-                         step++)
+                    for (int step = 1; step <= level.Crates[crateIndex].Distance; step++)
                     {
-                        int testX =
-                            cratePosition.X +
-                            direction.X * step;
+                        int testX = cratePosition.X + direction.X * step;
 
-                        int testY =
-                            cratePosition.Y +
-                            direction.Y * step;
+                        int testY = cratePosition.Y + direction.Y * step;
 
-                        Point testPosition =
-                            new Point(
-                                testX,
-                                testY);
+                        Point testPosition = new Point(testX, testY);
 
-                        if (IsWall(
-                            testPosition))
+                        if (IsWall(testPosition))
                         {
                             wallBlocked = true;
                             pathBlocked = true;
                             break;
                         }
 
-                        if (IsOccupiedByAnyCrate(
-                            testPosition))
+                        if (IsOccupiedByAnyCrate(testPosition))
                         {
                             crateBlocked = true;
                             pathBlocked = true;
                             break;
                         }
 
-                        finalPosition =
-                            testPosition;
+                        finalPosition = testPosition;
                     }
 
                     if (pathBlocked)
@@ -1155,8 +917,7 @@ newCanonicalCrateKeys);
                         continue;
                     }
 
-                    if (IsStaticCornerDeadlock(
-                        finalPosition))
+                    if (IsStaticCornerDeadlock(finalPosition))
                     {
                         cornerDeadlocked = true;
                     }
@@ -1183,101 +944,75 @@ newCanonicalCrateKeys);
                 }
             }
 
-            AnalyzeLastPushedCrate(
-                state);
+            AnalyzeLastPushedCrate(state);
         }
 
-        private void AnalyzeLastPushedCrate(
-            SolverState state)
+        private void AnalyzeLastPushedCrate(SolverState state)
         {
             if (state.Step == null)
             {
                 return;
             }
 
-            int crateIndex =
-                state.Step.CrateIndex;
+            int crateIndex = state.Step.CrateIndex;
 
-            if (crateIndex < 0 ||
-                crateIndex >= state.CratePositions.Length)
+            if (crateIndex < 0 || crateIndex >= state.CratePositions.Length)
             {
                 return;
             }
 
-            Point cratePosition =
-                state.CratePositions[crateIndex];
+            Point cratePosition = state.CratePositions[crateIndex];
 
             Point[] directions =
             {
                 new Point(0, -1),
                 new Point(0, 1),
                 new Point(-1, 0),
-                new Point(1, 0)
+                new Point(1, 0),
             };
 
             foreach (Point direction in directions)
             {
-                Point playerRequiredPosition =
-                    new Point(
-                        cratePosition.X -
-                            direction.X,
-                        cratePosition.Y -
-                            direction.Y);
+                Point playerRequiredPosition = new Point(
+                    cratePosition.X - direction.X,
+                    cratePosition.Y - direction.Y
+                );
 
-                int currentReachableVisitId =
-                    MarkReachableCells(
-                        state.PlayerPosition);
+                int currentReachableVisitId = MarkReachableCells(state.PlayerPosition);
 
-                if (!IsReachable(
-                    playerRequiredPosition,
-                    currentReachableVisitId))
+                if (!IsReachable(playerRequiredPosition, currentReachableVisitId))
                 {
                     FirstZeroPushLastCratePlayerAccessBlocked++;
                     continue;
                 }
 
-                Point finalPosition =
-                    cratePosition;
+                Point finalPosition = cratePosition;
 
-                bool wallBlocked =
-                    false;
+                bool wallBlocked = false;
 
-                bool crateBlocked =
-                    false;
+                bool crateBlocked = false;
 
-                for (int step = 1;
-                     step <= level.Crates[crateIndex].Distance;
-                     step++)
+                for (int step = 1; step <= level.Crates[crateIndex].Distance; step++)
                 {
-                    int testX =
-                        cratePosition.X +
-                        direction.X * step;
+                    int testX = cratePosition.X + direction.X * step;
 
-                    int testY =
-                        cratePosition.Y +
-                        direction.Y * step;
+                    int testY = cratePosition.Y + direction.Y * step;
 
-                    Point testPosition =
-                        new Point(
-                            testX,
-                            testY);
+                    Point testPosition = new Point(testX, testY);
 
-                    if (IsWall(
-                        testPosition))
+                    if (IsWall(testPosition))
                     {
                         wallBlocked = true;
                         break;
                     }
 
-                    if (IsOccupiedByAnyCrate(
-                        testPosition))
+                    if (IsOccupiedByAnyCrate(testPosition))
                     {
                         crateBlocked = true;
                         break;
                     }
 
-                    finalPosition =
-                        testPosition;
+                    finalPosition = testPosition;
                 }
 
                 if (wallBlocked)
@@ -1292,8 +1027,7 @@ newCanonicalCrateKeys);
                     continue;
                 }
 
-                if (IsStaticCornerDeadlock(
-                    finalPosition))
+                if (IsStaticCornerDeadlock(finalPosition))
                 {
                     FirstZeroPushLastCrateCornerDeadlocked++;
                     continue;
@@ -1313,21 +1047,15 @@ newCanonicalCrateKeys);
         /// This lets the solver treat different player positions in the
         /// same walkable region as the same state.
         /// </summary>
-        private int GetPlayerRegionKey(
-            int currentReachableVisitId)
+        private int GetPlayerRegionKey(int currentReachableVisitId)
         {
-            int regionKey =
-                int.MaxValue;
+            int regionKey = int.MaxValue;
 
-            for (int index = 0;
-                 index < reachableVisit.Length;
-                 index++)
+            for (int index = 0; index < reachableVisit.Length; index++)
             {
-                if (reachableVisit[index] ==
-                    currentReachableVisitId)
+                if (reachableVisit[index] == currentReachableVisitId)
                 {
-                    regionKey =
-                        index;
+                    regionKey = index;
 
                     break;
                 }
@@ -1336,21 +1064,15 @@ newCanonicalCrateKeys);
             return regionKey;
         }
 
-        private int GetSuccessorPlayerRegionKey(
-            int currentReachableVisitId)
+        private int GetSuccessorPlayerRegionKey(int currentReachableVisitId)
         {
-            int regionKey =
-                int.MaxValue;
+            int regionKey = int.MaxValue;
 
-            for (int index = 0;
-                 index < successorReachableVisit.Length;
-                 index++)
+            for (int index = 0; index < successorReachableVisit.Length; index++)
             {
-                if (successorReachableVisit[index] ==
-                    currentReachableVisitId)
+                if (successorReachableVisit[index] == currentReachableVisitId)
                 {
-                    regionKey =
-                        index;
+                    regionKey = index;
 
                     break;
                 }
@@ -1359,121 +1081,84 @@ newCanonicalCrateKeys);
             return regionKey;
         }
 
-        private bool IsStaticCornerDeadlock(
-            Point position)
+        private bool IsStaticCornerDeadlock(Point position)
         {
-            if (goalPositions.Contains(
-                position))
+            if (goalPositions.Contains(position))
             {
                 return false;
             }
 
-            bool wallUp =
-                IsWall(
-                    new Point(
-                        position.X,
-                        position.Y - 1));
+            bool wallUp = IsWall(new Point(position.X, position.Y - 1));
 
-            bool wallDown =
-                IsWall(
-                    new Point(
-                        position.X,
-                        position.Y + 1));
+            bool wallDown = IsWall(new Point(position.X, position.Y + 1));
 
-            bool wallLeft =
-                IsWall(
-                    new Point(
-                        position.X - 1,
-                        position.Y));
+            bool wallLeft = IsWall(new Point(position.X - 1, position.Y));
 
-            bool wallRight =
-                IsWall(
-                    new Point(
-                        position.X + 1,
-                        position.Y));
+            bool wallRight = IsWall(new Point(position.X + 1, position.Y));
 
-            return
-                (wallUp && wallLeft) ||
-                (wallUp && wallRight) ||
-                (wallDown && wallLeft) ||
-                (wallDown && wallRight);
+            return (wallUp && wallLeft)
+                || (wallUp && wallRight)
+                || (wallDown && wallLeft)
+                || (wallDown && wallRight);
         }
 
-        private NumberPushSolution BuildSolution(
-            SolverState finalState)
+        private NumberPushSolution BuildSolution(SolverState finalState)
         {
-            List<NumberPushSolutionStep> steps =
-                new();
+            List<NumberPushSolutionStep> steps = new();
 
-            SolverState? current =
-                finalState;
+            SolverState? current = finalState;
 
-            while (current != null &&
-                   current.Parent != null)
+            while (current != null && current.Parent != null)
             {
                 if (current.Step != null)
                 {
-                    NumberPushSolutionStep step =
-                        current.Step;
+                    NumberPushSolutionStep step = current.Step;
 
-                    step.PlayerPath =
-                        FindPlayerPath(
-                            step.PlayerStart,
-                            step.PlayerPushPosition,
-                            current.Parent.CratePositions);
+                    step.PlayerPath = FindPlayerPath(
+                        step.PlayerStart,
+                        step.PlayerPushPosition,
+                        current.Parent.CratePositions
+                    );
 
-                    steps.Add(
-                        step);
+                    steps.Add(step);
                 }
 
-                current =
-                    current.Parent;
+                current = current.Parent;
             }
 
             steps.Reverse();
 
-            for (int i = 0;
-                 i < steps.Count;
-                 i++)
+            for (int i = 0; i < steps.Count; i++)
             {
-                steps[i].PushNumber =
-                    i + 1;
+                steps[i].PushNumber = i + 1;
             }
 
-            NumberPushSolution solution =
-                new NumberPushSolution
-                {
-                    IsSolved = true,
-                    MinimumPushes =
-                        finalState.Pushes,
-                    Steps = steps
-                };
+            NumberPushSolution solution = new NumberPushSolution
+            {
+                IsSolved = true,
+                MinimumPushes = finalState.Pushes,
+                Steps = steps,
+            };
 
             foreach (NumberPushSolutionStep step in steps)
             {
-                if (solution.CratePushCounts.ContainsKey(
-                    step.CrateIndex))
+                if (solution.CratePushCounts.ContainsKey(step.CrateIndex))
                 {
                     solution.CratePushCounts[step.CrateIndex]++;
                 }
                 else
                 {
-                    solution.CratePushCounts[step.CrateIndex] =
-                        1;
+                    solution.CratePushCounts[step.CrateIndex] = 1;
                 }
 
-                if (!solution.CrateFirstPushNumbers.ContainsKey(
-                    step.CrateIndex))
+                if (!solution.CrateFirstPushNumbers.ContainsKey(step.CrateIndex))
                 {
-                    solution.CrateFirstPushNumbers[step.CrateIndex] =
-                        step.PushNumber;
+                    solution.CrateFirstPushNumbers[step.CrateIndex] = step.PushNumber;
                 }
 
-                solution.CrateLastPushNumbers[step.CrateIndex] =
-                    step.PushNumber;
+                solution.CrateLastPushNumbers[step.CrateIndex] = step.PushNumber;
 
-                solution.CrateGoalPositions[step.CrateIndex] =
-                    step.CrateEnd;
+                solution.CrateGoalPositions[step.CrateIndex] = step.CrateEnd;
             }
 
             return solution;
@@ -1482,85 +1167,63 @@ newCanonicalCrateKeys);
         private List<Point> FindPlayerPath(
             Point startPosition,
             Point targetPosition,
-            IReadOnlyList<Point> cratePositions)
+            IReadOnlyList<Point> cratePositions
+        )
         {
             if (startPosition == targetPosition)
             {
-                return new List<Point>
-                {
-                    startPosition
-                };
+                return new List<Point> { startPosition };
             }
 
-            Queue<Point> queue =
-                new();
+            Queue<Point> queue = new();
 
-            HashSet<Point> visited =
-                new();
+            HashSet<Point> visited = new();
 
-            Dictionary<Point, Point> parents =
-                new();
+            Dictionary<Point, Point> parents = new();
 
-            queue.Enqueue(
-                startPosition);
+            queue.Enqueue(startPosition);
 
-            visited.Add(
-                startPosition);
+            visited.Add(startPosition);
 
             Point[] directions =
             {
                 new Point(0, -1),
                 new Point(0, 1),
                 new Point(-1, 0),
-                new Point(1, 0)
+                new Point(1, 0),
             };
 
             while (queue.Count > 0)
             {
-                Point current =
-                    queue.Dequeue();
+                Point current = queue.Dequeue();
 
                 foreach (Point direction in directions)
                 {
-                    Point next =
-                        new Point(
-                            current.X +
-                                direction.X,
-                            current.Y +
-                                direction.Y);
+                    Point next = new Point(current.X + direction.X, current.Y + direction.Y);
 
-                    if (IsWall(
-                        next))
+                    if (IsWall(next))
                     {
                         continue;
                     }
 
-                    if (IsOccupiedByAnyCrate(
-                        next,
-                        cratePositions))
+                    if (IsOccupiedByAnyCrate(next, cratePositions))
                     {
                         continue;
                     }
 
-                    if (!visited.Add(
-                        next))
+                    if (!visited.Add(next))
                     {
                         continue;
                     }
 
-                    parents[next] =
-                        current;
+                    parents[next] = current;
 
                     if (next == targetPosition)
                     {
-                        return ReconstructPlayerPath(
-                            startPosition,
-                            targetPosition,
-                            parents);
+                        return ReconstructPlayerPath(startPosition, targetPosition, parents);
                     }
 
-                    queue.Enqueue(
-                        next);
+                    queue.Enqueue(next);
                 }
             }
 
@@ -1570,31 +1233,25 @@ newCanonicalCrateKeys);
         private List<Point> ReconstructPlayerPath(
             Point startPosition,
             Point targetPosition,
-            Dictionary<Point, Point> parents)
+            Dictionary<Point, Point> parents
+        )
         {
-            List<Point> path =
-                new();
+            List<Point> path = new();
 
-            Point current =
-                targetPosition;
+            Point current = targetPosition;
 
-            path.Add(
-                current);
+            path.Add(current);
 
             while (current != startPosition)
             {
-                if (!parents.TryGetValue(
-                    current,
-                    out Point parent))
+                if (!parents.TryGetValue(current, out Point parent))
                 {
                     return new List<Point>();
                 }
 
-                current =
-                    parent;
+                current = parent;
 
-                path.Add(
-                    current);
+                path.Add(current);
             }
 
             path.Reverse();
@@ -1606,37 +1263,32 @@ newCanonicalCrateKeys);
         /// Builds a reusable occupancy map for the current crate
         /// configuration.
         /// </summary>
-        private void BuildCrateOccupancy(
-            IReadOnlyList<Point> cratePositions)
+        private void BuildCrateOccupancy(IReadOnlyList<Point> cratePositions)
         {
             crateOccupancyVisitId++;
 
             if (crateOccupancyVisitId == int.MaxValue)
             {
-                Array.Clear(
-                    crateOccupancyVisit,
-                    0,
-                    crateOccupancyVisit.Length);
+                Array.Clear(crateOccupancyVisit, 0, crateOccupancyVisit.Length);
 
                 crateOccupancyVisitId = 1;
             }
 
             foreach (Point cratePosition in cratePositions)
             {
-                if (cratePosition.X < 0 ||
-                    cratePosition.X >= columns ||
-                    cratePosition.Y < 0 ||
-                    cratePosition.Y >= rows)
+                if (
+                    cratePosition.X < 0
+                    || cratePosition.X >= columns
+                    || cratePosition.Y < 0
+                    || cratePosition.Y >= rows
+                )
                 {
                     continue;
                 }
 
-                int index =
-                    GetCellIndex(
-                        cratePosition);
+                int index = GetCellIndex(cratePosition);
 
-                crateOccupancyVisit[index] =
-                    crateOccupancyVisitId;
+                crateOccupancyVisit[index] = crateOccupancyVisitId;
             }
         }
 
@@ -1646,198 +1298,145 @@ newCanonicalCrateKeys);
         ///
         /// The visitation array and queue are reused between calls.
         /// </summary>
-        private int MarkReachableCells(
-            Point startPosition)
+        private int MarkReachableCells(Point startPosition)
         {
             reachableVisitId++;
 
             if (reachableVisitId == int.MaxValue)
             {
-                Array.Clear(
-                    reachableVisit,
-                    0,
-                    reachableVisit.Length);
+                Array.Clear(reachableVisit, 0, reachableVisit.Length);
 
                 reachableVisitId = 1;
             }
 
-            if (IsWall(
-                startPosition) ||
-                IsOccupiedByAnyCrate(
-                    startPosition))
+            if (IsWall(startPosition) || IsOccupiedByAnyCrate(startPosition))
             {
                 return reachableVisitId;
             }
 
-            int startIndex =
-                GetCellIndex(
-                    startPosition);
+            int startIndex = GetCellIndex(startPosition);
 
             int head = 0;
 
             int tail = 0;
 
-            reachableQueue[tail++] =
-                startIndex;
+            reachableQueue[tail++] = startIndex;
 
-            reachableVisit[startIndex] =
-                reachableVisitId;
+            reachableVisit[startIndex] = reachableVisitId;
 
             while (head < tail)
             {
-                int currentIndex =
-                    reachableQueue[head++];
+                int currentIndex = reachableQueue[head++];
 
-                int currentX =
-                    currentIndex % columns;
+                int currentX = currentIndex % columns;
 
-                int currentY =
-                    currentIndex / columns;
+                int currentY = currentIndex / columns;
 
-                MarkReachableNeighbor(
-                    currentX,
-                    currentY - 1,
-                    ref tail);
+                MarkReachableNeighbor(currentX, currentY - 1, ref tail);
 
-                MarkReachableNeighbor(
-                    currentX,
-                    currentY + 1,
-                    ref tail);
+                MarkReachableNeighbor(currentX, currentY + 1, ref tail);
 
-                MarkReachableNeighbor(
-                    currentX - 1,
-                    currentY,
-                    ref tail);
+                MarkReachableNeighbor(currentX - 1, currentY, ref tail);
 
-                MarkReachableNeighbor(
-                    currentX + 1,
-                    currentY,
-                    ref tail);
+                MarkReachableNeighbor(currentX + 1, currentY, ref tail);
             }
 
             return reachableVisitId;
         }
 
-
-        private int MarkSuccessorReachableCells(
-    Point startPosition)
+        private int MarkSuccessorReachableCells(Point startPosition)
         {
             successorReachableVisitId++;
 
             if (successorReachableVisitId == int.MaxValue)
             {
-                Array.Clear(
-                    successorReachableVisit,
-                    0,
-                    successorReachableVisit.Length);
+                Array.Clear(successorReachableVisit, 0, successorReachableVisit.Length);
 
                 successorReachableVisitId = 1;
             }
 
-            if (IsWall(
-                startPosition) ||
-                IsOccupiedByAnyCrate(
-                    startPosition))
+            if (IsWall(startPosition) || IsOccupiedByAnyCrate(startPosition))
             {
                 return successorReachableVisitId;
             }
 
-            int startIndex =
-                GetCellIndex(
-                    startPosition);
+            int startIndex = GetCellIndex(startPosition);
 
             int head = 0;
 
             int tail = 0;
 
-            successorReachableQueue[tail++] =
-                startIndex;
+            successorReachableQueue[tail++] = startIndex;
 
-            successorReachableVisit[startIndex] =
-                successorReachableVisitId;
+            successorReachableVisit[startIndex] = successorReachableVisitId;
 
             while (head < tail)
             {
-                int currentIndex =
-                    successorReachableQueue[head++];
+                int currentIndex = successorReachableQueue[head++];
 
-                int currentX =
-                    currentIndex % columns;
+                int currentX = currentIndex % columns;
 
                 if (currentX > 0)
                 {
-                    int index =
-                        currentIndex - 1;
+                    int index = currentIndex - 1;
 
-                    if (successorReachableVisit[index] !=
-                        successorReachableVisitId &&
-                        !blockedCells[index] &&
-                        crateOccupancyVisit[index] !=
-                            crateOccupancyVisitId)
+                    if (
+                        successorReachableVisit[index] != successorReachableVisitId
+                        && !blockedCells[index]
+                        && crateOccupancyVisit[index] != crateOccupancyVisitId
+                    )
                     {
-                        successorReachableVisit[index] =
-                            successorReachableVisitId;
+                        successorReachableVisit[index] = successorReachableVisitId;
 
-                        successorReachableQueue[tail++] =
-                            index;
+                        successorReachableQueue[tail++] = index;
                     }
                 }
 
                 if (currentX < columns - 1)
                 {
-                    int index =
-                        currentIndex + 1;
+                    int index = currentIndex + 1;
 
-                    if (successorReachableVisit[index] !=
-                        successorReachableVisitId &&
-                        !blockedCells[index] &&
-                        crateOccupancyVisit[index] !=
-                            crateOccupancyVisitId)
+                    if (
+                        successorReachableVisit[index] != successorReachableVisitId
+                        && !blockedCells[index]
+                        && crateOccupancyVisit[index] != crateOccupancyVisitId
+                    )
                     {
-                        successorReachableVisit[index] =
-                            successorReachableVisitId;
+                        successorReachableVisit[index] = successorReachableVisitId;
 
-                        successorReachableQueue[tail++] =
-                            index;
+                        successorReachableQueue[tail++] = index;
                     }
                 }
 
                 if (currentIndex >= columns)
                 {
-                    int index =
-                        currentIndex - columns;
+                    int index = currentIndex - columns;
 
-                    if (successorReachableVisit[index] !=
-                        successorReachableVisitId &&
-                        !blockedCells[index] &&
-                        crateOccupancyVisit[index] !=
-                            crateOccupancyVisitId)
+                    if (
+                        successorReachableVisit[index] != successorReachableVisitId
+                        && !blockedCells[index]
+                        && crateOccupancyVisit[index] != crateOccupancyVisitId
+                    )
                     {
-                        successorReachableVisit[index] =
-                            successorReachableVisitId;
+                        successorReachableVisit[index] = successorReachableVisitId;
 
-                        successorReachableQueue[tail++] =
-                            index;
+                        successorReachableQueue[tail++] = index;
                     }
                 }
 
-                if (currentIndex <
-                    successorReachableVisit.Length - columns)
+                if (currentIndex < successorReachableVisit.Length - columns)
                 {
-                    int index =
-                        currentIndex + columns;
+                    int index = currentIndex + columns;
 
-                    if (successorReachableVisit[index] !=
-                        successorReachableVisitId &&
-                        !blockedCells[index] &&
-                        crateOccupancyVisit[index] !=
-                            crateOccupancyVisitId)
+                    if (
+                        successorReachableVisit[index] != successorReachableVisitId
+                        && !blockedCells[index]
+                        && crateOccupancyVisit[index] != crateOccupancyVisitId
+                    )
                     {
-                        successorReachableVisit[index] =
-                            successorReachableVisitId;
+                        successorReachableVisit[index] = successorReachableVisitId;
 
-                        successorReachableQueue[tail++] =
-                            index;
+                        successorReachableQueue[tail++] = index;
                     }
                 }
             }
@@ -1845,70 +1444,47 @@ newCanonicalCrateKeys);
             return successorReachableVisitId;
         }
 
-        private void MarkReachableNeighbor(
-            int x,
-            int y,
-            ref int tail)
+        private void MarkReachableNeighbor(int x, int y, ref int tail)
         {
-            if (x < 0 ||
-                x >= columns ||
-                y < 0 ||
-                y >= rows)
+            if (x < 0 || x >= columns || y < 0 || y >= rows)
             {
                 return;
             }
 
-            int index =
-                y * columns + x;
+            int index = y * columns + x;
 
-            if (reachableVisit[index] ==
-                reachableVisitId)
+            if (reachableVisit[index] == reachableVisitId)
             {
                 return;
             }
 
-            Point position =
-                new Point(
-                    x,
-                    y);
+            Point position = new Point(x, y);
 
-            if (IsWall(
-                position))
+            if (IsWall(position))
             {
                 return;
             }
 
-            if (crateOccupancyVisit[index] ==
-                crateOccupancyVisitId)
+            if (crateOccupancyVisit[index] == crateOccupancyVisitId)
             {
                 return;
             }
 
-            reachableVisit[index] =
-                reachableVisitId;
+            reachableVisit[index] = reachableVisitId;
 
-            reachableQueue[tail++] =
-                index;
+            reachableQueue[tail++] = index;
         }
 
-        private void MarkSuccessorReachableNeighbor(
-    int x,
-    int y,
-    ref int tail)
+        private void MarkSuccessorReachableNeighbor(int x, int y, ref int tail)
         {
-            if (x < 0 ||
-                x >= columns ||
-                y < 0 ||
-                y >= rows)
+            if (x < 0 || x >= columns || y < 0 || y >= rows)
             {
                 return;
             }
 
-            int index =
-                y * columns + x;
+            int index = y * columns + x;
 
-            if (successorReachableVisit[index] ==
-                successorReachableVisitId)
+            if (successorReachableVisit[index] == successorReachableVisitId)
             {
                 return;
             }
@@ -1918,55 +1494,38 @@ newCanonicalCrateKeys);
                 return;
             }
 
-            if (crateOccupancyVisit[index] ==
-                crateOccupancyVisitId)
+            if (crateOccupancyVisit[index] == crateOccupancyVisitId)
             {
                 return;
             }
 
-            successorReachableVisit[index] =
-                successorReachableVisitId;
+            successorReachableVisit[index] = successorReachableVisitId;
 
-            successorReachableQueue[tail++] =
-                index;
+            successorReachableQueue[tail++] = index;
         }
 
-        private bool IsReachable(
-            Point position,
-            int currentReachableVisitId)
+        private bool IsReachable(Point position, int currentReachableVisitId)
         {
-            if (position.X < 0 ||
-                position.X >= columns ||
-                position.Y < 0 ||
-                position.Y >= rows)
+            if (position.X < 0 || position.X >= columns || position.Y < 0 || position.Y >= rows)
             {
                 return false;
             }
 
-            int index =
-                GetCellIndex(
-                    position);
+            int index = GetCellIndex(position);
 
-            return
-                reachableVisit[index] ==
-                currentReachableVisitId;
+            return reachableVisit[index] == currentReachableVisitId;
         }
 
-        private int GetCellIndex(
-            Point position)
+        private int GetCellIndex(Point position)
         {
-            return
-                position.Y * columns +
-                position.X;
+            return position.Y * columns + position.X;
         }
 
-        private bool IsComplete(
-            IReadOnlyList<Point> cratePositions)
+        private bool IsComplete(IReadOnlyList<Point> cratePositions)
         {
             foreach (Point cratePosition in cratePositions)
             {
-                if (!goalPositions.Contains(
-                    cratePosition))
+                if (!goalPositions.Contains(cratePosition))
                 {
                     return false;
                 }
@@ -1975,65 +1534,48 @@ newCanonicalCrateKeys);
             return true;
         }
 
-        private bool IsWall(
-            Point position)
+        private bool IsWall(Point position)
         {
-            if (position.X < 0 ||
-                position.X >= columns ||
-                position.Y < 0 ||
-                position.Y >= rows)
+            if (position.X < 0 || position.X >= columns || position.Y < 0 || position.Y >= rows)
             {
                 return true;
             }
 
-            return wallPositions.Contains(
-                position);
+            return wallPositions.Contains(position);
         }
 
         /// <summary>
         /// Checks the reusable occupancy map.
         /// Used during player reachability calculations.
         /// </summary>
-        private bool IsOccupiedByAnyCrate(
-            Point position)
+        private bool IsOccupiedByAnyCrate(Point position)
         {
-            if (position.X < 0 ||
-                position.X >= columns ||
-                position.Y < 0 ||
-                position.Y >= rows)
+            if (position.X < 0 || position.X >= columns || position.Y < 0 || position.Y >= rows)
             {
                 return false;
             }
 
-            int index =
-                GetCellIndex(
-                    position);
+            int index = GetCellIndex(position);
 
-            return
-                crateOccupancyVisit[index] ==
-                crateOccupancyVisitId;
+            return crateOccupancyVisit[index] == crateOccupancyVisitId;
         }
 
         /// <summary>
         /// Checks the supplied crate configuration directly.
         /// Used when reconstructing player paths for a solution.
         /// </summary>
-        private bool IsOccupiedByAnyCrate(
-            Point position,
-            IReadOnlyList<Point> cratePositions)
+        private bool IsOccupiedByAnyCrate(Point position, IReadOnlyList<Point> cratePositions)
         {
-            return cratePositions.Contains(
-                position);
+            return cratePositions.Contains(position);
         }
 
         private bool IsOccupiedByAnotherCrate(
             Point position,
             Point[] cratePositions,
-            int movingCrateIndex)
+            int movingCrateIndex
+        )
         {
-            for (int i = 0;
-                 i < cratePositions.Length;
-                 i++)
+            for (int i = 0; i < cratePositions.Length; i++)
             {
                 if (i == movingCrateIndex)
                 {
@@ -2049,12 +1591,9 @@ newCanonicalCrateKeys);
             return false;
         }
 
-        private static long ToMilliseconds(
-    long timeSpanTicks)
+        private static long ToMilliseconds(long timeSpanTicks)
         {
-            return
-                timeSpanTicks /
-                TimeSpan.TicksPerMillisecond;
+            return timeSpanTicks / TimeSpan.TicksPerMillisecond;
         }
 
         private class SolverState
@@ -2088,111 +1627,77 @@ newCanonicalCrateKeys);
                 int positionHashSum,
                 int positionHashSquareSum,
                 long[] canonicalCrateKeys,
-int canonicalCrateHash)
+                int canonicalCrateHash
+            )
             {
-                PlayerPosition =
-                    playerPosition;
+                PlayerPosition = playerPosition;
 
-                CratePositions =
-                    cratePositions;
+                CratePositions = cratePositions;
 
-                Pushes =
-                    pushes;
+                Pushes = pushes;
 
-                Parent =
-                    parent;
+                Parent = parent;
 
-                Step =
-                    step;
+                Step = step;
 
-                PositionHashSum =
-                    positionHashSum;
+                PositionHashSum = positionHashSum;
 
-                PositionHashSquareSum =
-                    positionHashSquareSum;
+                PositionHashSquareSum = positionHashSquareSum;
 
-                CanonicalCrateKeys =
-                    canonicalCrateKeys;
+                CanonicalCrateKeys = canonicalCrateKeys;
 
-                CanonicalCrateHash =
-canonicalCrateHash;
+                CanonicalCrateHash = canonicalCrateHash;
 
-                CanonicalCrateHash =
-                    CreateCanonicalCrateHash(
-                        canonicalCrateKeys);
+                CanonicalCrateHash = CreateCanonicalCrateHash(canonicalCrateKeys);
             }
         }
 
-        public long OccupancyMillisecondsValue =>
-            ToMilliseconds(
-                OccupancyMilliseconds);
+        public long OccupancyMillisecondsValue => ToMilliseconds(OccupancyMilliseconds);
 
         public long CurrentReachabilityMillisecondsValue =>
-            ToMilliseconds(
-                CurrentReachabilityMilliseconds);
+            ToMilliseconds(CurrentReachabilityMilliseconds);
 
         public long SuccessorReachabilityMillisecondsValue =>
-            ToMilliseconds(
-                SuccessorReachabilityMilliseconds);
+            ToMilliseconds(SuccessorReachabilityMilliseconds);
 
-        public long PushValidationMillisecondsValue =>
-            ToMilliseconds(
-                PushValidationMilliseconds);
+        public long PushValidationMillisecondsValue => ToMilliseconds(PushValidationMilliseconds);
 
-        public long ArrayCopyMillisecondsValue =>
-            ToMilliseconds(
-                ArrayCopyMilliseconds);
+        public long ArrayCopyMillisecondsValue => ToMilliseconds(ArrayCopyMilliseconds);
 
         public long StateConstructionMillisecondsValue =>
-            ToMilliseconds(
-                StateConstructionMilliseconds);
+            ToMilliseconds(StateConstructionMilliseconds);
 
-        public long HashSetLookupMillisecondsValue =>
-            ToMilliseconds(
-                HashSetLookupMilliseconds);
+        public long HashSetLookupMillisecondsValue => ToMilliseconds(HashSetLookupMilliseconds);
 
-        public long StaticDeadlockMillisecondsValue =>
-            ToMilliseconds(
-                StaticDeadlockMilliseconds);
+        public long StaticDeadlockMillisecondsValue => ToMilliseconds(StaticDeadlockMilliseconds);
 
-        private sealed class SolverStateComparer :
-            IEqualityComparer<SolverState>
+        private sealed class SolverStateComparer : IEqualityComparer<SolverState>
         {
-            public bool Equals(
-                SolverState? left,
-                SolverState? right)
+            public bool Equals(SolverState? left, SolverState? right)
             {
-                if (ReferenceEquals(
-                    left,
-                    right))
+                if (ReferenceEquals(left, right))
                 {
                     return true;
                 }
 
-                if (left == null ||
-                    right == null)
+                if (left == null || right == null)
                 {
                     return false;
                 }
 
-                if (left.PlayerRegion !=
-                    right.PlayerRegion)
+                if (left.PlayerRegion != right.PlayerRegion)
                 {
                     return false;
                 }
 
-                if (left.CanonicalCrateKeys.Length !=
-                    right.CanonicalCrateKeys.Length)
+                if (left.CanonicalCrateKeys.Length != right.CanonicalCrateKeys.Length)
                 {
                     return false;
                 }
 
-                for (int index = 0;
-                     index < left.CanonicalCrateKeys.Length;
-                     index++)
+                for (int index = 0; index < left.CanonicalCrateKeys.Length; index++)
                 {
-                    if (left.CanonicalCrateKeys[index] !=
-                        right.CanonicalCrateKeys[index])
+                    if (left.CanonicalCrateKeys[index] != right.CanonicalCrateKeys[index])
                     {
                         return false;
                     }
@@ -2201,12 +1706,9 @@ canonicalCrateHash;
                 return true;
             }
 
-            public int GetHashCode(
-                SolverState state)
+            public int GetHashCode(SolverState state)
             {
-                return HashCode.Combine(
-state.PlayerRegion,
-state.CanonicalCrateHash);
+                return HashCode.Combine(state.PlayerRegion, state.CanonicalCrateHash);
             }
         }
     }

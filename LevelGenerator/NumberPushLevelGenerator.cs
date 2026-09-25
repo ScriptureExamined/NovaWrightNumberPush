@@ -1,5 +1,5 @@
-﻿using NovaWrightNumberPush;
-using System.Diagnostics;
+﻿using System.Diagnostics;
+using NovaWrightNumberPush;
 
 namespace NovaWright.NumberPush.LevelGenerator
 {
@@ -10,118 +10,93 @@ namespace NovaWright.NumberPush.LevelGenerator
         private int? currentRows;
         private int? currentColumns;
 
-        private HashSet<Point> currentWallPositions =
-    new HashSet<Point>();
+        private HashSet<Point> currentWallPositions = new HashSet<Point>();
 
         private Dictionary<int, HashSet<Point>> currentCrateReachableGoals =
-    new Dictionary<int, HashSet<Point>>();
+            new Dictionary<int, HashSet<Point>>();
 
         public NumberPushLevelGenerator(int seed)
         {
-            random =
-                new Random(seed);
+            random = new Random(seed);
         }
 
         public NumberPushLevel? Generate(
             int levelNumber,
             NumberPushDifficulty difficulty,
-            NumberPushGenerationDiagnostics? diagnostics = null)
+            NumberPushGenerationDiagnostics? diagnostics = null
+        )
         {
             if (difficulty == null)
             {
-                throw new ArgumentNullException(
-                    nameof(difficulty));
+                throw new ArgumentNullException(nameof(difficulty));
             }
 
             if (diagnostics != null)
             {
-                diagnostics.LevelNumber =
-                    levelNumber;
+                diagnostics.LevelNumber = levelNumber;
 
-                diagnostics.TargetMinimumPushes =
-                    difficulty.MinimumSolutionPushes;
+                diagnostics.TargetMinimumPushes = difficulty.MinimumSolutionPushes;
 
-                diagnostics.TargetMaximumPushes =
-                    difficulty.MaximumSolutionPushes;
+                diagnostics.TargetMaximumPushes = difficulty.MaximumSolutionPushes;
             }
 
-            if (difficulty.StartingRows <= 0 ||
-                difficulty.StartingColumns <= 0)
+            if (difficulty.StartingRows <= 0 || difficulty.StartingColumns <= 0)
             {
                 throw new ArgumentException(
                     "Starting board dimensions must be greater than zero.",
-                    nameof(difficulty));
+                    nameof(difficulty)
+                );
             }
 
-            if (difficulty.MaximumRows <
-                difficulty.StartingRows ||
-                difficulty.MaximumColumns <
-                difficulty.StartingColumns)
+            if (
+                difficulty.MaximumRows < difficulty.StartingRows
+                || difficulty.MaximumColumns < difficulty.StartingColumns
+            )
             {
                 throw new ArgumentException(
                     "Maximum board dimensions cannot be smaller than the starting dimensions.",
-                    nameof(difficulty));
+                    nameof(difficulty)
+                );
             }
 
-            if (!currentRows.HasValue ||
-                !currentColumns.HasValue)
+            if (!currentRows.HasValue || !currentColumns.HasValue)
             {
-                currentRows =
-                    difficulty.StartingRows;
+                currentRows = difficulty.StartingRows;
 
-                currentColumns =
-                    difficulty.StartingColumns;
+                currentColumns = difficulty.StartingColumns;
             }
             else
             {
-                currentRows =
-                    Math.Max(
-                        currentRows.Value,
-                        difficulty.StartingRows);
+                currentRows = Math.Max(currentRows.Value, difficulty.StartingRows);
 
-                currentColumns =
-                    Math.Max(
-                        currentColumns.Value,
-                        difficulty.StartingColumns);
+                currentColumns = Math.Max(currentColumns.Value, difficulty.StartingColumns);
             }
 
-            int rows =
-    currentRows.Value;
+            int rows = currentRows.Value;
 
-            int columns =
-                currentColumns.Value;
+            int columns = currentColumns.Value;
 
-            int maximumRows =
-                Math.Max(
-                    difficulty.MaximumRows,
-                    rows);
+            int maximumRows = Math.Max(difficulty.MaximumRows, rows);
 
-            int maximumColumns =
-                Math.Max(
-                    difficulty.MaximumColumns,
-                    columns);
+            int maximumColumns = Math.Max(difficulty.MaximumColumns, columns);
 
-            while (rows <= maximumRows &&
-                   columns <= maximumColumns)
+            while (rows <= maximumRows && columns <= maximumColumns)
             {
-                for (int attempt = 0;
-                     attempt < difficulty.MaximumAttempts;
-                     attempt++)
+                for (int attempt = 0; attempt < difficulty.MaximumAttempts; attempt++)
                 {
                     if (diagnostics != null)
                     {
                         diagnostics.TotalAttempts++;
                     }
 
-                    Stopwatch candidateTimer =
-                        Stopwatch.StartNew();
+                    Stopwatch candidateTimer = Stopwatch.StartNew();
 
-                    NumberPushLevel? candidate =
-                        CreateCandidate(
-                            levelNumber,
-                            difficulty,
-                            rows,
-                            columns);
+                    NumberPushLevel? candidate = CreateCandidate(
+                        levelNumber,
+                        difficulty,
+                        rows,
+                        columns
+                    );
 
                     candidateTimer.Stop();
 
@@ -143,19 +118,20 @@ namespace NovaWright.NumberPush.LevelGenerator
 
                     if (diagnostics != null)
                     {
-                        CalculateCrateInteractions(
-                            candidate,
-                            diagnostics);
+                        CalculateCrateInteractions(candidate, diagnostics);
                     }
 
                     bool noReachableGoals;
                     int failedCrateDistance;
 
-                    if (!CanCratesReachDistinctGoals(
-        candidate,
-        currentCrateReachableGoals,
-        out noReachableGoals,
-        out failedCrateDistance))
+                    if (
+                        !CanCratesReachDistinctGoals(
+                            candidate,
+                            currentCrateReachableGoals,
+                            out noReachableGoals,
+                            out failedCrateDistance
+                        )
+                    )
                     {
                         if (diagnostics != null)
                         {
@@ -193,144 +169,137 @@ namespace NovaWright.NumberPush.LevelGenerator
                         continue;
                     }
 
-                    int initialPlayerPushMobility =
-                        0;
+                    int initialPlayerPushMobility = 0;
 
                     List<(int CrateIndex, Point Direction)> initialLegalPushes =
                         new List<(int CrateIndex, Point Direction)>();
 
                     if (diagnostics != null)
                     {
-                        int initialCrateMobility =
-                            0;
+                        int initialCrateMobility = 0;
 
-                        foreach (NumberPushCrate crate in
-                                 candidate.Crates)
+                        foreach (NumberPushCrate crate in candidate.Crates)
                         {
                             Point[] directions =
                             {
-            new Point(0, -1),
-            new Point(0, 1),
-            new Point(-1, 0),
-            new Point(1, 0)
-        };
+                                new Point(0, -1),
+                                new Point(0, 1),
+                                new Point(-1, 0),
+                                new Point(1, 0),
+                            };
 
                             foreach (Point direction in directions)
                             {
-                                if (CanMoveCrateDistance(
+                                if (
+                                    CanMoveCrateDistance(
                                         candidate,
                                         crate.Position,
                                         direction,
-                                        crate.Distance))
+                                        crate.Distance
+                                    )
+                                )
                                 {
                                     initialCrateMobility++;
                                 }
                             }
                         }
 
-                        if (!diagnostics.InitialCrateMobilityDistribution.ContainsKey(
-                                initialCrateMobility))
+                        if (
+                            !diagnostics.InitialCrateMobilityDistribution.ContainsKey(
+                                initialCrateMobility
+                            )
+                        )
                         {
-                            diagnostics.InitialCrateMobilityDistribution[
-                                initialCrateMobility] = 0;
+                            diagnostics.InitialCrateMobilityDistribution[initialCrateMobility] = 0;
                         }
 
-                        diagnostics.InitialCrateMobilityDistribution[
-                            initialCrateMobility]++;
+                        diagnostics.InitialCrateMobilityDistribution[initialCrateMobility]++;
 
-                        List<Point> initialCratePositions =
-                            candidate.Crates
-                                .Select(
-                                    crate =>
-                                        crate.Position)
-                                .ToList();
+                        List<Point> initialCratePositions = candidate
+                            .Crates.Select(crate => crate.Position)
+                            .ToList();
 
-                        NumberPushSolver mobilitySolver =
-                            new NumberPushSolver(
-                                candidate);
+                        NumberPushSolver mobilitySolver = new NumberPushSolver(candidate);
 
-                        initialLegalPushes =
-    mobilitySolver
-        .GetLegalPushes(
-            candidate.PlayerStart,
-            initialCratePositions);
+                        initialLegalPushes = mobilitySolver.GetLegalPushes(
+                            candidate.PlayerStart,
+                            initialCratePositions
+                        );
 
-                        initialPlayerPushMobility =
-                            initialLegalPushes.Count;
+                        initialPlayerPushMobility = initialLegalPushes.Count;
 
-                        if (!diagnostics.InitialPlayerPushMobilityDistribution.ContainsKey(
-                                initialPlayerPushMobility))
+                        if (
+                            !diagnostics.InitialPlayerPushMobilityDistribution.ContainsKey(
+                                initialPlayerPushMobility
+                            )
+                        )
                         {
                             diagnostics.InitialPlayerPushMobilityDistribution[
-                                initialPlayerPushMobility] = 0;
+                                initialPlayerPushMobility
+                            ] = 0;
                         }
 
                         diagnostics.InitialPlayerPushMobilityDistribution[
-                            initialPlayerPushMobility]++;
+                            initialPlayerPushMobility
+                        ]++;
 
                         if (initialLegalPushes.Count > 0)
                         {
-                            (int CrateIndex, Point Direction) firstPush =
-                                initialLegalPushes[0];
+                            (int CrateIndex, Point Direction) firstPush = initialLegalPushes[0];
 
-                            List<Point> afterFirstPushCratePositions =
-                                new List<Point>(
-                                    initialCratePositions);
+                            List<Point> afterFirstPushCratePositions = new List<Point>(
+                                initialCratePositions
+                            );
 
-                            Point firstCratePosition =
-                                afterFirstPushCratePositions[
-                                    firstPush.CrateIndex];
+                            Point firstCratePosition = afterFirstPushCratePositions[
+                                firstPush.CrateIndex
+                            ];
 
-                            Point firstCrateDestination =
-                                new Point(
-                                    firstCratePosition.X +
-                                        firstPush.Direction.X *
-                                        candidate.Crates[
-                                            firstPush.CrateIndex].Distance,
-                                    firstCratePosition.Y +
-                                        firstPush.Direction.Y *
-                                        candidate.Crates[
-                                            firstPush.CrateIndex].Distance);
+                            Point firstCrateDestination = new Point(
+                                firstCratePosition.X
+                                    + firstPush.Direction.X
+                                        * candidate.Crates[firstPush.CrateIndex].Distance,
+                                firstCratePosition.Y
+                                    + firstPush.Direction.Y
+                                        * candidate.Crates[firstPush.CrateIndex].Distance
+                            );
 
-                            afterFirstPushCratePositions[
-                                firstPush.CrateIndex] =
+                            afterFirstPushCratePositions[firstPush.CrateIndex] =
                                 firstCrateDestination;
 
-                            Point afterFirstPushPlayerPosition =
-                                firstCratePosition;
+                            Point afterFirstPushPlayerPosition = firstCratePosition;
 
-                            NumberPushSolver afterFirstPushSolver =
-                                new NumberPushSolver(
-                                    candidate);
+                            NumberPushSolver afterFirstPushSolver = new NumberPushSolver(candidate);
 
-                            int afterFirstPushMobility =
-                                afterFirstPushSolver
-                                    .GetLegalPushes(
-                                        afterFirstPushPlayerPosition,
-                                        afterFirstPushCratePositions)
-                                    .Count;
+                            int afterFirstPushMobility = afterFirstPushSolver
+                                .GetLegalPushes(
+                                    afterFirstPushPlayerPosition,
+                                    afterFirstPushCratePositions
+                                )
+                                .Count;
 
-                            if (!diagnostics.InitialToAfterFirstPushMobilityDistribution.ContainsKey(
-                                    initialPlayerPushMobility))
+                            if (
+                                !diagnostics.InitialToAfterFirstPushMobilityDistribution.ContainsKey(
+                                    initialPlayerPushMobility
+                                )
+                            )
                             {
                                 diagnostics.InitialToAfterFirstPushMobilityDistribution[
-                                    initialPlayerPushMobility] =
-                                    new Dictionary<int, int>();
+                                    initialPlayerPushMobility
+                                ] = new Dictionary<int, int>();
                             }
 
                             Dictionary<int, int> afterFirstPushDistribution =
                                 diagnostics.InitialToAfterFirstPushMobilityDistribution[
-                                    initialPlayerPushMobility];
+                                    initialPlayerPushMobility
+                                ];
 
-                            if (!afterFirstPushDistribution.ContainsKey(
-                                    afterFirstPushMobility))
+                            if (!afterFirstPushDistribution.ContainsKey(afterFirstPushMobility))
                             {
-                                afterFirstPushDistribution[
-                                    afterFirstPushMobility] = 0;
+                                afterFirstPushDistribution[afterFirstPushMobility] = 0;
                             }
 
-                            afterFirstPushDistribution[
-                                afterFirstPushMobility]++;
+                            afterFirstPushDistribution[afterFirstPushMobility]++;
                         }
                     }
 
@@ -339,26 +308,19 @@ namespace NovaWright.NumberPush.LevelGenerator
                         diagnostics.TotalSolverCalls++;
                     }
 
-                    Stopwatch solverTimer =
-                        Stopwatch.StartNew();
+                    Stopwatch solverTimer = Stopwatch.StartNew();
 
-                    NumberPushSolver solver =
-                        new NumberPushSolver(
-                            candidate);
+                    NumberPushSolver solver = new NumberPushSolver(candidate);
 
-                    NumberPushSolution solution =
-                        solver.FindSolution();
+                    NumberPushSolution solution = solver.FindSolution();
 
                     if (diagnostics != null)
                     {
-                        diagnostics.InitialTryPushLegalPushes +=
-                            solver.InitialTryPushLegalPushes;
+                        diagnostics.InitialTryPushLegalPushes += solver.InitialTryPushLegalPushes;
 
-                        diagnostics.UniqueSuccessorStates +=
-                            solver.UniqueSuccessorStates;
+                        diagnostics.UniqueSuccessorStates += solver.UniqueSuccessorStates;
 
-                        diagnostics.OccupancyMilliseconds +=
-                            solver.OccupancyMillisecondsValue;
+                        diagnostics.OccupancyMilliseconds += solver.OccupancyMillisecondsValue;
 
                         diagnostics.CurrentReachabilityMilliseconds +=
                             solver.CurrentReachabilityMillisecondsValue;
@@ -369,8 +331,7 @@ namespace NovaWright.NumberPush.LevelGenerator
                         diagnostics.PushValidationMilliseconds +=
                             solver.PushValidationMillisecondsValue;
 
-                        diagnostics.ArrayCopyMilliseconds +=
-                            solver.ArrayCopyMillisecondsValue;
+                        diagnostics.ArrayCopyMilliseconds += solver.ArrayCopyMillisecondsValue;
 
                         diagnostics.StateConstructionMilliseconds +=
                             solver.StateConstructionMillisecondsValue;
@@ -382,40 +343,31 @@ namespace NovaWright.NumberPush.LevelGenerator
                             solver.StaticDeadlockMillisecondsValue;
                     }
 
-                    if (solution.MinimumPushes >= 0 &&
-    solution.Steps.Count > 0)
+                    if (solution.MinimumPushes >= 0 && solution.Steps.Count > 0)
                     {
-                        if (!SetPlayerStartForFirstSolutionPush(
-                                candidate,
-                                solution))
+                        if (!SetPlayerStartForFirstSolutionPush(candidate, solution))
                         {
                             continue;
                         }
                     }
 
-                    int minimumSolution =
-                        solution.MinimumPushes;
+                    int minimumSolution = solution.MinimumPushes;
 
-                    if (minimumSolution >= 0 &&
-                        diagnostics != null)
+                    if (minimumSolution >= 0 && diagnostics != null)
                     {
-                        if (!diagnostics.SolvableCandidatePushCounts.ContainsKey(
-                                minimumSolution))
+                        if (!diagnostics.SolvableCandidatePushCounts.ContainsKey(minimumSolution))
                         {
-                            diagnostics.SolvableCandidatePushCounts[
-                                minimumSolution] = 0;
+                            diagnostics.SolvableCandidatePushCounts[minimumSolution] = 0;
                         }
 
-                        diagnostics.SolvableCandidatePushCounts[
-                            minimumSolution]++;
+                        diagnostics.SolvableCandidatePushCounts[minimumSolution]++;
                     }
 
                     solverTimer.Stop();
 
                     if (diagnostics != null)
                     {
-                        diagnostics.SolverMilliseconds +=
-                            solverTimer.ElapsedMilliseconds;
+                        diagnostics.SolverMilliseconds += solverTimer.ElapsedMilliseconds;
                     }
 
                     if (minimumSolution < 0)
@@ -424,19 +376,16 @@ namespace NovaWright.NumberPush.LevelGenerator
                         {
                             diagnostics.UnsolvableCandidates++;
 
-                            diagnostics.UnsolvableStatesExplored +=
-                                solver.StatesExplored;
+                            diagnostics.UnsolvableStatesExplored += solver.StatesExplored;
 
-                            diagnostics.UnsolvableZeroLegalPushStates +=
-                                solver.ZeroLegalPushStates;
+                            diagnostics.UnsolvableZeroLegalPushStates += solver.ZeroLegalPushStates;
 
-                            diagnostics.UnsolvableMaximumLegalPushes =
-                                Math.Max(
-                                    diagnostics.UnsolvableMaximumLegalPushes,
-                                    solver.MaximumLegalPushes);
+                            diagnostics.UnsolvableMaximumLegalPushes = Math.Max(
+                                diagnostics.UnsolvableMaximumLegalPushes,
+                                solver.MaximumLegalPushes
+                            );
 
-                            diagnostics.UnsolvableDuplicateStates +=
-                                solver.DuplicateStates;
+                            diagnostics.UnsolvableDuplicateStates += solver.DuplicateStates;
 
                             diagnostics.UnsolvableExactParentReversalStates +=
                                 solver.ExactParentReversalStates;
@@ -444,11 +393,9 @@ namespace NovaWright.NumberPush.LevelGenerator
                             diagnostics.UnsolvableHashSetDuplicateStates +=
                                 solver.HashSetDuplicateStates;
 
-                            int maximumLegalPushes =
-                                solver.MaximumLegalPushes;
+                            int maximumLegalPushes = solver.MaximumLegalPushes;
 
-                            int minimumZeroPushDepth =
-                                solver.MinimumZeroLegalPushDepth;
+                            int minimumZeroPushDepth = solver.MinimumZeroLegalPushDepth;
 
                             int legalPushesBeforeZero =
                                 solver.LegalPushesBeforeMinimumZeroPushDepth;
@@ -465,14 +412,11 @@ namespace NovaWright.NumberPush.LevelGenerator
                             diagnostics.FirstZeroPushCornerDeadlockedCrates +=
                                 solver.FirstZeroPushCornerDeadlockedCrates;
 
-                            diagnostics.FirstZeroPushUpBlocked +=
-                                solver.FirstZeroPushUpBlocked;
+                            diagnostics.FirstZeroPushUpBlocked += solver.FirstZeroPushUpBlocked;
 
-                            diagnostics.FirstZeroPushDownBlocked +=
-                                solver.FirstZeroPushDownBlocked;
+                            diagnostics.FirstZeroPushDownBlocked += solver.FirstZeroPushDownBlocked;
 
-                            diagnostics.FirstZeroPushLeftBlocked +=
-                                solver.FirstZeroPushLeftBlocked;
+                            diagnostics.FirstZeroPushLeftBlocked += solver.FirstZeroPushLeftBlocked;
 
                             diagnostics.FirstZeroPushRightBlocked +=
                                 solver.FirstZeroPushRightBlocked;
@@ -494,68 +438,81 @@ namespace NovaWright.NumberPush.LevelGenerator
 
                             if (legalPushesBeforeZero >= 0)
                             {
-                                if (!diagnostics.UnsolvableCandidateLegalPushesBeforeZero.ContainsKey(
-                                        legalPushesBeforeZero))
+                                if (
+                                    !diagnostics.UnsolvableCandidateLegalPushesBeforeZero.ContainsKey(
+                                        legalPushesBeforeZero
+                                    )
+                                )
                                 {
                                     diagnostics.UnsolvableCandidateLegalPushesBeforeZero[
-                                        legalPushesBeforeZero] = 0;
+                                        legalPushesBeforeZero
+                                    ] = 0;
                                 }
 
                                 diagnostics.UnsolvableCandidateLegalPushesBeforeZero[
-                                    legalPushesBeforeZero]++;
+                                    legalPushesBeforeZero
+                                ]++;
                             }
 
                             if (minimumZeroPushDepth >= 0)
                             {
-                                if (!diagnostics.UnsolvableCandidateMinimumZeroPushDepths.ContainsKey(
-                                        minimumZeroPushDepth))
+                                if (
+                                    !diagnostics.UnsolvableCandidateMinimumZeroPushDepths.ContainsKey(
+                                        minimumZeroPushDepth
+                                    )
+                                )
                                 {
                                     diagnostics.UnsolvableCandidateMinimumZeroPushDepths[
-                                        minimumZeroPushDepth] = 0;
+                                        minimumZeroPushDepth
+                                    ] = 0;
                                 }
 
                                 diagnostics.UnsolvableCandidateMinimumZeroPushDepths[
-                                    minimumZeroPushDepth]++;
+                                    minimumZeroPushDepth
+                                ]++;
                             }
 
-                            if (!diagnostics.InitialPlayerMobilityMaximumPushDistribution.ContainsKey(
-                                    initialPlayerPushMobility))
+                            if (
+                                !diagnostics.InitialPlayerMobilityMaximumPushDistribution.ContainsKey(
+                                    initialPlayerPushMobility
+                                )
+                            )
                             {
                                 diagnostics.InitialPlayerMobilityMaximumPushDistribution[
-                                    initialPlayerPushMobility] =
-                                    new Dictionary<int, int>();
+                                    initialPlayerPushMobility
+                                ] = new Dictionary<int, int>();
                             }
 
                             Dictionary<int, int> maximumPushDistribution =
                                 diagnostics.InitialPlayerMobilityMaximumPushDistribution[
-                                    initialPlayerPushMobility];
+                                    initialPlayerPushMobility
+                                ];
 
-                            if (!maximumPushDistribution.ContainsKey(
-                                    maximumLegalPushes))
+                            if (!maximumPushDistribution.ContainsKey(maximumLegalPushes))
                             {
-                                maximumPushDistribution[
-                                    maximumLegalPushes] = 0;
+                                maximumPushDistribution[maximumLegalPushes] = 0;
                             }
 
-                            maximumPushDistribution[
-                                maximumLegalPushes]++;
+                            maximumPushDistribution[maximumLegalPushes]++;
 
-                            if (!diagnostics.UnsolvableCandidateMaximumPushCounts.ContainsKey(
-                                    maximumLegalPushes))
+                            if (
+                                !diagnostics.UnsolvableCandidateMaximumPushCounts.ContainsKey(
+                                    maximumLegalPushes
+                                )
+                            )
                             {
                                 diagnostics.UnsolvableCandidateMaximumPushCounts[
-                                    maximumLegalPushes] = 0;
+                                    maximumLegalPushes
+                                ] = 0;
                             }
 
-                            diagnostics.UnsolvableCandidateMaximumPushCounts[
-                                maximumLegalPushes]++;
+                            diagnostics.UnsolvableCandidateMaximumPushCounts[maximumLegalPushes]++;
                         }
 
                         continue;
                     }
 
-                    if (minimumSolution <
-                        difficulty.MinimumSolutionPushes)
+                    if (minimumSolution < difficulty.MinimumSolutionPushes)
                     {
                         if (diagnostics != null)
                         {
@@ -585,61 +542,49 @@ namespace NovaWright.NumberPush.LevelGenerator
                     {
                         diagnostics.AcceptedCandidates++;
 
-                        diagnostics.MinimumPushes =
-                            solution.MinimumPushes;
+                        diagnostics.MinimumPushes = solution.MinimumPushes;
 
-                        for (int crateIndex = 0;
-                             crateIndex < candidate.Crates.Count;
-                             crateIndex++)
+                        for (int crateIndex = 0; crateIndex < candidate.Crates.Count; crateIndex++)
                         {
-                            NumberPushCrate crate =
-                                candidate.Crates[crateIndex];
+                            NumberPushCrate crate = candidate.Crates[crateIndex];
 
-                            diagnostics.CrateStartPositions[crateIndex] =
-                                crate.Position;
+                            diagnostics.CrateStartPositions[crateIndex] = crate.Position;
 
-                            diagnostics.CrateDistances[crateIndex] =
-                                crate.Distance;
+                            diagnostics.CrateDistances[crateIndex] = crate.Distance;
 
-                            diagnostics.CrateReachableGoals[crateIndex] =
-                                GetReachableGoals(
-                                    candidate,
-                                    crate.Position,
-                                    crate.Distance);
+                            diagnostics.CrateReachableGoals[crateIndex] = GetReachableGoals(
+                                candidate,
+                                crate.Position,
+                                crate.Distance
+                            );
 
-                            diagnostics.CrateReachablePositions[crateIndex] =
-                                GetReachablePositions(
-                                    candidate,
-                                    crate.Position,
-                                    crate.Distance);
+                            diagnostics.CrateReachablePositions[crateIndex] = GetReachablePositions(
+                                candidate,
+                                crate.Position,
+                                crate.Distance
+                            );
 
                             diagnostics.CrateGoalPushDistances[crateIndex] =
                                 GetCrateGoalPushDistances(
                                     candidate,
                                     crate.Position,
-                                    crate.Distance);
+                                    crate.Distance
+                                );
                         }
 
-                        diagnostics.CratesMoved =
-                            solution.CratesMoved;
+                        diagnostics.CratesMoved = solution.CratesMoved;
 
-                        int previousCrateIndex =
-                            -1;
+                        int previousCrateIndex = -1;
 
-                        int currentConsecutivePushes =
-                            0;
+                        int currentConsecutivePushes = 0;
 
-                        int maximumConsecutivePushes =
-                            0;
+                        int maximumConsecutivePushes = 0;
 
-                        int cratePushOrderChanges =
-                            0;
+                        int cratePushOrderChanges = 0;
 
-                        foreach (NumberPushSolutionStep step in
-                                 solution.Steps)
+                        foreach (NumberPushSolutionStep step in solution.Steps)
                         {
-                            if (step.CrateIndex !=
-                                previousCrateIndex)
+                            if (step.CrateIndex != previousCrateIndex)
                             {
                                 if (previousCrateIndex != -1)
                                 {
@@ -648,81 +593,66 @@ namespace NovaWright.NumberPush.LevelGenerator
 
                                 currentConsecutivePushes = 1;
 
-                                previousCrateIndex =
-                                    step.CrateIndex;
+                                previousCrateIndex = step.CrateIndex;
                             }
                             else
                             {
                                 currentConsecutivePushes++;
                             }
 
-                            maximumConsecutivePushes =
-                                Math.Max(
-                                    maximumConsecutivePushes,
-                                    currentConsecutivePushes);
+                            maximumConsecutivePushes = Math.Max(
+                                maximumConsecutivePushes,
+                                currentConsecutivePushes
+                            );
                         }
 
-                        diagnostics.CratePushOrderChanges =
-                            cratePushOrderChanges;
+                        diagnostics.CratePushOrderChanges = cratePushOrderChanges;
 
-                        diagnostics.MaximumConsecutivePushes =
-                            maximumConsecutivePushes;
+                        diagnostics.MaximumConsecutivePushes = maximumConsecutivePushes;
 
-                        diagnostics.CratePushCounts =
-                            new Dictionary<int, int>(
-                                solution.CratePushCounts);
+                        diagnostics.CratePushCounts = new Dictionary<int, int>(
+                            solution.CratePushCounts
+                        );
 
-                        diagnostics.CrateFirstPushNumbers =
-                            new Dictionary<int, int>(
-                                solution.CrateFirstPushNumbers);
+                        diagnostics.CrateFirstPushNumbers = new Dictionary<int, int>(
+                            solution.CrateFirstPushNumbers
+                        );
 
-                        diagnostics.CrateLastPushNumbers =
-                            new Dictionary<int, int>(
-                                solution.CrateLastPushNumbers);
+                        diagnostics.CrateLastPushNumbers = new Dictionary<int, int>(
+                            solution.CrateLastPushNumbers
+                        );
 
-                        diagnostics.CrateGoalPositions =
-                            new Dictionary<int, Point>(
-                                solution.CrateGoalPositions);
+                        diagnostics.CrateGoalPositions = new Dictionary<int, Point>(
+                            solution.CrateGoalPositions
+                        );
 
                         diagnostics.SolutionPushSequence.Clear();
 
-                        foreach (NumberPushSolutionStep step
-                                 in solution.Steps)
+                        foreach (NumberPushSolutionStep step in solution.Steps)
                         {
                             diagnostics.SolutionPushSequence.Add(
-                                $"Push {step.PushNumber}: Crate {step.CrateNumber} " +
-                                $"{step.CrateStart} -> {step.CrateEnd}");
+                                $"Push {step.PushNumber}: Crate {step.CrateNumber} "
+                                    + $"{step.CrateStart} -> {step.CrateEnd}"
+                            );
                         }
 
-                        CalculateSolutionOpportunities(
-                            candidate,
-                            solution,
-                            diagnostics);
+                        CalculateSolutionOpportunities(candidate, solution, diagnostics);
 
-                        CalculateSolutionPlayerAccessBlocks(
-                            candidate,
-                            solution,
-                            diagnostics);
+                        CalculateSolutionPlayerAccessBlocks(candidate, solution, diagnostics);
 
-                        CalculateTemporaryDisplacement(
-                            candidate,
-                            solution,
-                            diagnostics);
+                        CalculateTemporaryDisplacement(candidate, solution, diagnostics);
                     }
 
-                    currentRows =
-                        rows;
+                    currentRows = rows;
 
-                    currentColumns =
-                        columns;
+                    currentColumns = columns;
 
                     return candidate;
                 }
 
                 Console.WriteLine(
-                    $"No suitable level at " +
-                    $"{rows}x{columns}. " +
-                    $"Increasing board size.");
+                    $"No suitable level at " + $"{rows}x{columns}. " + $"Increasing board size."
+                );
 
                 //rows += 2;
                 //columns += 2;
@@ -744,105 +674,78 @@ namespace NovaWright.NumberPush.LevelGenerator
                 rows += 2;
                 columns += 2;
 
-                currentRows =
-                    rows;
+                currentRows = rows;
 
-                currentColumns =
-                    columns;
+                currentColumns = columns;
             }
 
             return null;
         }
 
         private bool SetPlayerStartForFirstSolutionPush(
-    NumberPushLevel level,
-    NumberPushSolution solution)
+            NumberPushLevel level,
+            NumberPushSolution solution
+        )
         {
-            NumberPushSolutionStep firstStep =
-                solution.Steps[0];
+            NumberPushSolutionStep firstStep = solution.Steps[0];
 
-            if (firstStep.CrateIndex < 0 ||
-                firstStep.CrateIndex >= level.Crates.Count)
+            if (firstStep.CrateIndex < 0 || firstStep.CrateIndex >= level.Crates.Count)
             {
                 return false;
             }
 
-            NumberPushCrate crate =
-                level.Crates[firstStep.CrateIndex];
+            NumberPushCrate crate = level.Crates[firstStep.CrateIndex];
 
-            Point playerRequiredPosition =
-                new Point(
-                    crate.Position.X -
-                        firstStep.Direction.X,
-                    crate.Position.Y -
-                        firstStep.Direction.Y);
+            Point playerRequiredPosition = new Point(
+                crate.Position.X - firstStep.Direction.X,
+                crate.Position.Y - firstStep.Direction.Y
+            );
 
-            if (IsWall(
-                    level,
-                    playerRequiredPosition) ||
-                level.Crates.Any(
-                    otherCrate =>
-                        otherCrate.Position ==
-                        playerRequiredPosition))
+            if (
+                IsWall(level, playerRequiredPosition)
+                || level.Crates.Any(otherCrate => otherCrate.Position == playerRequiredPosition)
+            )
             {
                 return false;
             }
 
-            List<Point> playerCandidates =
-                GetAvailableCells(level)
-                    .Where(
-                        cell =>
-                            !level.Crates.Any(
-                                crateAtCell =>
-                                    crateAtCell.Position == cell) &&
-                            !level.Goals.Contains(cell))
-                    .ToList();
+            List<Point> playerCandidates = GetAvailableCells(level)
+                .Where(cell =>
+                    !level.Crates.Any(crateAtCell => crateAtCell.Position == cell)
+                    && !level.Goals.Contains(cell)
+                )
+                .ToList();
 
-            Queue<Point> queue =
-                new Queue<Point>();
+            Queue<Point> queue = new Queue<Point>();
 
-            HashSet<Point> visited =
-                new HashSet<Point>();
+            HashSet<Point> visited = new HashSet<Point>();
 
-            queue.Enqueue(
-                playerRequiredPosition);
+            queue.Enqueue(playerRequiredPosition);
 
-            visited.Add(
-                playerRequiredPosition);
+            visited.Add(playerRequiredPosition);
 
             Point[] directions =
             {
-        new Point(0, -1),
-        new Point(0, 1),
-        new Point(-1, 0),
-        new Point(1, 0)
-    };
+                new Point(0, -1),
+                new Point(0, 1),
+                new Point(-1, 0),
+                new Point(1, 0),
+            };
 
             while (queue.Count > 0)
             {
-                Point current =
-                    queue.Dequeue();
+                Point current = queue.Dequeue();
 
                 foreach (Point direction in directions)
                 {
-                    Point next =
-                        new Point(
-                            current.X +
-                                direction.X,
-                            current.Y +
-                                direction.Y);
+                    Point next = new Point(current.X + direction.X, current.Y + direction.Y);
 
-                    if (IsWall(
-                            level,
-                            next))
+                    if (IsWall(level, next))
                     {
                         continue;
                     }
 
-                    if (level.Crates.Any(
-                            crateAtCell =>
-                                crateAtCell.Position ==
-                                next))
+                    if (level.Crates.Any(crateAtCell => crateAtCell.Position == next))
                     {
                         continue;
                     }
@@ -854,22 +757,16 @@ namespace NovaWright.NumberPush.LevelGenerator
                 }
             }
 
-            List<Point> reachableCandidates =
-                playerCandidates
-                    .Where(
-                        candidate =>
-                            visited.Contains(candidate))
-                    .ToList();
+            List<Point> reachableCandidates = playerCandidates
+                .Where(candidate => visited.Contains(candidate))
+                .ToList();
 
             if (reachableCandidates.Count == 0)
             {
                 return false;
             }
 
-            level.PlayerStart =
-                reachableCandidates[
-                    random.Next(
-                        reachableCandidates.Count)];
+            level.PlayerStart = reachableCandidates[random.Next(reachableCandidates.Count)];
 
             return true;
         }
@@ -877,79 +774,61 @@ namespace NovaWright.NumberPush.LevelGenerator
         private Dictionary<Point, int> GetCrateGoalPushDistances(
             NumberPushLevel level,
             Point startPosition,
-            int distance)
+            int distance
+        )
         {
-            Dictionary<Point, int> goalDistances =
-                new Dictionary<Point, int>();
+            Dictionary<Point, int> goalDistances = new Dictionary<Point, int>();
 
-            Dictionary<Point, int> distances =
-                new Dictionary<Point, int>();
+            Dictionary<Point, int> distances = new Dictionary<Point, int>();
 
-            Queue<Point> queue =
-                new Queue<Point>();
+            Queue<Point> queue = new Queue<Point>();
 
-            distances[startPosition] =
-                0;
+            distances[startPosition] = 0;
 
-            queue.Enqueue(
-                startPosition);
+            queue.Enqueue(startPosition);
 
             Point[] directions =
             {
                 new Point(0, -1),
                 new Point(0, 1),
                 new Point(-1, 0),
-                new Point(1, 0)
+                new Point(1, 0),
             };
 
             while (queue.Count > 0)
             {
-                Point current =
-                    queue.Dequeue();
+                Point current = queue.Dequeue();
 
-                int currentDistance =
-                    distances[current];
+                int currentDistance = distances[current];
 
                 foreach (Point direction in directions)
                 {
-                    Point destination =
-                        new Point(
-                            current.X +
-                                direction.X * distance,
-                            current.Y +
-                                direction.Y * distance);
+                    Point destination = new Point(
+                        current.X + direction.X * distance,
+                        current.Y + direction.Y * distance
+                    );
 
-                    if (!CanMoveCrateDistance(
-                            level,
-                            current,
-                            direction,
-                            distance))
+                    if (!CanMoveCrateDistance(level, current, direction, distance))
                     {
                         continue;
                     }
 
-                    if (distances.ContainsKey(
-                            destination))
+                    if (distances.ContainsKey(destination))
                     {
                         continue;
                     }
 
-                    distances[destination] =
-                        currentDistance + 1;
+                    distances[destination] = currentDistance + 1;
 
-                    queue.Enqueue(
-                        destination);
+                    queue.Enqueue(destination);
                 }
             }
 
             foreach (Point goal in level.Goals)
             {
-                if (distances.TryGetValue(
-                        goal,
-                        out int pushDistance))
+                if (distances.TryGetValue(goal, out int pushDistance))
                 {
-                    goalDistances[goal] =
-                        pushDistance;
+                    goalDistances[goal] = pushDistance;
                 }
             }
 
@@ -957,28 +836,25 @@ namespace NovaWright.NumberPush.LevelGenerator
         }
 
         private bool CanCratesReachDistinctGoals(
-    NumberPushLevel level,
-    Dictionary<int, HashSet<Point>> crateReachableGoals,
-    out bool noReachableGoals,
-    out int failedCrateDistance)
+            NumberPushLevel level,
+            Dictionary<int, HashSet<Point>> crateReachableGoals,
+            out bool noReachableGoals,
+            out int failedCrateDistance
+        )
         {
             noReachableGoals = false;
             failedCrateDistance = 0;
 
-            List<HashSet<Point>> reachableGoals =
-                new List<HashSet<Point>>();
+            List<HashSet<Point>> reachableGoals = new List<HashSet<Point>>();
 
-            for (int crateIndex = 0;
-                 crateIndex < level.Crates.Count;
-                 crateIndex++)
+            for (int crateIndex = 0; crateIndex < level.Crates.Count; crateIndex++)
             {
-                NumberPushCrate crate =
-                    level.Crates[crateIndex];
+                NumberPushCrate crate = level.Crates[crateIndex];
 
-                if (!crateReachableGoals.TryGetValue(
-                        crateIndex,
-                        out HashSet<Point>? goals) ||
-                    goals.Count == 0)
+                if (
+                    !crateReachableGoals.TryGetValue(crateIndex, out HashSet<Point>? goals)
+                    || goals.Count == 0
+                )
                 {
                     noReachableGoals = true;
                     failedCrateDistance = crate.Distance;
@@ -986,64 +862,49 @@ namespace NovaWright.NumberPush.LevelGenerator
                     return false;
                 }
 
-                reachableGoals.Add(
-                    goals);
+                reachableGoals.Add(goals);
             }
 
-            reachableGoals =
-                reachableGoals
-                    .OrderBy(
-                        goals =>
-                            goals.Count)
-                    .ToList();
+            reachableGoals = reachableGoals.OrderBy(goals => goals.Count).ToList();
 
-            HashSet<Point> assignedGoals =
-                new HashSet<Point>();
+            HashSet<Point> assignedGoals = new HashSet<Point>();
 
-            return TryMatchGoals(
-                reachableGoals,
-                0,
-                assignedGoals);
+            return TryMatchGoals(reachableGoals, 0, assignedGoals);
         }
 
         private HashSet<Point> GetReachablePositions(
             NumberPushLevel level,
             Point startPosition,
-            int distance)
+            int distance
+        )
         {
-            HashSet<Point> reachable =
-                new();
+            HashSet<Point> reachable = new();
 
-            Queue<Point> queue =
-                new();
+            Queue<Point> queue = new();
 
             reachable.Add(startPosition);
             queue.Enqueue(startPosition);
 
             while (queue.Count > 0)
             {
-                Point current =
-                    queue.Dequeue();
+                Point current = queue.Dequeue();
 
-                foreach (Point direction in
-                         new[]
-                         {
-                             new Point(1, 0),
-                             new Point(-1, 0),
-                             new Point(0, 1),
-                             new Point(0, -1)
-                         })
+                foreach (
+                    Point direction in new[]
+                    {
+                        new Point(1, 0),
+                        new Point(-1, 0),
+                        new Point(0, 1),
+                        new Point(0, -1),
+                    }
+                )
                 {
-                    Point destination =
-                        new Point(
-                            current.X + direction.X * distance,
-                            current.Y + direction.Y * distance);
+                    Point destination = new Point(
+                        current.X + direction.X * distance,
+                        current.Y + direction.Y * distance
+                    );
 
-                    if (!CanMoveCrateDistance(
-                            level,
-                            current,
-                            direction,
-                            distance))
+                    if (!CanMoveCrateDistance(level, current, direction, distance))
                     {
                         continue;
                     }
@@ -1060,91 +921,65 @@ namespace NovaWright.NumberPush.LevelGenerator
             return reachable;
         }
 
-        private HashSet<Point> GetReachableGoals(
-            NumberPushLevel level,
-            Point start,
-            int distance)
+        private HashSet<Point> GetReachableGoals(NumberPushLevel level, Point start, int distance)
         {
-            HashSet<Point> visited =
-                new HashSet<Point>();
+            HashSet<Point> visited = new HashSet<Point>();
 
-            Queue<Point> queue =
-                new Queue<Point>();
+            Queue<Point> queue = new Queue<Point>();
 
-            visited.Add(
-                start);
+            visited.Add(start);
 
-            queue.Enqueue(
-                start);
+            queue.Enqueue(start);
 
             Point[] directions =
             {
                 new Point(0, -1),
                 new Point(0, 1),
                 new Point(-1, 0),
-                new Point(1, 0)
+                new Point(1, 0),
             };
 
             while (queue.Count > 0)
             {
-                Point current =
-                    queue.Dequeue();
+                Point current = queue.Dequeue();
 
                 foreach (Point direction in directions)
                 {
-                    Point destination =
-                        new Point(
-                            current.X +
-                                direction.X * distance,
-                            current.Y +
-                                direction.Y * distance);
+                    Point destination = new Point(
+                        current.X + direction.X * distance,
+                        current.Y + direction.Y * distance
+                    );
 
-                    if (!CanMoveCrateDistance(
-                            level,
-                            current,
-                            direction,
-                            distance))
+                    if (!CanMoveCrateDistance(level, current, direction, distance))
                     {
                         continue;
                     }
 
-                    if (visited.Add(
-                            destination))
+                    if (visited.Add(destination))
                     {
-                        queue.Enqueue(
-                            destination);
+                        queue.Enqueue(destination);
                     }
                 }
             }
 
-            return level.Goals
-                .Where(
-                    goal =>
-                        visited.Contains(
-                            goal))
-                .ToHashSet();
+            return level.Goals.Where(goal => visited.Contains(goal)).ToHashSet();
         }
 
         private bool CanMoveCrateDistance(
             NumberPushLevel level,
             Point start,
             Point direction,
-            int distance)
+            int distance
+        )
         {
-            for (int step = 1;
-                 step <= distance;
-                 step++)
+            for (int step = 1; step <= distance; step++)
             {
-                Point position =
-                    new Point(
-                        start.X +
-                            direction.X * step,
-                        start.Y +
-                            direction.Y * step);
+                Point position = new Point(
+                    start.X + direction.X * step,
+                    start.Y + direction.Y * step
+                );
 
-                if (IsWall(
-                        level,
-                        position))
+                if (IsWall(level, position))
                 {
                     return false;
                 }
@@ -1156,36 +991,29 @@ namespace NovaWright.NumberPush.LevelGenerator
         private bool TryMatchGoals(
             List<HashSet<Point>> reachableGoals,
             int crateIndex,
-            HashSet<Point> assignedGoals)
+            HashSet<Point> assignedGoals
+        )
         {
-            if (crateIndex >=
-                reachableGoals.Count)
+            if (crateIndex >= reachableGoals.Count)
             {
                 return true;
             }
 
-            foreach (Point goal in
-                     reachableGoals[crateIndex])
+            foreach (Point goal in reachableGoals[crateIndex])
             {
-                if (assignedGoals.Contains(
-                        goal))
+                if (assignedGoals.Contains(goal))
                 {
                     continue;
                 }
 
-                assignedGoals.Add(
-                    goal);
+                assignedGoals.Add(goal);
 
-                if (TryMatchGoals(
-                        reachableGoals,
-                        crateIndex + 1,
-                        assignedGoals))
+                if (TryMatchGoals(reachableGoals, crateIndex + 1, assignedGoals))
                 {
                     return true;
                 }
 
-                assignedGoals.Remove(
-                    goal);
+                assignedGoals.Remove(goal);
             }
 
             return false;
@@ -1193,48 +1021,38 @@ namespace NovaWright.NumberPush.LevelGenerator
 
         private void CalculateCrateInteractions(
             NumberPushLevel level,
-            NumberPushGenerationDiagnostics diagnostics)
+            NumberPushGenerationDiagnostics diagnostics
+        )
         {
             diagnostics.CrateInteractionPairs = 0;
             diagnostics.CrateInteractionBlocks = 0;
 
-            HashSet<string> interactionPairs =
-                new HashSet<string>();
+            HashSet<string> interactionPairs = new HashSet<string>();
 
             Point[] directions =
             {
                 new Point(0, -1),
                 new Point(0, 1),
                 new Point(-1, 0),
-                new Point(1, 0)
+                new Point(1, 0),
             };
 
-            for (int firstIndex = 0;
-                 firstIndex < level.Crates.Count;
-                 firstIndex++)
+            for (int firstIndex = 0; firstIndex < level.Crates.Count; firstIndex++)
             {
-                NumberPushCrate firstCrate =
-                    level.Crates[firstIndex];
+                NumberPushCrate firstCrate = level.Crates[firstIndex];
 
                 foreach (Point direction in directions)
                 {
-                    bool wallClear =
-                        true;
+                    bool wallClear = true;
 
-                    for (int step = 1;
-                         step <= firstCrate.Distance;
-                         step++)
+                    for (int step = 1; step <= firstCrate.Distance; step++)
                     {
-                        Point position =
-                            new Point(
-                                firstCrate.Position.X +
-                                    direction.X * step,
-                                firstCrate.Position.Y +
-                                    direction.Y * step);
+                        Point position = new Point(
+                            firstCrate.Position.X + direction.X * step,
+                            firstCrate.Position.Y + direction.Y * step
+                        );
 
-                        if (IsWall(
-                                level,
-                                position))
+                        if (IsWall(level, position))
                         {
                             wallClear = false;
                             break;
@@ -1246,46 +1064,31 @@ namespace NovaWright.NumberPush.LevelGenerator
                         continue;
                     }
 
-                    for (int secondIndex = 0;
-                         secondIndex < level.Crates.Count;
-                         secondIndex++)
+                    for (int secondIndex = 0; secondIndex < level.Crates.Count; secondIndex++)
                     {
                         if (firstIndex == secondIndex)
                         {
                             continue;
                         }
 
-                        NumberPushCrate secondCrate =
-                            level.Crates[secondIndex];
+                        NumberPushCrate secondCrate = level.Crates[secondIndex];
 
-                        for (int step = 1;
-                             step <= firstCrate.Distance;
-                             step++)
+                        for (int step = 1; step <= firstCrate.Distance; step++)
                         {
-                            Point position =
-                                new Point(
-                                    firstCrate.Position.X +
-                                        direction.X * step,
-                                    firstCrate.Position.Y +
-                                        direction.Y * step);
+                            Point position = new Point(
+                                firstCrate.Position.X + direction.X * step,
+                                firstCrate.Position.Y + direction.Y * step
+                            );
 
-                            if (position ==
-                                secondCrate.Position)
+                            if (position == secondCrate.Position)
                             {
                                 diagnostics.CrateInteractionBlocks++;
 
-                                int lowerIndex =
-                                    Math.Min(
-                                        firstIndex,
-                                        secondIndex);
+                                int lowerIndex = Math.Min(firstIndex, secondIndex);
 
-                                int higherIndex =
-                                    Math.Max(
-                                        firstIndex,
-                                        secondIndex);
+                                int higherIndex = Math.Max(firstIndex, secondIndex);
 
-                                interactionPairs.Add(
-                                    $"{lowerIndex}:{higherIndex}");
+                                interactionPairs.Add($"{lowerIndex}:{higherIndex}");
 
                                 break;
                             }
@@ -1294,96 +1097,68 @@ namespace NovaWright.NumberPush.LevelGenerator
                 }
             }
 
-            diagnostics.CrateInteractionPairs =
-                interactionPairs.Count;
+            diagnostics.CrateInteractionPairs = interactionPairs.Count;
         }
 
         private NumberPushLevel? CreateCandidate(
             int levelNumber,
             NumberPushDifficulty difficulty,
             int rows,
-            int columns)
+            int columns
+        )
         {
-            NumberPushLevel level =
-                new NumberPushLevel
-                {
-                    LevelNumber = levelNumber,
-                    Rows = rows,
-                    Columns = columns
-                };
+            NumberPushLevel level = new NumberPushLevel
+            {
+                LevelNumber = levelNumber,
+                Rows = rows,
+                Columns = columns,
+            };
 
-            CreateOuterWalls(
-                level);
+            CreateOuterWalls(level);
 
-            if (!CreateInteriorWalls(
-                level,
-                difficulty))
+            if (!CreateInteriorWalls(level, difficulty))
             {
                 return null;
             }
 
-            currentWallPositions =
-    level.Walls
-        .Select(
-            wall =>
-                new Point(
-                    wall.X,
-                    wall.Y))
-        .ToHashSet();
+            currentWallPositions = level
+                .Walls.Select(wall => new Point(wall.X, wall.Y))
+                .ToHashSet();
 
-            List<Point> availableCells =
-                GetAvailableCells(
-                    level);
+            List<Point> availableCells = GetAvailableCells(level);
 
-            int crateCount =
-                difficulty.LevelNumber == 12
-                    ? 4
-                    : difficulty.MinimumCrates;
+            int crateCount = difficulty.LevelNumber == 12 ? 4 : difficulty.MinimumCrates;
 
-            if (availableCells.Count <
-                crateCount * 2 + 1)
+            if (availableCells.Count < crateCount * 2 + 1)
             {
                 return null;
             }
 
-            List<Point> cratePositions =
-                new List<Point>();
+            List<Point> cratePositions = new List<Point>();
 
-            for (int crateIndex = 0;
-                 crateIndex < crateCount;
-                 crateIndex++)
+            for (int crateIndex = 0; crateIndex < crateCount; crateIndex++)
             {
-                int distance =
-                    GetCrateDistance(
-                        difficulty,
-                        crateIndex);
+                int distance = GetCrateDistance(difficulty, crateIndex);
 
-                List<Point> viablePositions =
-                    new List<Point>();
+                List<Point> viablePositions = new List<Point>();
 
-                int bestMoveCount =
-                    -1;
+                int bestMoveCount = -1;
 
                 foreach (Point candidatePosition in availableCells)
                 {
-                    int moveCount =
-                        0;
+                    int moveCount = 0;
 
                     Point[] directions =
                     {
                         new Point(0, -1),
                         new Point(0, 1),
                         new Point(-1, 0),
-                        new Point(1, 0)
+                        new Point(1, 0),
                     };
 
                     foreach (Point direction in directions)
                     {
-                        if (CanMoveCrateDistance(
-                                level,
-                                candidatePosition,
-                                direction,
-                                distance))
+                        if (CanMoveCrateDistance(level, candidatePosition, direction, distance))
                         {
                             moveCount++;
                         }
@@ -1391,228 +1166,166 @@ namespace NovaWright.NumberPush.LevelGenerator
 
                     if (moveCount > bestMoveCount)
                     {
-                        bestMoveCount =
-                            moveCount;
+                        bestMoveCount = moveCount;
 
                         viablePositions.Clear();
 
-                        viablePositions.Add(
-                            candidatePosition);
+                        viablePositions.Add(candidatePosition);
                     }
                     else if (moveCount == bestMoveCount)
                     {
-                        viablePositions.Add(
-                            candidatePosition);
+                        viablePositions.Add(candidatePosition);
                     }
                 }
 
-                if (viablePositions.Count == 0 ||
-                    bestMoveCount == 0)
+                if (viablePositions.Count == 0 || bestMoveCount == 0)
                 {
                     return null;
                 }
 
-                Point cratePosition =
-                    viablePositions[
-                        random.Next(
-                            viablePositions.Count)];
+                Point cratePosition = viablePositions[random.Next(viablePositions.Count)];
 
-                cratePositions.Add(
-                    cratePosition);
+                cratePositions.Add(cratePosition);
 
-                availableCells.Remove(
-                    cratePosition);
+                availableCells.Remove(cratePosition);
 
-                level.Crates.Add(
-                    new NumberPushCrate(
-                        cratePosition,
-                        distance));
+                level.Crates.Add(new NumberPushCrate(cratePosition, distance));
             }
 
-            HashSet<Point> assignedGoals =
-    new HashSet<Point>();
+            HashSet<Point> assignedGoals = new HashSet<Point>();
 
             Dictionary<int, HashSet<Point>> crateReachableGoals =
-    new Dictionary<int, HashSet<Point>>();
+                new Dictionary<int, HashSet<Point>>();
 
-            for (int crateIndex = 0;
-                 crateIndex < crateCount;
-                 crateIndex++)
+            for (int crateIndex = 0; crateIndex < crateCount; crateIndex++)
             {
-                NumberPushCrate crate =
-                    level.Crates[crateIndex];
+                NumberPushCrate crate = level.Crates[crateIndex];
 
-                HashSet<Point> reachablePositions =
-                    GetReachablePositions(
-                        level,
-                        crate.Position,
-                        crate.Distance);
+                HashSet<Point> reachablePositions = GetReachablePositions(
+                    level,
+                    crate.Position,
+                    crate.Distance
+                );
 
-                crateReachableGoals[crateIndex] =
-                    availableCells
-                        .Where(
-                            candidateGoal =>
-                                reachablePositions.Contains(
-                                    candidateGoal))
-                        .ToHashSet();
+                crateReachableGoals[crateIndex] = availableCells
+                    .Where(candidateGoal => reachablePositions.Contains(candidateGoal))
+                    .ToHashSet();
             }
 
-            for (int crateIndex = 0;
-                 crateIndex < crateCount;
-                 crateIndex++)
+            for (int crateIndex = 0; crateIndex < crateCount; crateIndex++)
             {
-                if (!crateReachableGoals.ContainsKey(
-                        crateIndex) ||
-                    crateReachableGoals[crateIndex].Count == 0)
+                if (
+                    !crateReachableGoals.ContainsKey(crateIndex)
+                    || crateReachableGoals[crateIndex].Count == 0
+                )
                 {
                     return null;
                 }
             }
 
-            currentCrateReachableGoals =
-    crateReachableGoals;
+            currentCrateReachableGoals = crateReachableGoals;
 
             while (level.Goals.Count < crateCount)
             {
-                List<Point> goalCandidates =
-                    availableCells
-                        .Where(
-                            position =>
-                                !assignedGoals.Contains(
-                                    position))
-                        .Where(
-                            position =>
-                                crateReachableGoals.Any(
-                                    pair =>
-                                        pair.Value.Contains(
-                                            position)))
-                        .ToList();
+                List<Point> goalCandidates = availableCells
+                    .Where(position => !assignedGoals.Contains(position))
+                    .Where(position =>
+                        crateReachableGoals.Any(pair => pair.Value.Contains(position))
+                    )
+                    .ToList();
 
                 if (goalCandidates.Count == 0)
                 {
                     return null;
                 }
 
-                int bestCompatibility =
-                    int.MaxValue;
+                int bestCompatibility = int.MaxValue;
 
-                List<Point> bestGoals =
-                    new List<Point>();
+                List<Point> bestGoals = new List<Point>();
 
                 foreach (Point goal in goalCandidates)
                 {
-                    int compatibility =
-                        crateReachableGoals.Count(
-                            pair =>
-                                pair.Value.Contains(
-                                    goal));
+                    int compatibility = crateReachableGoals.Count(pair =>
+                        pair.Value.Contains(goal)
+                    );
 
-                    if (compatibility <
-                        bestCompatibility)
+                    if (compatibility < bestCompatibility)
                     {
-                        bestCompatibility =
-                            compatibility;
+                        bestCompatibility = compatibility;
 
                         bestGoals.Clear();
 
-                        bestGoals.Add(
-                            goal);
+                        bestGoals.Add(goal);
                     }
-                    else if (compatibility ==
-                             bestCompatibility)
+                    else if (compatibility == bestCompatibility)
                     {
-                        bestGoals.Add(
-                            goal);
+                        bestGoals.Add(goal);
                     }
                 }
 
-                Point selectedGoal =
-                    bestGoals[
-                        random.Next(
-                            bestGoals.Count)];
+                Point selectedGoal = bestGoals[random.Next(bestGoals.Count)];
 
-                assignedGoals.Add(
-                    selectedGoal);
+                assignedGoals.Add(selectedGoal);
 
-                level.Goals.Add(
-                    selectedGoal);
+                level.Goals.Add(selectedGoal);
             }
 
-            List<Point> playerCandidates =
-    availableCells
-        .Where(
-            cell =>
-                !cratePositions.Contains(
-                    cell) &&
-                !level.Goals.Contains(
-                    cell))
-        .ToList();
+            List<Point> playerCandidates = availableCells
+                .Where(cell => !cratePositions.Contains(cell) && !level.Goals.Contains(cell))
+                .ToList();
 
             if (playerCandidates.Count == 0)
             {
                 return null;
             }
 
-            Point bestPlayerStart =
-                playerCandidates[0];
+            Point bestPlayerStart = playerCandidates[0];
 
-            int bestPlayerPushCount =
-                -1;
+            int bestPlayerPushCount = -1;
 
             foreach (Point playerCandidate in playerCandidates)
             {
-                int playerPushCount =
-                    0;
+                int playerPushCount = 0;
 
-                HashSet<Point> reachablePositions =
-    GetPlayerReachablePositionsForGeneration(
-        level,
-        playerCandidate);
+                HashSet<Point> reachablePositions = GetPlayerReachablePositionsForGeneration(
+                    level,
+                    playerCandidate
+                );
 
                 foreach (NumberPushCrate crate in level.Crates)
                 {
                     Point[] directions =
                     {
-                    new Point(0, -1),
-                    new Point(0, 1),
-                    new Point(-1, 0),
-                    new Point(1, 0)
-                };
+                        new Point(0, -1),
+                        new Point(0, 1),
+                        new Point(-1, 0),
+                        new Point(1, 0),
+                    };
 
                     foreach (Point direction in directions)
                     {
-                        Point requiredPlayerPosition =
-                            new Point(
-                                crate.Position.X -
-                                    direction.X,
-                                crate.Position.Y -
-                                    direction.Y);
+                        Point requiredPlayerPosition = new Point(
+                            crate.Position.X - direction.X,
+                            crate.Position.Y - direction.Y
+                        );
 
-                        if (!reachablePositions.Contains(
-                                requiredPlayerPosition))
+                        if (!reachablePositions.Contains(requiredPlayerPosition))
                         {
                             continue;
                         }
 
-                        if (CanMoveCrateDistance(
-                                level,
-                                crate.Position,
-                                direction,
-                                crate.Distance))
+                        if (CanMoveCrateDistance(level, crate.Position, direction, crate.Distance))
                         {
                             playerPushCount++;
                         }
                     }
                 }
 
-                if (playerPushCount >
-                    bestPlayerPushCount)
+                if (playerPushCount > bestPlayerPushCount)
                 {
-                    bestPlayerPushCount =
-                        playerPushCount;
+                    bestPlayerPushCount = playerPushCount;
 
-                    bestPlayerStart =
-                        playerCandidate;
+                    bestPlayerStart = playerCandidate;
                 }
             }
 
@@ -1621,69 +1334,52 @@ namespace NovaWright.NumberPush.LevelGenerator
                 return null;
             }
 
-            level.PlayerStart =
-                bestPlayerStart;
+            level.PlayerStart = bestPlayerStart;
 
             return level;
         }
 
         private HashSet<Point> GetPlayerReachablePositionsForGeneration(
-    NumberPushLevel level,
-    Point startPosition)
+            NumberPushLevel level,
+            Point startPosition
+        )
         {
-            HashSet<Point> reachable =
-                new HashSet<Point>();
+            HashSet<Point> reachable = new HashSet<Point>();
 
-            Queue<Point> queue =
-                new Queue<Point>();
+            Queue<Point> queue = new Queue<Point>();
 
-            HashSet<Point> cratePositions =
-                level.Crates
-                    .Select(
-                        crate =>
-                            crate.Position)
-                    .ToHashSet();
+            HashSet<Point> cratePositions = level
+                .Crates.Select(crate => crate.Position)
+                .ToHashSet();
 
-            reachable.Add(
-                startPosition);
+            reachable.Add(startPosition);
 
-            queue.Enqueue(
-                startPosition);
+            queue.Enqueue(startPosition);
 
             Point[] directions =
             {
-            new Point(0, -1),
-            new Point(0, 1),
-            new Point(-1, 0),
-            new Point(1, 0)
-        };
+                new Point(0, -1),
+                new Point(0, 1),
+                new Point(-1, 0),
+                new Point(1, 0),
+            };
 
             while (queue.Count > 0)
             {
-                Point current =
-                    queue.Dequeue();
+                Point current = queue.Dequeue();
 
                 foreach (Point direction in directions)
                 {
-                    Point destination =
-                        new Point(
-                            current.X + direction.X,
-                            current.Y + direction.Y);
+                    Point destination = new Point(current.X + direction.X, current.Y + direction.Y);
 
-                    if (IsWall(
-                            level,
-                            destination) ||
-                        cratePositions.Contains(
-                            destination))
+                    if (IsWall(level, destination) || cratePositions.Contains(destination))
                     {
                         continue;
                     }
 
-                    if (reachable.Add(
-                            destination))
+                    if (reachable.Add(destination))
                     {
-                        queue.Enqueue(
-                            destination);
+                        queue.Enqueue(destination);
                     }
                 }
             }
@@ -1694,7 +1390,8 @@ namespace NovaWright.NumberPush.LevelGenerator
         private void CalculateSolutionOpportunities(
             NumberPushLevel level,
             NumberPushSolution solution,
-            NumberPushGenerationDiagnostics diagnostics)
+            NumberPushGenerationDiagnostics diagnostics
+        )
         {
             diagnostics.SolutionOpportunityPairs = 0;
             diagnostics.SolutionOpportunityBlocks = 0;
@@ -1704,64 +1401,50 @@ namespace NovaWright.NumberPush.LevelGenerator
             diagnostics.SolutionRequiredDependencyBlocks = 0;
             diagnostics.SolutionRequiredDependencies.Clear();
 
-            List<Point> cratePositions =
-                level.Crates
-                    .Select(crate => crate.Position)
-                    .ToList();
+            List<Point> cratePositions = level.Crates.Select(crate => crate.Position).ToList();
 
-            Point playerPosition =
-                level.PlayerStart;
+            Point playerPosition = level.PlayerStart;
 
-            NumberPushSolver solver =
-                new NumberPushSolver(level);
+            NumberPushSolver solver = new NumberPushSolver(level);
 
-            for (int solutionStepIndex = 0;
-                 solutionStepIndex < solution.Steps.Count;
-                 solutionStepIndex++)
+            for (
+                int solutionStepIndex = 0;
+                solutionStepIndex < solution.Steps.Count;
+                solutionStepIndex++
+            )
             {
-                NumberPushSolutionStep solutionStep =
-                    solution.Steps[solutionStepIndex];
+                NumberPushSolutionStep solutionStep = solution.Steps[solutionStepIndex];
 
-                List<(int CrateIndex, Point Direction)> beforePush =
-                    solver.GetLegalPushes(
-                        playerPosition,
-                        cratePositions);
+                List<(int CrateIndex, Point Direction)> beforePush = solver.GetLegalPushes(
+                    playerPosition,
+                    cratePositions
+                );
 
-                HashSet<string> beforeKeys =
-                    beforePush
-                        .Select(
-                            push =>
-                                $"{push.CrateIndex}:{push.Direction.X}:{push.Direction.Y}")
-                        .ToHashSet();
+                HashSet<string> beforeKeys = beforePush
+                    .Select(push => $"{push.CrateIndex}:{push.Direction.X}:{push.Direction.Y}")
+                    .ToHashSet();
 
-                int movingCrateIndex =
-                    solutionStep.CrateIndex;
+                int movingCrateIndex = solutionStep.CrateIndex;
 
-                Point movingCrateStart =
-                    cratePositions[movingCrateIndex];
+                Point movingCrateStart = cratePositions[movingCrateIndex];
 
-                cratePositions[movingCrateIndex] =
-                    solutionStep.CrateEnd;
+                cratePositions[movingCrateIndex] = solutionStep.CrateEnd;
 
-                playerPosition =
-                    movingCrateStart;
+                playerPosition = movingCrateStart;
 
-                List<(int CrateIndex, Point Direction)> afterPush =
-                    solver.GetLegalPushes(
-                        playerPosition,
-                        cratePositions);
+                List<(int CrateIndex, Point Direction)> afterPush = solver.GetLegalPushes(
+                    playerPosition,
+                    cratePositions
+                );
 
-                foreach ((int CrateIndex, Point Direction) push
-                         in afterPush)
+                foreach ((int CrateIndex, Point Direction) push in afterPush)
                 {
-                    if (push.CrateIndex ==
-                        movingCrateIndex)
+                    if (push.CrateIndex == movingCrateIndex)
                     {
                         continue;
                     }
 
-                    string key =
-                        $"{push.CrateIndex}:{push.Direction.X}:{push.Direction.Y}";
+                    string key = $"{push.CrateIndex}:{push.Direction.X}:{push.Direction.Y}";
 
                     if (beforeKeys.Contains(key))
                     {
@@ -1770,47 +1453,37 @@ namespace NovaWright.NumberPush.LevelGenerator
 
                     diagnostics.SolutionOpportunityBlocks++;
 
-                    if (!diagnostics.SolutionOpportunities.ContainsKey(
-                            movingCrateIndex))
+                    if (!diagnostics.SolutionOpportunities.ContainsKey(movingCrateIndex))
                     {
-                        diagnostics.SolutionOpportunities[
-                            movingCrateIndex] =
-                            new HashSet<int>();
+                        diagnostics.SolutionOpportunities[movingCrateIndex] = new HashSet<int>();
                     }
 
-                    if (diagnostics.SolutionOpportunities[
-                            movingCrateIndex].Add(
-                                push.CrateIndex))
+                    if (diagnostics.SolutionOpportunities[movingCrateIndex].Add(push.CrateIndex))
                     {
                         diagnostics.SolutionOpportunityPairs++;
                     }
 
-                    int nextPushIndex =
-                        solution.Steps
-                            .FindIndex(
-                                solutionStepIndex + 1,
-                                step =>
-                                    step.CrateIndex ==
-                                        push.CrateIndex &&
-                                    step.Direction ==
-                                        push.Direction);
+                    int nextPushIndex = solution.Steps.FindIndex(
+                        solutionStepIndex + 1,
+                        step =>
+                            step.CrateIndex == push.CrateIndex && step.Direction == push.Direction
+                    );
 
-                    if (nextPushIndex ==
-                        solutionStepIndex + 1)
+                    if (nextPushIndex == solutionStepIndex + 1)
                     {
                         diagnostics.SolutionRequiredDependencyBlocks++;
 
-                        if (!diagnostics.SolutionRequiredDependencies.ContainsKey(
-                                movingCrateIndex))
+                        if (!diagnostics.SolutionRequiredDependencies.ContainsKey(movingCrateIndex))
                         {
-                            diagnostics.SolutionRequiredDependencies[
-                                movingCrateIndex] =
+                            diagnostics.SolutionRequiredDependencies[movingCrateIndex] =
                                 new HashSet<int>();
                         }
 
-                        if (diagnostics.SolutionRequiredDependencies[
-                            movingCrateIndex].Add(
-                                push.CrateIndex))
+                        if (
+                            diagnostics
+                                .SolutionRequiredDependencies[movingCrateIndex]
+                                .Add(push.CrateIndex)
+                        )
                         {
                             diagnostics.SolutionRequiredDependencyPairs++;
                         }
@@ -1831,99 +1504,76 @@ namespace NovaWright.NumberPush.LevelGenerator
         private void CalculateSolutionPlayerAccessBlocks(
             NumberPushLevel level,
             NumberPushSolution solution,
-            NumberPushGenerationDiagnostics diagnostics)
+            NumberPushGenerationDiagnostics diagnostics
+        )
         {
             diagnostics.SolutionPlayerAccessBlockPairs = 0;
             diagnostics.SolutionPlayerAccessBlockMoves = 0;
             diagnostics.SolutionPlayerAccessBlocks.Clear();
 
-            List<Point> cratePositions =
-                level.Crates
-                    .Select(crate => crate.Position)
-                    .ToList();
+            List<Point> cratePositions = level.Crates.Select(crate => crate.Position).ToList();
 
             Point[] directions =
             {
                 new Point(0, -1),
                 new Point(0, 1),
                 new Point(-1, 0),
-                new Point(1, 0)
+                new Point(1, 0),
             };
 
-            for (int solutionStepIndex = 0;
-                 solutionStepIndex < solution.Steps.Count;
-                 solutionStepIndex++)
+            for (
+                int solutionStepIndex = 0;
+                solutionStepIndex < solution.Steps.Count;
+                solutionStepIndex++
+            )
             {
-                NumberPushSolutionStep solutionStep =
-                    solution.Steps[solutionStepIndex];
+                NumberPushSolutionStep solutionStep = solution.Steps[solutionStepIndex];
 
-                int targetCrateIndex =
-                    solutionStep.CrateIndex;
+                int targetCrateIndex = solutionStep.CrateIndex;
 
-                Point targetCratePosition =
-                    cratePositions[targetCrateIndex];
+                Point targetCratePosition = cratePositions[targetCrateIndex];
 
-                int targetDistance =
-                    level.Crates[targetCrateIndex].Distance;
+                int targetDistance = level.Crates[targetCrateIndex].Distance;
 
                 foreach (Point direction in directions)
                 {
-                    Point requiredPlayerPosition =
-                        new Point(
-                            targetCratePosition.X -
-                                direction.X,
-                            targetCratePosition.Y -
-                                direction.Y);
+                    Point requiredPlayerPosition = new Point(
+                        targetCratePosition.X - direction.X,
+                        targetCratePosition.Y - direction.Y
+                    );
 
-                    int blockingCrateIndex =
-                        cratePositions.FindIndex(
-                            position =>
-                                position ==
-                                requiredPlayerPosition);
+                    int blockingCrateIndex = cratePositions.FindIndex(position =>
+                        position == requiredPlayerPosition
+                    );
 
-                    if (blockingCrateIndex < 0 ||
-                        blockingCrateIndex ==
-                            targetCrateIndex)
+                    if (blockingCrateIndex < 0 || blockingCrateIndex == targetCrateIndex)
                     {
                         continue;
                     }
 
-                    bool pathClear =
-                        true;
+                    bool pathClear = true;
 
-                    for (int distance = 1;
-                         distance <= targetDistance;
-                         distance++)
+                    for (int distance = 1; distance <= targetDistance; distance++)
                     {
-                        Point destination =
-                            new Point(
-                                targetCratePosition.X +
-                                    direction.X * distance,
-                                targetCratePosition.Y +
-                                    direction.Y * distance);
+                        Point destination = new Point(
+                            targetCratePosition.X + direction.X * distance,
+                            targetCratePosition.Y + direction.Y * distance
+                        );
 
-                        if (IsWall(
-                                level,
-                                destination))
+                        if (IsWall(level, destination))
                         {
                             pathClear = false;
                             break;
                         }
 
-                        for (int crateIndex = 0;
-                             crateIndex < cratePositions.Count;
-                             crateIndex++)
+                        for (int crateIndex = 0; crateIndex < cratePositions.Count; crateIndex++)
                         {
-                            if (crateIndex ==
-                                targetCrateIndex ||
-                                crateIndex ==
-                                blockingCrateIndex)
+                            if (crateIndex == targetCrateIndex || crateIndex == blockingCrateIndex)
                             {
                                 continue;
                             }
 
-                            if (cratePositions[crateIndex] ==
-                                destination)
+                            if (cratePositions[crateIndex] == destination)
                             {
                                 pathClear = false;
                                 break;
@@ -1943,148 +1593,110 @@ namespace NovaWright.NumberPush.LevelGenerator
 
                     diagnostics.SolutionPlayerAccessBlockMoves++;
 
-                    if (!diagnostics.SolutionPlayerAccessBlocks.ContainsKey(
-                            blockingCrateIndex))
+                    if (!diagnostics.SolutionPlayerAccessBlocks.ContainsKey(blockingCrateIndex))
                     {
-                        diagnostics.SolutionPlayerAccessBlocks[
-                            blockingCrateIndex] =
+                        diagnostics.SolutionPlayerAccessBlocks[blockingCrateIndex] =
                             new HashSet<int>();
                     }
 
-                    if (diagnostics.SolutionPlayerAccessBlocks[
-                        blockingCrateIndex].Add(
-                            targetCrateIndex))
+                    if (
+                        diagnostics
+                            .SolutionPlayerAccessBlocks[blockingCrateIndex]
+                            .Add(targetCrateIndex)
+                    )
                     {
                         diagnostics.SolutionPlayerAccessBlockPairs++;
                     }
                 }
 
-                Point movingCrateStart =
-                    cratePositions[targetCrateIndex];
+                Point movingCrateStart = cratePositions[targetCrateIndex];
 
-                cratePositions[targetCrateIndex] =
-                    solutionStep.CrateEnd;
+                cratePositions[targetCrateIndex] = solutionStep.CrateEnd;
             }
         }
 
         private void CalculateTemporaryDisplacement(
             NumberPushLevel level,
             NumberPushSolution solution,
-            NumberPushGenerationDiagnostics diagnostics)
+            NumberPushGenerationDiagnostics diagnostics
+        )
         {
             diagnostics.SolutionTemporaryDisplacementCrates = 0;
             diagnostics.SolutionTemporaryDisplacementMoves = 0;
 
-            foreach (KeyValuePair<int, Point> goalEntry
-                     in solution.CrateGoalPositions)
+            foreach (KeyValuePair<int, Point> goalEntry in solution.CrateGoalPositions)
             {
-                int crateIndex =
-                    goalEntry.Key;
+                int crateIndex = goalEntry.Key;
 
-                Point goal =
-                    goalEntry.Value;
+                Point goal = goalEntry.Value;
 
-                Point currentPosition =
-                    level.Crates[crateIndex].Position;
+                Point currentPosition = level.Crates[crateIndex].Position;
 
-                int displacementMoves =
-                    0;
+                int displacementMoves = 0;
 
-                bool hasMovedAway =
-                    false;
+                bool hasMovedAway = false;
 
-                bool hasRecovered =
-                    false;
+                bool hasRecovered = false;
 
-                foreach (NumberPushSolutionStep step
-                         in solution.Steps)
+                foreach (NumberPushSolutionStep step in solution.Steps)
                 {
-                    if (step.CrateIndex !=
-                        crateIndex)
+                    if (step.CrateIndex != crateIndex)
                     {
                         continue;
                     }
 
                     int beforeDistance =
-                        Math.Abs(
-                            currentPosition.X -
-                            goal.X) +
-                        Math.Abs(
-                            currentPosition.Y -
-                            goal.Y);
+                        Math.Abs(currentPosition.X - goal.X) + Math.Abs(currentPosition.Y - goal.Y);
 
                     int afterDistance =
-                        Math.Abs(
-                            step.CrateEnd.X -
-                            goal.X) +
-                        Math.Abs(
-                            step.CrateEnd.Y -
-                            goal.Y);
+                        Math.Abs(step.CrateEnd.X - goal.X) + Math.Abs(step.CrateEnd.Y - goal.Y);
 
-                    if (afterDistance >
-                        beforeDistance)
+                    if (afterDistance > beforeDistance)
                     {
                         hasMovedAway = true;
 
                         displacementMoves++;
                     }
-                    else if (hasMovedAway &&
-                             afterDistance < beforeDistance)
+                    else if (hasMovedAway && afterDistance < beforeDistance)
                     {
                         hasRecovered = true;
                     }
 
-                    currentPosition =
-                        step.CrateEnd;
+                    currentPosition = step.CrateEnd;
                 }
 
-                if (hasMovedAway &&
-                    hasRecovered)
+                if (hasMovedAway && hasRecovered)
                 {
                     diagnostics.SolutionTemporaryDisplacementCrates++;
 
-                    diagnostics.SolutionTemporaryDisplacementMoves +=
-                        displacementMoves;
+                    diagnostics.SolutionTemporaryDisplacementMoves += displacementMoves;
                 }
             }
         }
 
-        private int GetCrateDistance(
-            NumberPushDifficulty difficulty,
-            int crateIndex)
+        private int GetCrateDistance(NumberPushDifficulty difficulty, int crateIndex)
         {
             return difficulty.MinimumCrateDistance;
         }
 
-        private bool CreateInteriorWalls(
-            NumberPushLevel level,
-            NumberPushDifficulty difficulty)
+        private bool CreateInteriorWalls(NumberPushLevel level, NumberPushDifficulty difficulty)
         {
-            int wallCount =
-                random.Next(
-                    difficulty.MinimumInteriorWalls,
-                    difficulty.MaximumInteriorWalls + 1);
+            int wallCount = random.Next(
+                difficulty.MinimumInteriorWalls,
+                difficulty.MaximumInteriorWalls + 1
+            );
 
-            List<Point> candidates =
-                new List<Point>();
+            List<Point> candidates = new List<Point>();
 
-            for (int y = 1;
-                 y < level.Rows - 1;
-                 y++)
+            for (int y = 1; y < level.Rows - 1; y++)
             {
-                for (int x = 1;
-                     x < level.Columns - 1;
-                     x++)
+                for (int x = 1; x < level.Columns - 1; x++)
                 {
-                    candidates.Add(
-                        new Point(
-                            x,
-                            y));
+                    candidates.Add(new Point(x, y));
                 }
             }
 
-            Shuffle(
-                candidates);
+            Shuffle(candidates);
 
             int wallsAdded = 0;
 
@@ -2095,18 +1707,11 @@ namespace NovaWright.NumberPush.LevelGenerator
                     break;
                 }
 
-                level.Walls.Add(
-                    new Rectangle(
-                        candidate.X,
-                        candidate.Y,
-                        1,
-                        1));
+                level.Walls.Add(new Rectangle(candidate.X, candidate.Y, 1, 1));
 
-                if (!IsBoardConnected(
-                        level))
+                if (!IsBoardConnected(level))
                 {
-                    level.Walls.RemoveAt(
-                        level.Walls.Count - 1);
+                    level.Walls.RemoveAt(level.Walls.Count - 1);
 
                     continue;
                 }
@@ -2117,40 +1722,29 @@ namespace NovaWright.NumberPush.LevelGenerator
             return wallsAdded == wallCount;
         }
 
-        private bool IsBoardConnected(
-    NumberPushLevel level)
+        private bool IsBoardConnected(NumberPushLevel level)
         {
-            HashSet<Point> wallPositions =
-                level.Walls
-                    .Select(
-                        wall =>
-                            new Point(
-                                wall.X,
-                                wall.Y))
-                    .ToHashSet();
+            HashSet<Point> wallPositions = level
+                .Walls.Select(wall => new Point(wall.X, wall.Y))
+                .ToHashSet();
 
             int availableCellCount =
-                (level.Rows - 2) *
-                (level.Columns - 2) -
-                wallPositions.Count(
-                    position =>
-                        position.X > 0 &&
-                        position.X < level.Columns - 1 &&
-                        position.Y > 0 &&
-                        position.Y < level.Rows - 1);
+                (level.Rows - 2) * (level.Columns - 2)
+                - wallPositions.Count(position =>
+                    position.X > 0
+                    && position.X < level.Columns - 1
+                    && position.Y > 0
+                    && position.Y < level.Rows - 1
+                );
 
             if (availableCellCount <= 0)
             {
                 return false;
             }
 
-            Point start =
-                new Point(
-                    1,
-                    1);
+            Point start = new Point(1, 1);
 
-            while (wallPositions.Contains(
-                       start))
+            while (wallPositions.Contains(start))
             {
                 start.X++;
 
@@ -2166,131 +1760,83 @@ namespace NovaWright.NumberPush.LevelGenerator
                 }
             }
 
-            HashSet<Point> visited =
-                new HashSet<Point>();
+            HashSet<Point> visited = new HashSet<Point>();
 
-            Queue<Point> queue =
-                new Queue<Point>();
+            Queue<Point> queue = new Queue<Point>();
 
-            visited.Add(
-                start);
+            visited.Add(start);
 
-            queue.Enqueue(
-                start);
+            queue.Enqueue(start);
 
             Point[] directions =
             {
-        new Point(0, -1),
-        new Point(0, 1),
-        new Point(-1, 0),
-        new Point(1, 0)
-    };
+                new Point(0, -1),
+                new Point(0, 1),
+                new Point(-1, 0),
+                new Point(1, 0),
+            };
 
             while (queue.Count > 0)
             {
-                Point current =
-                    queue.Dequeue();
+                Point current = queue.Dequeue();
 
                 foreach (Point direction in directions)
                 {
-                    Point next =
-                        new Point(
-                            current.X +
-                                direction.X,
-                            current.Y +
-                                direction.Y);
+                    Point next = new Point(current.X + direction.X, current.Y + direction.Y);
 
-                    if (next.X <= 0 ||
-                        next.X >= level.Columns - 1 ||
-                        next.Y <= 0 ||
-                        next.Y >= level.Rows - 1)
+                    if (
+                        next.X <= 0
+                        || next.X >= level.Columns - 1
+                        || next.Y <= 0
+                        || next.Y >= level.Rows - 1
+                    )
                     {
                         continue;
                     }
 
-                    if (wallPositions.Contains(
-                            next))
+                    if (wallPositions.Contains(next))
                     {
                         continue;
                     }
 
-                    if (visited.Add(
-                            next))
+                    if (visited.Add(next))
                     {
-                        queue.Enqueue(
-                            next);
+                        queue.Enqueue(next);
                     }
                 }
             }
 
-            return visited.Count ==
-                   availableCellCount;
+            return visited.Count == availableCellCount;
         }
 
-        private void CreateOuterWalls(
-            NumberPushLevel level)
+        private void CreateOuterWalls(NumberPushLevel level)
         {
-            for (int x = 0;
-                 x < level.Columns;
-                 x++)
+            for (int x = 0; x < level.Columns; x++)
             {
-                level.Walls.Add(
-                    new Rectangle(
-                        x,
-                        0,
-                        1,
-                        1));
+                level.Walls.Add(new Rectangle(x, 0, 1, 1));
 
-                level.Walls.Add(
-                    new Rectangle(
-                        x,
-                        level.Rows - 1,
-                        1,
-                        1));
+                level.Walls.Add(new Rectangle(x, level.Rows - 1, 1, 1));
             }
 
-            for (int y = 1;
-                 y < level.Rows - 1;
-                 y++)
+            for (int y = 1; y < level.Rows - 1; y++)
             {
-                level.Walls.Add(
-                    new Rectangle(
-                        0,
-                        y,
-                        1,
-                        1));
+                level.Walls.Add(new Rectangle(0, y, 1, 1));
 
-                level.Walls.Add(
-                    new Rectangle(
-                        level.Columns - 1,
-                        y,
-                        1,
-                        1));
+                level.Walls.Add(new Rectangle(level.Columns - 1, y, 1, 1));
             }
         }
 
-        private List<Point> GetAvailableCells(
-            NumberPushLevel level)
+        private List<Point> GetAvailableCells(NumberPushLevel level)
         {
-            List<Point> cells =
-                new List<Point>();
+            List<Point> cells = new List<Point>();
 
-            for (int y = 1;
-                 y < level.Rows - 1;
-                 y++)
+            for (int y = 1; y < level.Rows - 1; y++)
             {
-                for (int x = 1;
-                     x < level.Columns - 1;
-                     x++)
+                for (int x = 1; x < level.Columns - 1; x++)
                 {
-                    Point point =
-                        new Point(
-                            x,
-                            y);
+                    Point point = new Point(x, y);
 
-                    if (!IsWall(
-                            level,
-                            point))
+                    if (!IsWall(level, point))
                     {
                         cells.Add(point);
                     }
@@ -2300,35 +1846,28 @@ namespace NovaWright.NumberPush.LevelGenerator
             return cells;
         }
 
-        private bool IsWall(
-    NumberPushLevel level,
-    Point position)
+        private bool IsWall(NumberPushLevel level, Point position)
         {
-            if (position.X < 0 ||
-                position.X >= level.Columns ||
-                position.Y < 0 ||
-                position.Y >= level.Rows)
+            if (
+                position.X < 0
+                || position.X >= level.Columns
+                || position.Y < 0
+                || position.Y >= level.Rows
+            )
             {
                 return true;
             }
 
-            return currentWallPositions.Contains(
-                position);
+            return currentWallPositions.Contains(position);
         }
 
-        private void Shuffle<T>(
-            List<T> list)
+        private void Shuffle<T>(List<T> list)
         {
-            for (int i = list.Count - 1;
-                 i > 0;
-                 i--)
+            for (int i = list.Count - 1; i > 0; i--)
             {
-                int j =
-                    random.Next(
-                        i + 1);
+                int j = random.Next(i + 1);
 
-                (list[i], list[j]) =
-                    (list[j], list[i]);
+                (list[i], list[j]) = (list[j], list[i]);
             }
         }
     }

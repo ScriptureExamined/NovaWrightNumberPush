@@ -18,23 +18,12 @@ namespace NovaWright.NumberPush.LevelGenerator
 
         public long TotalMilliseconds
         {
-            get
-            {
-                return
-                    GenerationMilliseconds +
-                    SolutionMilliseconds;
-            }
+            get { return GenerationMilliseconds + SolutionMilliseconds; }
         }
 
         public bool IsSuccessful
         {
-            get
-            {
-                return
-                    Level != null &&
-                    Solution != null &&
-                    Solution.IsSolved;
-            }
+            get { return Level != null && Solution != null && Solution.IsSolved; }
         }
 
         public int InteriorWallCount
@@ -46,23 +35,15 @@ namespace NovaWright.NumberPush.LevelGenerator
                     return 0;
                 }
 
-                int outerWallCount =
-                    (Level.Columns * 2) +
-                    ((Level.Rows - 2) * 2);
+                int outerWallCount = (Level.Columns * 2) + ((Level.Rows - 2) * 2);
 
-                return
-                    Level.Walls.Count -
-                    outerWallCount;
+                return Level.Walls.Count - outerWallCount;
             }
         }
 
         public int CrateCount
         {
-            get
-            {
-                return
-                    Level?.Crates.Count ?? 0;
-            }
+            get { return Level?.Crates.Count ?? 0; }
         }
     }
 }

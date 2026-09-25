@@ -6,27 +6,19 @@
 
         public int MinimumPushes { get; set; }
 
-        public List<NumberPushSolutionStep> Steps { get; set; } =
-            new();
+        public List<NumberPushSolutionStep> Steps { get; set; } = new();
 
-        public Dictionary<int, int> CratePushCounts { get; set; } =
-            new();
+        public Dictionary<int, int> CratePushCounts { get; set; } = new();
 
-        public Dictionary<int, int> CrateFirstPushNumbers { get; set; } =
-            new();
+        public Dictionary<int, int> CrateFirstPushNumbers { get; set; } = new();
 
-        public Dictionary<int, int> CrateLastPushNumbers { get; set; } =
-            new();
+        public Dictionary<int, int> CrateLastPushNumbers { get; set; } = new();
 
-        public Dictionary<int, Point> CrateGoalPositions { get; set; } =
-    new();
+        public Dictionary<int, Point> CrateGoalPositions { get; set; } = new();
 
         public int CratesMoved
         {
-            get
-            {
-                return CratePushCounts.Count;
-            }
+            get { return CratePushCounts.Count; }
         }
     }
 
@@ -38,10 +30,7 @@
 
         public int CrateNumber
         {
-            get
-            {
-                return CrateIndex + 1;
-            }
+            get { return CrateIndex + 1; }
         }
 
         public Point PlayerStart { get; set; }

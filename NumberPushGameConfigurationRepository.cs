@@ -6,67 +6,45 @@ namespace NovaWrightNumberPush
     {
         private readonly string configurationFilePath;
 
-        private static readonly JsonSerializerOptions Options =
-            new JsonSerializerOptions
-            {
-                WriteIndented = true
-            };
+        private static readonly JsonSerializerOptions Options = new JsonSerializerOptions
+        {
+            WriteIndented = true,
+        };
 
         public NumberPushGameConfigurationRepository()
         {
-            string gameFolder =
-                Path.Combine(
-                    AppContext.BaseDirectory,
-                    "Game");
+            string gameFolder = Path.Combine(AppContext.BaseDirectory, "Game");
 
-            Directory.CreateDirectory(
-                gameFolder);
+            Directory.CreateDirectory(gameFolder);
 
-            configurationFilePath =
-                Path.Combine(
-                    gameFolder,
-                    "GameConfiguration.json");
+            configurationFilePath = Path.Combine(gameFolder, "GameConfiguration.json");
         }
 
         public NumberPushGameConfiguration Load()
         {
-            if (!File.Exists(
-                    configurationFilePath))
+            if (!File.Exists(configurationFilePath))
             {
                 NumberPushGameConfiguration defaultConfiguration =
                     new NumberPushGameConfiguration();
 
-                Save(
-                    defaultConfiguration);
+                Save(defaultConfiguration);
 
                 return defaultConfiguration;
             }
 
-            string json =
-                File.ReadAllText(
-                    configurationFilePath);
+            string json = File.ReadAllText(configurationFilePath);
 
             NumberPushGameConfiguration? loadedConfiguration =
-                JsonSerializer.Deserialize<
-                    NumberPushGameConfiguration>(
-                        json,
-                        Options);
+                JsonSerializer.Deserialize<NumberPushGameConfiguration>(json, Options);
 
-            return loadedConfiguration ??
-                new NumberPushGameConfiguration();
+            return loadedConfiguration ?? new NumberPushGameConfiguration();
         }
 
-        public void Save(
-            NumberPushGameConfiguration configuration)
+        public void Save(NumberPushGameConfiguration configuration)
         {
-            string json =
-                JsonSerializer.Serialize(
-                    configuration,
-                    Options);
+            string json = JsonSerializer.Serialize(configuration, Options);
 
-            File.WriteAllText(
-                configurationFilePath,
-                json);
+            File.WriteAllText(configurationFilePath, json);
         }
     }
 }

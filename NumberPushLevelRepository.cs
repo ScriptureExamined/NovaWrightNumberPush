@@ -6,146 +6,96 @@
 
         public NumberPushLevelRepository()
         {
-            string projectDirectory =
-                Directory.GetParent(
-                    AppContext.BaseDirectory)!
-                .Parent!
-                .Parent!
-                .Parent!
-                .FullName;
+            string projectDirectory = Directory
+                .GetParent(AppContext.BaseDirectory)!
+                .Parent!.Parent!.Parent!.FullName;
 
-            levelsFolder =
-                Path.Combine(
-                    projectDirectory,
-                    "Game",
-                    "Levels");
+            levelsFolder = Path.Combine(projectDirectory, "Game", "Levels");
 
-            Directory.CreateDirectory(
-                levelsFolder);
+            Directory.CreateDirectory(levelsFolder);
         }
 
         public List<int> GetAvailableLevelNumbers()
         {
             return Directory
-                .GetFiles(
-                    levelsFolder,
-                    "Level*.json")
-                .Select(
-                    file =>
-                    {
-                        string fileName =
-                            Path.GetFileNameWithoutExtension(
-                                file);
+                .GetFiles(levelsFolder, "Level*.json")
+                .Select(file =>
+                {
+                    string fileName = Path.GetFileNameWithoutExtension(file);
 
-                        string numberText =
-                            fileName.Substring(
-                                "Level".Length);
+                    string numberText = fileName.Substring("Level".Length);
 
-                        return int.TryParse(
-                            numberText,
-                            out int levelNumber)
-                                ? levelNumber
-                                : -1;
-                    })
-                .Where(
-                    levelNumber =>
-                        levelNumber >= 0)
-                .OrderBy(
-                    levelNumber =>
-                        levelNumber)
+                    return int.TryParse(numberText, out int levelNumber) ? levelNumber : -1;
+                })
+                .Where(levelNumber => levelNumber >= 0)
+                .OrderBy(levelNumber => levelNumber)
                 .ToList();
         }
 
-        public bool LevelExists(
-            int levelNumber)
+        public bool LevelExists(int levelNumber)
         {
-            return File.Exists(
-                GetLevelFilePath(
-                    levelNumber));
+            return File.Exists(GetLevelFilePath(levelNumber));
         }
 
-        public NumberPushLevel LoadLevel(
-            int levelNumber)
+        public NumberPushLevel LoadLevel(int levelNumber)
         {
-            string filePath =
-                GetLevelFilePath(
-                    levelNumber);
+            string filePath = GetLevelFilePath(levelNumber);
 
-            if (!File.Exists(
-                    filePath))
+            if (!File.Exists(filePath))
             {
                 throw new FileNotFoundException(
                     $"Level {levelNumber} could not be found.",
-                    filePath);
+                    filePath
+                );
             }
 
-            return NumberPushLevelSerializer.LoadFromFile(
-                filePath);
+            return NumberPushLevelSerializer.LoadFromFile(filePath);
         }
 
-        public void SaveLevel(
-            NumberPushLevel level)
+        public void SaveLevel(NumberPushLevel level)
         {
             if (level == null)
             {
-                throw new ArgumentNullException(
-                    nameof(level));
+                throw new ArgumentNullException(nameof(level));
             }
 
             if (level.LevelNumber <= 0)
             {
                 throw new ArgumentException(
                     "The level must have a valid level number.",
-                    nameof(level));
+                    nameof(level)
+                );
             }
 
-            string filePath =
-                GetLevelFilePath(
-                    level.LevelNumber);
+            string filePath = GetLevelFilePath(level.LevelNumber);
 
-            NumberPushLevelSerializer.SaveToFile(
-                level,
-                filePath);
+            NumberPushLevelSerializer.SaveToFile(level, filePath);
         }
 
-        public void DeleteLevel(
-            int levelNumber)
+        public void DeleteLevel(int levelNumber)
         {
-            string filePath =
-                GetLevelFilePath(
-                    levelNumber);
+            string filePath = GetLevelFilePath(levelNumber);
 
-            if (File.Exists(
-                    filePath))
+            if (File.Exists(filePath))
             {
-                File.Delete(
-                    filePath);
+                File.Delete(filePath);
             }
         }
 
-        public int? GetNextLevelNumber(
-            int currentLevelNumber)
+        public int? GetNextLevelNumber(int currentLevelNumber)
         {
-            List<int> levelNumbers =
-                GetAvailableLevelNumbers();
+            List<int> levelNumbers = GetAvailableLevelNumbers();
 
             return levelNumbers
-                .Where(
-                    levelNumber =>
-                        levelNumber > currentLevelNumber)
-                .OrderBy(
-                    levelNumber =>
-                        levelNumber)
+                .Where(levelNumber => levelNumber > currentLevelNumber)
+                .OrderBy(levelNumber => levelNumber)
                 .Cast<int?>()
                 .FirstOrDefault();
         }
 
-        private string GetLevelFilePath(
-            int levelNumber)
+        private string GetLevelFilePath(int levelNumber)
         {
-            return Path.Combine(
-                levelsFolder,
-                $"Level{levelNumber:D3}.json");
+            return Path.Combine(levelsFolder, $"Level{levelNumber:D3}.json");
         }
     }
 }

@@ -11,43 +11,34 @@
         public NumberPushGameSession(
             NumberPushGame game,
             NumberPushProgress progress,
-            NumberPushLevelRepository levelRepository)
+            NumberPushLevelRepository levelRepository
+        )
         {
-            Game =
-                game;
+            Game = game;
 
-            Progress =
-                progress;
+            Progress = progress;
 
-            this.levelRepository =
-                levelRepository;
+            this.levelRepository = levelRepository;
         }
 
         public List<int> GetAvailableLevelNumbers()
         {
-            return levelRepository
-                .GetAvailableLevelNumbers();
+            return levelRepository.GetAvailableLevelNumbers();
         }
 
-        public NumberPushLevel? GetLevel(
-            int levelNumber)
+        public NumberPushLevel? GetLevel(int levelNumber)
         {
-            if (!levelRepository.LevelExists(
-                    levelNumber))
+            if (!levelRepository.LevelExists(levelNumber))
             {
                 return null;
             }
 
-            return levelRepository.LoadLevel(
-                levelNumber);
+            return levelRepository.LoadLevel(levelNumber);
         }
 
-        public int? GetNextLevelNumber(
-            int currentLevelNumber)
+        public int? GetNextLevelNumber(int currentLevelNumber)
         {
-            return levelRepository
-                .GetNextLevelNumber(
-                    currentLevelNumber);
+            return levelRepository.GetNextLevelNumber(currentLevelNumber);
         }
     }
 }

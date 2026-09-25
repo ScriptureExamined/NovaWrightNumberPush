@@ -3,7 +3,7 @@
     public enum NumberPushMode
     {
         Exact,
-        BlockingAllowed
+        BlockingAllowed,
     }
 
     public class NumberPushLevel
@@ -14,8 +14,7 @@
 
         public int Columns { get; set; }
 
-        public NumberPushMode PushMode { get; set; } =
-            NumberPushMode.Exact;
+        public NumberPushMode PushMode { get; set; } = NumberPushMode.Exact;
 
         public Point PlayerStart { get; set; }
 

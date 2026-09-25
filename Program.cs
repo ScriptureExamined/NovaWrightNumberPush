@@ -7,11 +7,7 @@ namespace NovaWrightNumberPush
         {
             ApplicationConfiguration.Initialize();
 
-            Application.Run(
-                new NumberPushLevelSelectForm());
-
-            //        Application.Run(
-            //new NumberPushGeneratorForm());
+            Application.Run(new NumberPushLevelSelectForm());
         }
     }
 }
