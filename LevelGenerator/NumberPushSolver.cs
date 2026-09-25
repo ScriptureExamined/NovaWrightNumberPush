@@ -214,13 +214,35 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             InitialTryPushLegalPushes = 0;
 
+            int startPositionHashSum = 0;
+
+            int startPositionHashSquareSum = 0;
+
+            foreach (Point position in
+                     crateStartPositions)
+            {
+                int positionHash =
+                    HashCode.Combine(
+                        position.X,
+                        position.Y);
+
+                startPositionHashSum +=
+                    positionHash;
+
+                startPositionHashSquareSum +=
+                    positionHash *
+                    positionHash;
+            }
+
             SolverState startState =
                 new SolverState(
                     level.PlayerStart,
                     crateStartPositions,
                     0,
                     null,
-                    null);
+                    null,
+                    startPositionHashSum,
+                    startPositionHashSquareSum);
 
             queue.Enqueue(startState);
 
@@ -687,17 +709,39 @@ namespace NovaWright.NumberPush.LevelGenerator
             BuildCrateOccupancy(
                 state.CratePositions);
 
+            int oldPositionHash =
+    HashCode.Combine(
+        cratePosition.X,
+        cratePosition.Y);
+
+            int newPositionHash =
+                HashCode.Combine(
+                    finalPosition.X,
+                    finalPosition.Y);
+
+            int newPositionHashSum =
+                state.PositionHashSum -
+                oldPositionHash +
+                newPositionHash;
+
+            int newPositionHashSquareSum =
+                state.PositionHashSquareSum -
+                oldPositionHash * oldPositionHash +
+                newPositionHash * newPositionHash;
+
             SolverState newState =
-                new SolverState(
-                    newPlayerPosition,
-                    newCratePositions,
-                    state.Pushes + 1,
-                    state,
-                    null)
-                {
-                    PlayerRegion =
-                        newPlayerRegion
-                };
+    new SolverState(
+        newPlayerPosition,
+        newCratePositions,
+        state.Pushes + 1,
+        state,
+        null,
+        newPositionHashSum,
+        newPositionHashSquareSum)
+    {
+        PlayerRegion =
+            newPlayerRegion
+    };
 
             if (!visited.Add(
                 newState))
@@ -1746,12 +1790,18 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             public NumberPushSolutionStep? Step { get; set; }
 
+            public int PositionHashSum { get; }
+
+            public int PositionHashSquareSum { get; }
+
             public SolverState(
                 Point playerPosition,
                 Point[] cratePositions,
                 int pushes,
                 SolverState? parent,
-                NumberPushSolutionStep? step)
+                NumberPushSolutionStep? step,
+                int positionHashSum,
+                int positionHashSquareSum)
             {
                 PlayerPosition =
                     playerPosition;
@@ -1767,6 +1817,12 @@ namespace NovaWright.NumberPush.LevelGenerator
 
                 Step =
                     step;
+
+                PositionHashSum =
+                    positionHashSum;
+
+                PositionHashSquareSum =
+                    positionHashSquareSum;
             }
         }
 
@@ -1833,33 +1889,42 @@ namespace NovaWright.NumberPush.LevelGenerator
             public int GetHashCode(
     SolverState state)
             {
-                unchecked
-                {
-                    int positionHashSum = 0;
-                    int positionHashSquareSum = 0;
-
-                    foreach (Point position in
-                             state.CratePositions)
-                    {
-                        int positionHash =
-                            HashCode.Combine(
-                                position.X,
-                                position.Y);
-
-                        positionHashSum +=
-                            positionHash;
-
-                        positionHashSquareSum +=
-                            positionHash *
-                            positionHash;
-                    }
-
-                    return HashCode.Combine(
-                        state.PlayerRegion,
-                        positionHashSum,
-                        positionHashSquareSum);
-                }
+                return HashCode.Combine(
+                    state.PlayerRegion,
+                    state.PositionHashSum,
+                    state.PositionHashSquareSum);
             }
+
+            //        public int GetHashCode(
+            //SolverState state)
+            //        {
+            //            unchecked
+            //            {
+            //                int positionHashSum = 0;
+            //                int positionHashSquareSum = 0;
+
+            //                foreach (Point position in
+            //                         state.CratePositions)
+            //                {
+            //                    int positionHash =
+            //                        HashCode.Combine(
+            //                            position.X,
+            //                            position.Y);
+
+            //                    positionHashSum +=
+            //                        positionHash;
+
+            //                    positionHashSquareSum +=
+            //                        positionHash *
+            //                        positionHash;
+            //                }
+
+            //                return HashCode.Combine(
+            //                    state.PlayerRegion,
+            //                    positionHashSum,
+            //                    positionHashSquareSum);
+            //            }
+            //        }
         }
     }
 }
