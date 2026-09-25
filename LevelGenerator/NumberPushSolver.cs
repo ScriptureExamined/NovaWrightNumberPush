@@ -16,6 +16,11 @@ namespace NovaWright.NumberPush.LevelGenerator
 
         private readonly bool[] blockedCells;
 
+        private readonly int[] leftNeighbors;
+        private readonly int[] rightNeighbors;
+        private readonly int[] upNeighbors;
+        private readonly int[] downNeighbors;
+
         // Reusable arrays for current-state player reachability.
         private readonly int[] reachableVisit;
         private readonly int[] reachableQueue;
@@ -135,6 +140,51 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             blockedCells =
                 new bool[cellCount];
+
+            leftNeighbors =
+new int[cellCount];
+
+            rightNeighbors =
+            new int[cellCount];
+
+            upNeighbors =
+            new int[cellCount];
+
+            downNeighbors =
+            new int[cellCount];
+
+            for (int index = 0;
+            index < cellCount;
+            index++)
+            {
+                int x =
+                index % columns;
+
+                int y =
+                    index / columns;
+
+                leftNeighbors[index] =
+                    x > 0
+                        ? index - 1
+                        : -1;
+
+                rightNeighbors[index] =
+                    x < columns - 1
+                        ? index + 1
+                        : -1;
+
+                upNeighbors[index] =
+                    y > 0
+                        ? index - columns
+                        : -1;
+
+                downNeighbors[index] =
+                    y < rows - 1
+                        ? index + columns
+                        : -1;
+
+            }
+
 
             foreach (Rectangle wall in level.Walls)
             {
