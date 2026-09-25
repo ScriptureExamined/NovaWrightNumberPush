@@ -42,6 +42,10 @@
 
         public long UnsolvableDuplicateStates { get; set; }
 
+        public long UnsolvableExactParentReversalStates { get; set; }
+
+        public long UnsolvableHashSetDuplicateStates { get; set; }
+
         public long UniqueSuccessorStates { get; set; }
 
         public long OccupancyMilliseconds { get; set; }
@@ -234,6 +238,8 @@
                 $"  Zero-legal-push states: {UnsolvableZeroLegalPushStates}\r\n" +
                 $"  Maximum legal pushes: {UnsolvableMaximumLegalPushes}\r\n" +
                 $"  Duplicate states: {UnsolvableDuplicateStates}\r\n" +
+                $"    Exact parent reversals: {UnsolvableExactParentReversalStates}\r\n" +
+                $"    HashSet duplicates: {UnsolvableHashSetDuplicateStates}\r\n" +
                 $"Unique successor states: {UniqueSuccessorStates}\r\n" +
                 $"Below target: {BelowTargetCandidates}\r\n" +
                 $"Above target: {AboveTargetCandidates}\r\n" +

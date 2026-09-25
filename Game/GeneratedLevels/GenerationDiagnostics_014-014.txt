@@ -24,6 +24,8 @@ Unsolvable: 1022
   Zero-legal-push states: 1167372
   Maximum legal pushes: 20
   Duplicate states: 105623665
+    Exact parent reversals: 6026476
+    HashSet duplicates: 99597189
 Unique successor states: 25602952
 Below target: 0
 Above target: 0
@@ -434,23 +436,23 @@ Push 29: Crate 5 {X=11,Y=8} -> {X=11,Y=9}
 Push 30: Crate 3 {X=9,Y=7} -> {X=10,Y=7}
 
 TIMING
-Candidate generation: 688 ms
-Solver: 688249 ms
-Average solver call: 672.78 ms
-  Occupancy: 46192 ms
-  Current reachability: 127228 ms
-  Successor reachability: 274687 ms
-  Push validation: 27916 ms
-  Array copy: 12284 ms
-  State construction: 40656 ms
-  HashSet lookup: 68873 ms
-  Static deadlock: 26813 ms
-Total time: 00:13:39
+Candidate generation: 755 ms
+Solver: 708511 ms
+Average solver call: 692.58 ms
+  Occupancy: 48451 ms
+  Current reachability: 127551 ms
+  Successor reachability: 278818 ms
+  Push validation: 32057 ms
+  Array copy: 13812 ms
+  State construction: 42168 ms
+  HashSet lookup: 74110 ms
+  Static deadlock: 28085 ms
+Total time: 00:14:03
 Crate interaction pairs: 0
 Crate interaction blocks: 0
 
 
 ========================================
-TOTAL CREATION TIME: 00:13:39
-START TIME:          2026-09-25 13:40:59
+TOTAL CREATION TIME: 00:14:03
+START TIME:          2026-09-25 14:03:51
 ========================================

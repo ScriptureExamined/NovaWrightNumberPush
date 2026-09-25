@@ -438,17 +438,23 @@ namespace NovaWright.NumberPush.LevelGenerator
                             diagnostics.UnsolvableDuplicateStates +=
                                 solver.DuplicateStates;
 
+                            diagnostics.UnsolvableExactParentReversalStates +=
+                                solver.ExactParentReversalStates;
+
+                            diagnostics.UnsolvableHashSetDuplicateStates +=
+                                solver.HashSetDuplicateStates;
+
                             int maximumLegalPushes =
                                 solver.MaximumLegalPushes;
 
                             int minimumZeroPushDepth =
-    solver.MinimumZeroLegalPushDepth;
+                                solver.MinimumZeroLegalPushDepth;
 
                             int legalPushesBeforeZero =
-    solver.LegalPushesBeforeMinimumZeroPushDepth;
+                                solver.LegalPushesBeforeMinimumZeroPushDepth;
 
                             diagnostics.FirstZeroPushPlayerAccessBlockedCrates +=
-    solver.FirstZeroPushPlayerAccessBlockedCrates;
+                                solver.FirstZeroPushPlayerAccessBlockedCrates;
 
                             diagnostics.FirstZeroPushWallBlockedCrates +=
                                 solver.FirstZeroPushWallBlockedCrates;
@@ -460,7 +466,7 @@ namespace NovaWright.NumberPush.LevelGenerator
                                 solver.FirstZeroPushCornerDeadlockedCrates;
 
                             diagnostics.FirstZeroPushUpBlocked +=
-    solver.FirstZeroPushUpBlocked;
+                                solver.FirstZeroPushUpBlocked;
 
                             diagnostics.FirstZeroPushDownBlocked +=
                                 solver.FirstZeroPushDownBlocked;
@@ -472,7 +478,7 @@ namespace NovaWright.NumberPush.LevelGenerator
                                 solver.FirstZeroPushRightBlocked;
 
                             diagnostics.FirstZeroPushLastCratePlayerAccessBlocked +=
-    solver.FirstZeroPushLastCratePlayerAccessBlocked;
+                                solver.FirstZeroPushLastCratePlayerAccessBlocked;
 
                             diagnostics.FirstZeroPushLastCrateWallBlocked +=
                                 solver.FirstZeroPushLastCrateWallBlocked;
