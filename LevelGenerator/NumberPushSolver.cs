@@ -1259,9 +1259,26 @@ namespace NovaWright.NumberPush.LevelGenerator
         }
 
         private int GetSuccessorPlayerRegionKey(
-    int currentReachableVisitId)
+            int currentReachableVisitId)
         {
-            return successorPlayerRegionKey;
+            int regionKey =
+                int.MaxValue;
+
+            for (int index = 0;
+                 index < successorReachableVisit.Length;
+                 index++)
+            {
+                if (successorReachableVisit[index] ==
+                    currentReachableVisitId)
+                {
+                    regionKey =
+                        index;
+
+                    break;
+                }
+            }
+
+            return regionKey;
         }
 
         private bool IsStaticCornerDeadlock(
@@ -1624,7 +1641,7 @@ namespace NovaWright.NumberPush.LevelGenerator
         }
 
         private int MarkSuccessorReachableCells(
-    Point startPosition)
+            Point startPosition)
         {
             successorReachableVisitId++;
 
@@ -1643,18 +1660,12 @@ namespace NovaWright.NumberPush.LevelGenerator
                 IsOccupiedByAnyCrate(
                     startPosition))
             {
-                successorPlayerRegionKey =
-                    int.MaxValue;
-
                 return successorReachableVisitId;
             }
 
             int startIndex =
                 GetCellIndex(
                     startPosition);
-
-            successorPlayerRegionKey =
-                startIndex;
 
             int head = 0;
 
@@ -1785,13 +1796,6 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             successorReachableQueue[tail++] =
                 index;
-
-            if (index <
-                successorPlayerRegionKey)
-            {
-                successorPlayerRegionKey =
-                    index;
-            }
         }
 
         private bool IsReachable(
