@@ -820,6 +820,20 @@ namespace NovaWright.NumberPush.LevelGenerator
                 GetSuccessorPlayerRegionKey(
                     newReachableVisitId);
 
+            if (state.Parent != null &&
+    state.Step != null &&
+    state.Step.CrateIndex == crateIndex &&
+    state.Step.Direction.X == -direction.X &&
+state.Step.Direction.Y == -direction.Y &&
+    cratePosition == state.Step.CrateEnd &&
+    finalPosition == state.Step.CrateStart &&
+    newPlayerRegion == state.Parent.PlayerRegion)
+            {
+                DuplicateStates++;
+
+                return;
+            }
+
             timingStart =
                 Stopwatch.GetTimestamp();
 
