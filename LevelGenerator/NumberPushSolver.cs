@@ -573,17 +573,14 @@ namespace NovaWright.NumberPush.LevelGenerator
         }
 
         private void TryPush(
-            SolverState state,
-            int crateIndex,
-            int distance,
-            Point direction,
-            int currentReachableVisitId,
-            Queue<SolverState> queue,
-            HashSet<SolverState> visited)
+    SolverState state,
+    int crateIndex,
+    int distance,
+    Point direction,
+    int currentReachableVisitId,
+    Queue<SolverState> queue,
+    HashSet<SolverState> visited)
         {
-            BuildCrateOccupancy(
-                state.CratePositions);
-
             Point cratePosition =
                 state.CratePositions[crateIndex];
 

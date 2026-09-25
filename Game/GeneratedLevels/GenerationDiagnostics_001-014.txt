@@ -118,8 +118,8 @@ Push 8: Crate 1 {X=2,Y=8} -> {X=1,Y=8}
 
 TIMING
 Candidate generation: 13 ms
-Solver: 11 ms
-Average solver call: 11.00 ms
+Solver: 10 ms
+Average solver call: 10.00 ms
 Total time: 00:00:00
 Crate interaction pairs: 0
 Crate interaction blocks: 0
@@ -239,7 +239,7 @@ Push 7: Crate 1 {X=7,Y=6} -> {X=8,Y=6}
 Push 8: Crate 1 {X=8,Y=6} -> {X=8,Y=7}
 
 TIMING
-Candidate generation: 4 ms
+Candidate generation: 5 ms
 Solver: 1 ms
 Average solver call: 1.00 ms
 Total time: 00:00:00
@@ -542,9 +542,9 @@ Push 8: Crate 2 {X=5,Y=7} -> {X=4,Y=7}
 Push 9: Crate 2 {X=4,Y=7} -> {X=4,Y=8}
 
 TIMING
-Candidate generation: 7 ms
-Solver: 116 ms
-Average solver call: 29.00 ms
+Candidate generation: 9 ms
+Solver: 115 ms
+Average solver call: 28.75 ms
 Total time: 00:00:00
 Crate interaction pairs: 0
 Crate interaction blocks: 0
@@ -897,8 +897,8 @@ Push 18: Crate 3 {X=9,Y=5} -> {X=9,Y=6}
 
 TIMING
 Candidate generation: 9 ms
-Solver: 639 ms
-Average solver call: 159.75 ms
+Solver: 613 ms
+Average solver call: 153.25 ms
 Total time: 00:00:01
 Crate interaction pairs: 0
 Crate interaction blocks: 0
@@ -1053,8 +1053,8 @@ Push 7: Crate 3 {X=8,Y=4} -> {X=8,Y=3}
 
 TIMING
 Candidate generation: 1 ms
-Solver: 70 ms
-Average solver call: 70.00 ms
+Solver: 66 ms
+Average solver call: 66.00 ms
 Total time: 00:00:00
 Crate interaction pairs: 0
 Crate interaction blocks: 0
@@ -1222,8 +1222,8 @@ Push 10: Crate 3 {X=6,Y=3} -> {X=7,Y=3}
 
 TIMING
 Candidate generation: 1 ms
-Solver: 154 ms
-Average solver call: 77.00 ms
+Solver: 150 ms
+Average solver call: 75.00 ms
 Total time: 00:00:00
 Crate interaction pairs: 1
 Crate interaction blocks: 2
@@ -1474,9 +1474,9 @@ Push 12: Crate 4 {X=9,Y=4} -> {X=9,Y=3}
 Push 13: Crate 4 {X=9,Y=3} -> {X=10,Y=3}
 
 TIMING
-Candidate generation: 1 ms
-Solver: 1892 ms
-Average solver call: 126.13 ms
+Candidate generation: 6 ms
+Solver: 1809 ms
+Average solver call: 120.60 ms
 Total time: 00:00:03
 Crate interaction pairs: 0
 Crate interaction blocks: 0
@@ -1771,9 +1771,9 @@ Push 22: Crate 4 {X=8,Y=6} -> {X=8,Y=7}
 Push 23: Crate 4 {X=8,Y=7} -> {X=7,Y=7}
 
 TIMING
-Candidate generation: 12 ms
-Solver: 5345 ms
-Average solver call: 118.78 ms
+Candidate generation: 17 ms
+Solver: 5065 ms
+Average solver call: 112.56 ms
 Total time: 00:00:06
 Crate interaction pairs: 1
 Crate interaction blocks: 2
@@ -2024,10 +2024,10 @@ Push 21: Crate 4 {X=8,Y=3} -> {X=9,Y=3}
 Push 22: Crate 4 {X=9,Y=3} -> {X=9,Y=2}
 
 TIMING
-Candidate generation: 3 ms
-Solver: 3338 ms
-Average solver call: 208.62 ms
-Total time: 00:00:06
+Candidate generation: 9 ms
+Solver: 3215 ms
+Average solver call: 200.94 ms
+Total time: 00:00:05
 Crate interaction pairs: 1
 Crate interaction blocks: 2
 
@@ -2238,9 +2238,9 @@ Push 9: Crate 4 {X=8,Y=6} -> {X=8,Y=5}
 Push 10: Crate 4 {X=8,Y=5} -> {X=8,Y=4}
 
 TIMING
-Candidate generation: 4 ms
-Solver: 662 ms
-Average solver call: 50.92 ms
+Candidate generation: 5 ms
+Solver: 642 ms
+Average solver call: 49.38 ms
 Total time: 00:00:01
 Crate interaction pairs: 0
 Crate interaction blocks: 0
@@ -2532,9 +2532,9 @@ Push 17: Crate 1 {X=5,Y=6} -> {X=4,Y=6}
 Push 18: Crate 1 {X=4,Y=6} -> {X=3,Y=6}
 
 TIMING
-Candidate generation: 9 ms
-Solver: 213 ms
-Average solver call: 6.09 ms
+Candidate generation: 11 ms
+Solver: 189 ms
+Average solver call: 5.40 ms
 Total time: 00:00:00
 Crate interaction pairs: 2
 Crate interaction blocks: 4
@@ -2972,15 +2972,15 @@ Push 27: Crate 2 {X=6,Y=2} -> {X=7,Y=2}
 Push 28: Crate 2 {X=7,Y=2} -> {X=8,Y=2}
 
 TIMING
-Candidate generation: 280 ms
-Solver: 2244016 ms
-Average solver call: 2159.78 ms
-Total time: 00:37:44
+Candidate generation: 293 ms
+Solver: 2267978 ms
+Average solver call: 2182.85 ms
+Total time: 00:38:08
 Crate interaction pairs: 2
 Crate interaction blocks: 4
 
 
 ========================================
-TOTAL CREATION TIME: 00:38:04
-START TIME:          2026-09-24 07:36:33 PM
+TOTAL CREATION TIME: 00:38:27
+START TIME:          2026-09-24 08:58:41 PM
 ========================================
