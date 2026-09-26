@@ -1,6 +1,6 @@
-﻿using System.Diagnostics;
+﻿using NovaWrightNumberPush;
+using System.Diagnostics;
 using System.Text;
-using NovaWrightNumberPush;
 
 namespace NovaWright.NumberPush.LevelGenerator
 {
@@ -129,7 +129,8 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             for (int index = 0; index < cellCount; index++)
             {
-                cellX[index] = index % columns;
+                int x = index % columns;
+                int y = index / columns;
             }
 
             foreach (Rectangle wall in level.Walls)
