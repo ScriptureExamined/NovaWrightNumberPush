@@ -1,6 +1,6 @@
-﻿using NovaWrightNumberPush;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Text;
+using NovaWrightNumberPush;
 
 namespace NovaWright.NumberPush.LevelGenerator
 {
@@ -864,6 +864,19 @@ namespace NovaWright.NumberPush.LevelGenerator
             queue.Enqueue(newState);
         }
 
+        private int GetSuccessorPlayerRegionKey(int visitId)
+        {
+            for (int index = 0; index < successorReachableVisit.Length; index++)
+            {
+                if (successorReachableVisit[index] == visitId)
+                {
+                    return index;
+                }
+            }
+
+            return int.MaxValue;
+        }
+
         private void AnalyzeFirstZeroPushState(SolverState state)
         {
             Point[] directions =
@@ -1092,23 +1105,6 @@ namespace NovaWright.NumberPush.LevelGenerator
             for (int index = 0; index < reachableVisit.Length; index++)
             {
                 if (reachableVisit[index] == currentReachableVisitId)
-                {
-                    regionKey = index;
-
-                    break;
-                }
-            }
-
-            return regionKey;
-        }
-
-        private int GetSuccessorPlayerRegionKey(int currentReachableVisitId)
-        {
-            int regionKey = int.MaxValue;
-
-            for (int index = 0; index < successorReachableVisit.Length; index++)
-            {
-                if (successorReachableVisit[index] == currentReachableVisitId)
                 {
                     regionKey = index;
 
@@ -1454,6 +1450,8 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             int startIndex = GetCellIndex(startPosition);
 
+            int minimumReachableIndex = startIndex;
+
             int head = 0;
 
             int tail = 0;
@@ -1481,6 +1479,11 @@ namespace NovaWright.NumberPush.LevelGenerator
                         successorReachableVisit[index] = successorReachableVisitId;
 
                         successorReachableQueue[tail++] = index;
+
+                        if (index < minimumReachableIndex)
+                        {
+                            minimumReachableIndex = index;
+                        }
                     }
                 }
 
@@ -1497,6 +1500,11 @@ namespace NovaWright.NumberPush.LevelGenerator
                         successorReachableVisit[index] = successorReachableVisitId;
 
                         successorReachableQueue[tail++] = index;
+
+                        if (index < minimumReachableIndex)
+                        {
+                            minimumReachableIndex = index;
+                        }
                     }
                 }
 
@@ -1513,6 +1521,11 @@ namespace NovaWright.NumberPush.LevelGenerator
                         successorReachableVisit[index] = successorReachableVisitId;
 
                         successorReachableQueue[tail++] = index;
+
+                        if (index < minimumReachableIndex)
+                        {
+                            minimumReachableIndex = index;
+                        }
                     }
                 }
 
@@ -1529,11 +1542,16 @@ namespace NovaWright.NumberPush.LevelGenerator
                         successorReachableVisit[index] = successorReachableVisitId;
 
                         successorReachableQueue[tail++] = index;
+
+                        if (index < minimumReachableIndex)
+                        {
+                            minimumReachableIndex = index;
+                        }
                     }
                 }
             }
 
-            return successorReachableVisitId;
+            return minimumReachableIndex;
         }
 
         private void MarkReachableNeighbor(int x, int y, ref int tail)
