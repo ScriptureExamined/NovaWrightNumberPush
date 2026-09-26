@@ -1,4 +1,4 @@
 # Run dotnet csharpier on C# files whenever they are saved
 [*.cs]
-command = dotnet
-arguments = csharpier {file}
+command = C:\Users\Stan\.dotnet\tools\csharpier.exe
+arguments = format {file}

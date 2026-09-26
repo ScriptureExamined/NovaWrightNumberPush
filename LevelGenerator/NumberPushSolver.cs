@@ -1,6 +1,6 @@
-﻿using NovaWrightNumberPush;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Text;
+using NovaWrightNumberPush;
 
 namespace NovaWright.NumberPush.LevelGenerator
 {
@@ -444,72 +444,50 @@ namespace NovaWright.NumberPush.LevelGenerator
         }
 
         private long[] CreateSuccessorCanonicalCrateKeys(
-    SolverState state,
-    int crateIndex,
-    Point cratePosition,
-    Point finalPosition,
-    int distance)
+            SolverState state,
+            int crateIndex,
+            Point cratePosition,
+            Point finalPosition,
+            int distance
+        )
         {
             long oldKey =
-                ((long)distance << 32) |
-                (uint)(cratePosition.Y * columns + cratePosition.X);
+                ((long)distance << 32) | (uint)(cratePosition.Y * columns + cratePosition.X);
 
             long newKey =
-                ((long)distance << 32) |
-                (uint)(finalPosition.Y * columns + finalPosition.X);
+                ((long)distance << 32) | (uint)(finalPosition.Y * columns + finalPosition.X);
 
-            long[] keys =
-                new long[state.CanonicalCrateKeys.Length];
+            long[] keys = new long[state.CanonicalCrateKeys.Length];
 
-            Array.Copy(
-                state.CanonicalCrateKeys,
-                keys,
-                state.CanonicalCrateKeys.Length);
+            Array.Copy(state.CanonicalCrateKeys, keys, state.CanonicalCrateKeys.Length);
 
-            int oldIndex =
-                Array.BinarySearch(
-                    keys,
-                    oldKey);
+            int oldIndex = Array.BinarySearch(keys, oldKey);
 
             if (oldIndex < 0)
             {
-                throw new InvalidOperationException(
-                    "The old canonical crate key was not found.");
+                throw new InvalidOperationException("The old canonical crate key was not found.");
             }
 
-            for (int index = oldIndex;
-                 index < keys.Length - 1;
-                 index++)
+            for (int index = oldIndex; index < keys.Length - 1; index++)
             {
-                keys[index] =
-                    keys[index + 1];
+                keys[index] = keys[index + 1];
             }
 
-            keys[keys.Length - 1] =
-                0;
+            keys[keys.Length - 1] = 0;
 
-            int newIndex =
-                Array.BinarySearch(
-                    keys,
-                    0,
-                    keys.Length - 1,
-                    newKey);
+            int newIndex = Array.BinarySearch(keys, 0, keys.Length - 1, newKey);
 
             if (newIndex < 0)
             {
                 newIndex = ~newIndex;
             }
 
-            for (int index = keys.Length - 1;
-                 index > newIndex;
-                 index--)
+            for (int index = keys.Length - 1; index > newIndex; index--)
             {
-                keys[index] =
-                    keys[index - 1];
+                keys[index] = keys[index - 1];
             }
 
-            keys[newIndex] =
-                newKey;
+            keys[newIndex] = newKey;
 
             return keys;
         }
@@ -803,13 +781,13 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             timingStart = Stopwatch.GetTimestamp();
 
-            long[] newCanonicalCrateKeys =
-    CreateSuccessorCanonicalCrateKeys(
-        state,
-        crateIndex,
-        cratePosition,
-        finalPosition,
-        distance);
+            long[] newCanonicalCrateKeys = CreateSuccessorCanonicalCrateKeys(
+                state,
+                crateIndex,
+                cratePosition,
+                finalPosition,
+                distance
+            );
 
             SolverState newState = new SolverState(
                 newPlayerPosition,
@@ -1391,15 +1369,69 @@ namespace NovaWright.NumberPush.LevelGenerator
 
                 int currentX = currentIndex % columns;
 
-                int currentY = currentIndex / columns;
+                if (currentX > 0)
+                {
+                    int index = currentIndex - 1;
 
-                MarkReachableNeighbor(currentX, currentY - 1, ref tail);
+                    if (
+                        reachableVisit[index] != reachableVisitId
+                        && !blockedCells[index]
+                        && crateOccupancyVisit[index] != crateOccupancyVisitId
+                    )
+                    {
+                        reachableVisit[index] = reachableVisitId;
 
-                MarkReachableNeighbor(currentX, currentY + 1, ref tail);
+                        reachableQueue[tail++] = index;
+                    }
+                }
 
-                MarkReachableNeighbor(currentX - 1, currentY, ref tail);
+                if (currentX < columns - 1)
+                {
+                    int index = currentIndex + 1;
 
-                MarkReachableNeighbor(currentX + 1, currentY, ref tail);
+                    if (
+                        reachableVisit[index] != reachableVisitId
+                        && !blockedCells[index]
+                        && crateOccupancyVisit[index] != crateOccupancyVisitId
+                    )
+                    {
+                        reachableVisit[index] = reachableVisitId;
+
+                        reachableQueue[tail++] = index;
+                    }
+                }
+
+                if (currentIndex >= columns)
+                {
+                    int index = currentIndex - columns;
+
+                    if (
+                        reachableVisit[index] != reachableVisitId
+                        && !blockedCells[index]
+                        && crateOccupancyVisit[index] != crateOccupancyVisitId
+                    )
+                    {
+                        reachableVisit[index] = reachableVisitId;
+
+                        reachableQueue[tail++] = index;
+                    }
+                }
+
+                if (currentIndex < reachableVisit.Length - columns)
+                {
+                    int index = currentIndex + columns;
+
+                    if (
+                        reachableVisit[index] != reachableVisitId
+                        && !blockedCells[index]
+                        && crateOccupancyVisit[index] != crateOccupancyVisitId
+                    )
+                    {
+                        reachableVisit[index] = reachableVisitId;
+
+                        reachableQueue[tail++] = index;
+                    }
+                }
             }
 
             return reachableVisitId;

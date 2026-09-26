@@ -436,23 +436,23 @@ Push 29: Crate 5 {X=11,Y=8} -> {X=11,Y=9}
 Push 30: Crate 3 {X=9,Y=7} -> {X=10,Y=7}
 
 TIMING
-Candidate generation: 732 ms
-Solver: 694375 ms
-Average solver call: 678.76 ms
-  Occupancy: 43032 ms
-  Current reachability: 128349 ms
-  Successor reachability: 277344 ms
-  Push validation: 29692 ms
-  Array copy: 15428 ms
-  State construction: 53977 ms
-  HashSet lookup: 53489 ms
-  Static deadlock: 27566 ms
-Total time: 00:13:45
+Candidate generation: 733 ms
+Solver: 604098 ms
+Average solver call: 590.52 ms
+  Occupancy: 43357 ms
+  Current reachability: 42499 ms
+  Successor reachability: 277540 ms
+  Push validation: 29107 ms
+  Array copy: 14760 ms
+  State construction: 53747 ms
+  HashSet lookup: 50419 ms
+  Static deadlock: 26511 ms
+Total time: 00:11:59
 Crate interaction pairs: 0
 Crate interaction blocks: 0
 
 
 ========================================
-TOTAL CREATION TIME: 00:13:45
-START TIME:          2026-09-26 08:04:59
+TOTAL CREATION TIME: 00:11:59
+START TIME:          2026-09-26 09:03:45
 ========================================
