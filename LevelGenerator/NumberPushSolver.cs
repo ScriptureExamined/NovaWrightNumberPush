@@ -16,6 +16,8 @@ namespace NovaWright.NumberPush.LevelGenerator
 
         private readonly bool[] blockedCells;
 
+        private readonly bool[] successorBlockedCells;
+
         // Reusable arrays for current-state player reachability.
         private readonly int[] reachableVisit;
         private readonly int[] reachableQueue;
@@ -1686,7 +1688,8 @@ namespace NovaWright.NumberPush.LevelGenerator
                 return HashCode.Combine(
                     state.PlayerRegion,
                     state.PositionHashSum,
-                    state.PositionHashSquareSum);
+                    state.PositionHashSquareSum
+                );
             }
         }
     }
