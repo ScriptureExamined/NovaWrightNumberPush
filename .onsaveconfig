@@ -1,0 +1,3 @@
+[*.cs]
+command = C:\Users\Stan\.dotnet\tools\dotnet-csharpier.exe
+arguments = format {file}

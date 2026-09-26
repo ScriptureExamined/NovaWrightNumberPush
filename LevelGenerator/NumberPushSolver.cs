@@ -1,6 +1,6 @@
-﻿using System.Diagnostics;
+﻿using NovaWrightNumberPush;
+using System.Diagnostics;
 using System.Text;
-using NovaWrightNumberPush;
 
 namespace NovaWright.NumberPush.LevelGenerator
 {
@@ -268,8 +268,6 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             long[] startCanonicalCrateKeys = CreateCanonicalCrateKeys(crateStartPositions);
 
-            int startCanonicalCrateHash = CreateCanonicalCrateHash(startCanonicalCrateKeys);
-
             SolverState startState = new SolverState(
                 level.PlayerStart,
                 crateStartPositions,
@@ -278,8 +276,7 @@ namespace NovaWright.NumberPush.LevelGenerator
                 null,
                 startPositionHashSum,
                 startPositionHashSquareSum,
-                startCanonicalCrateKeys,
-                startCanonicalCrateHash
+                startCanonicalCrateKeys
             );
 
             queue.Enqueue(startState);
@@ -442,18 +439,6 @@ namespace NovaWright.NumberPush.LevelGenerator
             Array.Sort(keys);
 
             return keys;
-        }
-
-        private static int CreateCanonicalCrateHash(IReadOnlyList<long> canonicalCrateKeys)
-        {
-            HashCode hash = new HashCode();
-
-            foreach (long key in canonicalCrateKeys)
-            {
-                hash.Add(key);
-            }
-
-            return hash.ToHashCode();
         }
 
         private string CreateCrateConfigurationKey(List<Point> cratePositions)
@@ -747,8 +732,6 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             long[] newCanonicalCrateKeys = CreateCanonicalCrateKeys(newCratePositions);
 
-            int newCanonicalCrateHash = CreateCanonicalCrateHash(newCanonicalCrateKeys);
-
             SolverState newState = new SolverState(
                 newPlayerPosition,
                 newCratePositions,
@@ -757,8 +740,7 @@ namespace NovaWright.NumberPush.LevelGenerator
                 null,
                 newPositionHashSum,
                 newPositionHashSquareSum,
-                newCanonicalCrateKeys,
-                newCanonicalCrateHash
+                newCanonicalCrateKeys
             )
             {
                 PlayerRegion = newPlayerRegion,
@@ -1604,8 +1586,6 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             public long[] CanonicalCrateKeys { get; }
 
-            public int CanonicalCrateHash { get; }
-
             public int Pushes { get; }
 
             public SolverState? Parent { get; }
@@ -1626,8 +1606,7 @@ namespace NovaWright.NumberPush.LevelGenerator
                 NumberPushSolutionStep? step,
                 int positionHashSum,
                 int positionHashSquareSum,
-                long[] canonicalCrateKeys,
-                int canonicalCrateHash
+                long[] canonicalCrateKeys
             )
             {
                 PlayerPosition = playerPosition;
@@ -1645,10 +1624,6 @@ namespace NovaWright.NumberPush.LevelGenerator
                 PositionHashSquareSum = positionHashSquareSum;
 
                 CanonicalCrateKeys = canonicalCrateKeys;
-
-                CanonicalCrateHash = canonicalCrateHash;
-
-                CanonicalCrateHash = CreateCanonicalCrateHash(canonicalCrateKeys);
             }
         }
 
@@ -1708,7 +1683,10 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             public int GetHashCode(SolverState state)
             {
-                return HashCode.Combine(state.PlayerRegion, state.CanonicalCrateHash);
+                return HashCode.Combine(
+                    state.PlayerRegion,
+                    state.PositionHashSum,
+                    state.PositionHashSquareSum);
             }
         }
     }
