@@ -443,6 +443,77 @@ namespace NovaWright.NumberPush.LevelGenerator
             return keys;
         }
 
+        private long[] CreateSuccessorCanonicalCrateKeys(
+    SolverState state,
+    int crateIndex,
+    Point cratePosition,
+    Point finalPosition,
+    int distance)
+        {
+            long oldKey =
+                ((long)distance << 32) |
+                (uint)(cratePosition.Y * columns + cratePosition.X);
+
+            long newKey =
+                ((long)distance << 32) |
+                (uint)(finalPosition.Y * columns + finalPosition.X);
+
+            long[] keys =
+                new long[state.CanonicalCrateKeys.Length];
+
+            Array.Copy(
+                state.CanonicalCrateKeys,
+                keys,
+                state.CanonicalCrateKeys.Length);
+
+            int oldIndex =
+                Array.BinarySearch(
+                    keys,
+                    oldKey);
+
+            if (oldIndex < 0)
+            {
+                throw new InvalidOperationException(
+                    "The old canonical crate key was not found.");
+            }
+
+            for (int index = oldIndex;
+                 index < keys.Length - 1;
+                 index++)
+            {
+                keys[index] =
+                    keys[index + 1];
+            }
+
+            keys[keys.Length - 1] =
+                0;
+
+            int newIndex =
+                Array.BinarySearch(
+                    keys,
+                    0,
+                    keys.Length - 1,
+                    newKey);
+
+            if (newIndex < 0)
+            {
+                newIndex = ~newIndex;
+            }
+
+            for (int index = keys.Length - 1;
+                 index > newIndex;
+                 index--)
+            {
+                keys[index] =
+                    keys[index - 1];
+            }
+
+            keys[newIndex] =
+                newKey;
+
+            return keys;
+        }
+
         private string CreateCrateConfigurationKey(List<Point> cratePositions)
         {
             List<(int Distance, int Position)> crateKeys = new List<(int Distance, int Position)>(
@@ -732,7 +803,13 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             timingStart = Stopwatch.GetTimestamp();
 
-            long[] newCanonicalCrateKeys = CreateCanonicalCrateKeys(newCratePositions);
+            long[] newCanonicalCrateKeys =
+    CreateSuccessorCanonicalCrateKeys(
+        state,
+        crateIndex,
+        cratePosition,
+        finalPosition,
+        distance);
 
             SolverState newState = new SolverState(
                 newPlayerPosition,
