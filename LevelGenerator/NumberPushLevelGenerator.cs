@@ -393,6 +393,86 @@ namespace NovaWright.NumberPush.LevelGenerator
                             diagnostics.UnsolvableHashSetDuplicateStates +=
                                 solver.HashSetDuplicateStates;
 
+                            foreach (
+                                KeyValuePair<
+                                    int,
+                                    long
+                                > entry in solver.SuccessorStatesByLegalPushCount
+                            )
+                            {
+                                if (
+                                    !diagnostics.SuccessorStatesByLegalPushCount.ContainsKey(
+                                        entry.Key
+                                    )
+                                )
+                                {
+                                    diagnostics.SuccessorStatesByLegalPushCount[entry.Key] = 0;
+                                }
+
+                                diagnostics.SuccessorStatesByLegalPushCount[entry.Key] +=
+                                    entry.Value;
+                            }
+
+                            foreach (
+                                KeyValuePair<
+                                    int,
+                                    long
+                                > entry in solver.ExactParentReversalsByLegalPushCount
+                            )
+                            {
+                                if (
+                                    !diagnostics.ExactParentReversalsByLegalPushCount.ContainsKey(
+                                        entry.Key
+                                    )
+                                )
+                                {
+                                    diagnostics.ExactParentReversalsByLegalPushCount[entry.Key] = 0;
+                                }
+
+                                diagnostics.ExactParentReversalsByLegalPushCount[entry.Key] +=
+                                    entry.Value;
+                            }
+
+                            foreach (
+                                KeyValuePair<
+                                    int,
+                                    long
+                                > entry in solver.HashSetDuplicatesByLegalPushCount
+                            )
+                            {
+                                if (
+                                    !diagnostics.HashSetDuplicatesByLegalPushCount.ContainsKey(
+                                        entry.Key
+                                    )
+                                )
+                                {
+                                    diagnostics.HashSetDuplicatesByLegalPushCount[entry.Key] = 0;
+                                }
+
+                                diagnostics.HashSetDuplicatesByLegalPushCount[entry.Key] +=
+                                    entry.Value;
+                            }
+
+                            foreach (
+                                KeyValuePair<
+                                    int,
+                                    long
+                                > entry in solver.UniqueSuccessorsByLegalPushCount
+                            )
+                            {
+                                if (
+                                    !diagnostics.UniqueSuccessorsByLegalPushCount.ContainsKey(
+                                        entry.Key
+                                    )
+                                )
+                                {
+                                    diagnostics.UniqueSuccessorsByLegalPushCount[entry.Key] = 0;
+                                }
+
+                                diagnostics.UniqueSuccessorsByLegalPushCount[entry.Key] +=
+                                    entry.Value;
+                            }
+
                             int maximumLegalPushes = solver.MaximumLegalPushes;
 
                             int minimumZeroPushDepth = solver.MinimumZeroLegalPushDepth;

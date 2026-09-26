@@ -37,6 +37,12 @@ namespace NovaWright.NumberPush.LevelGenerator
 
         private int legalPushesForState;
 
+        private int exactParentReversalStatesForCurrentState;
+
+        private int hashSetDuplicateStatesForCurrentState;
+
+        private int uniqueSuccessorStatesForCurrentState;
+
         public int StatesExplored { get; private set; }
 
         public long TotalLegalPushes { get; private set; }
@@ -84,6 +90,18 @@ namespace NovaWright.NumberPush.LevelGenerator
         public long HashSetDuplicateStates { get; private set; }
 
         public long UniqueSuccessorStates { get; private set; }
+
+        public Dictionary<int, long> SuccessorStatesByLegalPushCount { get; } =
+            new Dictionary<int, long>();
+
+        public Dictionary<int, long> ExactParentReversalsByLegalPushCount { get; } =
+            new Dictionary<int, long>();
+
+        public Dictionary<int, long> HashSetDuplicatesByLegalPushCount { get; } =
+            new Dictionary<int, long>();
+
+        public Dictionary<int, long> UniqueSuccessorsByLegalPushCount { get; } =
+            new Dictionary<int, long>();
 
         public long OccupancyMilliseconds { get; private set; }
 
@@ -254,6 +272,14 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             InitialTryPushLegalPushes = 0;
 
+            SuccessorStatesByLegalPushCount.Clear();
+
+            ExactParentReversalsByLegalPushCount.Clear();
+
+            HashSetDuplicatesByLegalPushCount.Clear();
+
+            UniqueSuccessorsByLegalPushCount.Clear();
+
             int startPositionHashSum = 0;
 
             int startPositionHashSquareSum = 0;
@@ -312,6 +338,12 @@ namespace NovaWright.NumberPush.LevelGenerator
                 }
 
                 legalPushesForState = 0;
+
+                exactParentReversalStatesForCurrentState = 0;
+
+                hashSetDuplicateStatesForCurrentState = 0;
+
+                uniqueSuccessorStatesForCurrentState = 0;
 
                 if (StatesExplored == 1)
                 {
@@ -391,6 +423,8 @@ namespace NovaWright.NumberPush.LevelGenerator
                 TotalLegalPushes += legalPushesForState;
 
                 MaximumLegalPushes = Math.Max(MaximumLegalPushes, legalPushesForState);
+
+                RecordSuccessorOutcomeDistribution(legalPushesForState);
 
                 if (legalPushesForState == 0)
                 {
@@ -754,6 +788,8 @@ namespace NovaWright.NumberPush.LevelGenerator
             {
                 ExactParentReversalStates++;
 
+                exactParentReversalStatesForCurrentState++;
+
                 DuplicateStates++;
 
                 return;
@@ -812,6 +848,8 @@ namespace NovaWright.NumberPush.LevelGenerator
 
                 HashSetDuplicateStates++;
 
+                hashSetDuplicateStatesForCurrentState++;
+
                 DuplicateStates++;
 
                 return;
@@ -820,6 +858,8 @@ namespace NovaWright.NumberPush.LevelGenerator
             HashSetLookupMilliseconds += Stopwatch.GetElapsedTime(timingStart).Ticks;
 
             UniqueSuccessorStates++;
+
+            uniqueSuccessorStatesForCurrentState++;
 
             // Only the pushed crate changes position, so we can determine
             // goal progress by comparing its old and new positions.
@@ -862,6 +902,40 @@ namespace NovaWright.NumberPush.LevelGenerator
             newState.Step = stepData;
 
             queue.Enqueue(newState);
+        }
+
+        private void RecordSuccessorOutcomeDistribution(int legalPushCount)
+        {
+            if (!SuccessorStatesByLegalPushCount.ContainsKey(legalPushCount))
+            {
+                SuccessorStatesByLegalPushCount[legalPushCount] = 0;
+            }
+
+            SuccessorStatesByLegalPushCount[legalPushCount]++;
+
+            if (!ExactParentReversalsByLegalPushCount.ContainsKey(legalPushCount))
+            {
+                ExactParentReversalsByLegalPushCount[legalPushCount] = 0;
+            }
+
+            ExactParentReversalsByLegalPushCount[legalPushCount] +=
+                exactParentReversalStatesForCurrentState;
+
+            if (!HashSetDuplicatesByLegalPushCount.ContainsKey(legalPushCount))
+            {
+                HashSetDuplicatesByLegalPushCount[legalPushCount] = 0;
+            }
+
+            HashSetDuplicatesByLegalPushCount[legalPushCount] +=
+                hashSetDuplicateStatesForCurrentState;
+
+            if (!UniqueSuccessorsByLegalPushCount.ContainsKey(legalPushCount))
+            {
+                UniqueSuccessorsByLegalPushCount[legalPushCount] = 0;
+            }
+
+            UniqueSuccessorsByLegalPushCount[legalPushCount] +=
+                uniqueSuccessorStatesForCurrentState;
         }
 
         private int GetSuccessorPlayerRegionKey(int visitId)
@@ -1438,121 +1512,93 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             if (successorReachableVisitId == int.MaxValue)
             {
-                Array.Clear(
-                    successorReachableVisit,
-                    0,
-                    successorReachableVisit.Length);
+                Array.Clear(successorReachableVisit, 0, successorReachableVisit.Length);
 
                 successorReachableVisitId = 1;
             }
 
-            if (
-                IsWall(startPosition) ||
-                IsOccupiedByAnyCrate(startPosition))
+            if (IsWall(startPosition) || IsOccupiedByAnyCrate(startPosition))
             {
                 return successorReachableVisitId;
             }
 
-            int startIndex =
-                GetCellIndex(startPosition);
+            int startIndex = GetCellIndex(startPosition);
 
             int head = 0;
 
             int tail = 0;
 
-            successorReachableQueue[tail++] =
-                startIndex;
+            successorReachableQueue[tail++] = startIndex;
 
-            successorReachableVisit[startIndex] =
-                successorReachableVisitId;
+            successorReachableVisit[startIndex] = successorReachableVisitId;
 
             while (head < tail)
             {
-                int currentIndex =
-                    successorReachableQueue[head++];
+                int currentIndex = successorReachableQueue[head++];
 
-                int currentX =
-                    currentIndex % columns;
+                int currentX = currentIndex % columns;
 
                 if (currentX > 0)
                 {
-                    int index =
-                        currentIndex - 1;
+                    int index = currentIndex - 1;
 
                     if (
-                        successorReachableVisit[index] !=
-                            successorReachableVisitId &&
-                        !blockedCells[index] &&
-                        crateOccupancyVisit[index] !=
-                            crateOccupancyVisitId)
+                        successorReachableVisit[index] != successorReachableVisitId
+                        && !blockedCells[index]
+                        && crateOccupancyVisit[index] != crateOccupancyVisitId
+                    )
                     {
-                        successorReachableVisit[index] =
-                            successorReachableVisitId;
+                        successorReachableVisit[index] = successorReachableVisitId;
 
-                        successorReachableQueue[tail++] =
-                            index;
+                        successorReachableQueue[tail++] = index;
                     }
                 }
 
                 if (currentX < columns - 1)
                 {
-                    int index =
-                        currentIndex + 1;
+                    int index = currentIndex + 1;
 
                     if (
-                        successorReachableVisit[index] !=
-                            successorReachableVisitId &&
-                        !blockedCells[index] &&
-                        crateOccupancyVisit[index] !=
-                            crateOccupancyVisitId)
+                        successorReachableVisit[index] != successorReachableVisitId
+                        && !blockedCells[index]
+                        && crateOccupancyVisit[index] != crateOccupancyVisitId
+                    )
                     {
-                        successorReachableVisit[index] =
-                            successorReachableVisitId;
+                        successorReachableVisit[index] = successorReachableVisitId;
 
-                        successorReachableQueue[tail++] =
-                            index;
+                        successorReachableQueue[tail++] = index;
                     }
                 }
 
                 if (currentIndex >= columns)
                 {
-                    int index =
-                        currentIndex - columns;
+                    int index = currentIndex - columns;
 
                     if (
-                        successorReachableVisit[index] !=
-                            successorReachableVisitId &&
-                        !blockedCells[index] &&
-                        crateOccupancyVisit[index] !=
-                            crateOccupancyVisitId)
+                        successorReachableVisit[index] != successorReachableVisitId
+                        && !blockedCells[index]
+                        && crateOccupancyVisit[index] != crateOccupancyVisitId
+                    )
                     {
-                        successorReachableVisit[index] =
-                            successorReachableVisitId;
+                        successorReachableVisit[index] = successorReachableVisitId;
 
-                        successorReachableQueue[tail++] =
-                            index;
+                        successorReachableQueue[tail++] = index;
                     }
                 }
 
-                if (
-                    currentIndex <
-                    successorReachableVisit.Length - columns)
+                if (currentIndex < successorReachableVisit.Length - columns)
                 {
-                    int index =
-                        currentIndex + columns;
+                    int index = currentIndex + columns;
 
                     if (
-                        successorReachableVisit[index] !=
-                            successorReachableVisitId &&
-                        !blockedCells[index] &&
-                        crateOccupancyVisit[index] !=
-                            crateOccupancyVisitId)
+                        successorReachableVisit[index] != successorReachableVisitId
+                        && !blockedCells[index]
+                        && crateOccupancyVisit[index] != crateOccupancyVisitId
+                    )
                     {
-                        successorReachableVisit[index] =
-                            successorReachableVisitId;
+                        successorReachableVisit[index] = successorReachableVisitId;
 
-                        successorReachableQueue[tail++] =
-                            index;
+                        successorReachableQueue[tail++] = index;
                     }
                 }
             }

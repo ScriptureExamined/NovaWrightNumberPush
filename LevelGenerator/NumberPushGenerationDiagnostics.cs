@@ -94,6 +94,14 @@
 
         public Dictionary<int, int> UnsolvableCandidateLegalPushesBeforeZero { get; set; } = new();
 
+        public Dictionary<int, long> SuccessorStatesByLegalPushCount { get; set; } = new();
+
+        public Dictionary<int, long> ExactParentReversalsByLegalPushCount { get; set; } = new();
+
+        public Dictionary<int, long> HashSetDuplicatesByLegalPushCount { get; set; } = new();
+
+        public Dictionary<int, long> UniqueSuccessorsByLegalPushCount { get; set; } = new();
+
         public int FirstZeroPushPlayerAccessBlockedCrates { get; set; }
 
         public int FirstZeroPushWallBlockedCrates { get; set; }
@@ -266,6 +274,43 @@
                 report +=
                     $"  {legalPushes} legal pushes before zero: "
                     + $"{UnsolvableCandidateLegalPushesBeforeZero[legalPushes]}\r\n";
+            }
+
+            report += "\r\n" + "SUCCESSOR OUTCOME DISTRIBUTION BY LEGAL PUSHES PER STATE\r\n";
+
+            foreach (
+                int legalPushCount in SuccessorStatesByLegalPushCount.Keys.OrderBy(value => value)
+            )
+            {
+                long expandedStates = SuccessorStatesByLegalPushCount[legalPushCount];
+
+                long exactParentReversals = ExactParentReversalsByLegalPushCount.TryGetValue(
+                    legalPushCount,
+                    out long exactReversals
+                )
+                    ? exactReversals
+                    : 0;
+
+                long hashSetDuplicates = HashSetDuplicatesByLegalPushCount.TryGetValue(
+                    legalPushCount,
+                    out long hashDuplicates
+                )
+                    ? hashDuplicates
+                    : 0;
+
+                long uniqueSuccessors = UniqueSuccessorsByLegalPushCount.TryGetValue(
+                    legalPushCount,
+                    out long unique
+                )
+                    ? unique
+                    : 0;
+
+                report +=
+                    $"  {legalPushCount} legal pushes: "
+                    + $"{expandedStates} states, "
+                    + $"{exactParentReversals} exact reversals, "
+                    + $"{hashSetDuplicates} HashSet duplicates, "
+                    + $"{uniqueSuccessors} unique successors\r\n";
             }
 
             report +=

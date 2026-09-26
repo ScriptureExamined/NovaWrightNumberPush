@@ -20,13 +20,13 @@ Pre-solver failed crate distance 3: 0
 Pre-solver failed crate distance 4+: 0
 Pre-solver no distinct goal matching: 0
 Unsolvable: 1022
-  States explored: 21617253
-  Zero-legal-push states: 1657049
+  States explored: 21127576
+  Zero-legal-push states: 1167372
   Maximum legal pushes: 20
-  Duplicate states: 105133988
+  Duplicate states: 105623665
     Exact parent reversals: 6026476
-    HashSet duplicates: 99107512
-Unique successor states: 26378717
+    HashSet duplicates: 99597189
+Unique successor states: 25602952
 Below target: 0
 Above target: 0
 Accepted: 1
@@ -436,23 +436,23 @@ Push 29: Crate 5 {X=11,Y=8} -> {X=11,Y=9}
 Push 30: Crate 3 {X=9,Y=7} -> {X=10,Y=7}
 
 TIMING
-Candidate generation: 696 ms
-Solver: 629877 ms
-Average solver call: 615.72 ms
-  Occupancy: 46374 ms
-  Current reachability: 42498 ms
-  Successor reachability: 294630 ms
-  Push validation: 31477 ms
-  Array copy: 17211 ms
-  State construction: 56291 ms
-  HashSet lookup: 54464 ms
-  Static deadlock: 28572 ms
-Total time: 00:12:30
+Candidate generation: 505 ms
+Solver: 605444 ms
+Average solver call: 591.83 ms
+  Occupancy: 45570 ms
+  Current reachability: 41976 ms
+  Successor reachability: 272736 ms
+  Push validation: 29137 ms
+  Array copy: 16489 ms
+  State construction: 54582 ms
+  HashSet lookup: 52923 ms
+  Static deadlock: 26983 ms
+Total time: 00:12:00
 Crate interaction pairs: 0
 Crate interaction blocks: 0
 
 
 ========================================
-TOTAL CREATION TIME: 00:12:30
-START TIME:          2026-09-26 10:41:57
+TOTAL CREATION TIME: 00:12:00
+START TIME:          2026-09-26 11:22:01
 ========================================

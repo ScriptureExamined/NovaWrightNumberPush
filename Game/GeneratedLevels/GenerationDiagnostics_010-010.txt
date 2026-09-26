@@ -5,12 +5,13 @@ Seed: 12345
 ========================================
 LEVEL 10 DIAGNOSTICS
 Target pushes: 9-20
-Final board: 12x14
+Final board: 10x12
 
 CANDIDATES
-Total attempts: 2697
-Wall generation failures: 2
-Solver calls: 2695
+Total attempts: 16
+Wall generation failures: 0
+Solver calls: 16
+Initial try-push legal pushes: 60
 Pre-solver rejected: 0
 Pre-solver no reachable goals: 0
 Pre-solver failed crate distance 1: 0
@@ -18,194 +19,270 @@ Pre-solver failed crate distance 2: 0
 Pre-solver failed crate distance 3: 0
 Pre-solver failed crate distance 4+: 0
 Pre-solver no distinct goal matching: 0
-Unsolvable: 2694
-  States explored: 329735
-  Zero-legal-push states: 14808
-  Maximum legal pushes: 8
-  Duplicate states: 209330
+Unsolvable: 15
+  States explored: 89006
+  Zero-legal-push states: 3727
+  Maximum legal pushes: 16
+  Duplicate states: 432335
+    Exact parent reversals: 34897
+    HashSet duplicates: 397438
+Unique successor states: 162634
 Below target: 0
 Above target: 0
 Accepted: 1
 
+SOLVABLE CANDIDATE PUSH DISTRIBUTION
+  11 pushes: 1
+
+UNSOLVABLE CANDIDATE MAXIMUM PUSH DISTRIBUTION
+  0 maximum pushes: 1
+  1 maximum pushes: 2
+  2 maximum pushes: 3
+  3 maximum pushes: 2
+  4 maximum pushes: 1
+  6 maximum pushes: 2
+  7 maximum pushes: 1
+  9 maximum pushes: 1
+  12 maximum pushes: 1
+  16 maximum pushes: 1
+
+UNSOLVABLE CANDIDATE MINIMUM ZERO-PUSH DEPTH DISTRIBUTION
+  Depth 0: 1
+  Depth 1: 1
+  Depth 2: 4
+  Depth 3: 1
+  Depth 4: 3
+  Depth 5: 3
+  Depth 6: 2
+
+UNSOLVABLE CANDIDATE LEGAL PUSHES BEFORE FIRST ZERO-PUSH STATE
+  0 legal pushes before zero: 1
+  1 legal pushes before zero: 8
+  2 legal pushes before zero: 2
+  3 legal pushes before zero: 1
+  4 legal pushes before zero: 2
+  7 legal pushes before zero: 1
+
+SUCCESSOR OUTCOME DISTRIBUTION BY LEGAL PUSHES PER STATE
+  0 legal pushes: 3727 states, 0 exact reversals, 0 HashSet duplicates, 0 unique successors
+  1 legal pushes: 2324 states, 39 exact reversals, 1424 HashSet duplicates, 861 unique successors
+  2 legal pushes: 5984 states, 460 exact reversals, 8049 HashSet duplicates, 3459 unique successors
+  3 legal pushes: 8735 states, 992 exact reversals, 19305 HashSet duplicates, 5908 unique successors
+  4 legal pushes: 9588 states, 2239 exact reversals, 29660 HashSet duplicates, 6453 unique successors
+  5 legal pushes: 9551 states, 3234 exact reversals, 36358 HashSet duplicates, 8163 unique successors
+  6 legal pushes: 11697 states, 4945 exact reversals, 53922 HashSet duplicates, 11315 unique successors
+  7 legal pushes: 10457 states, 5204 exact reversals, 56377 HashSet duplicates, 11618 unique successors
+  8 legal pushes: 10006 states, 5736 exact reversals, 61607 HashSet duplicates, 12705 unique successors
+  9 legal pushes: 6851 states, 4407 exact reversals, 47487 HashSet duplicates, 9765 unique successors
+  10 legal pushes: 5064 states, 3588 exact reversals, 38827 HashSet duplicates, 8225 unique successors
+  11 legal pushes: 2629 states, 2017 exact reversals, 22023 HashSet duplicates, 4879 unique successors
+  12 legal pushes: 1501 states, 1238 exact reversals, 13607 HashSet duplicates, 3167 unique successors
+  13 legal pushes: 535 states, 470 exact reversals, 5125 HashSet duplicates, 1360 unique successors
+  14 legal pushes: 276 states, 247 exact reversals, 2807 HashSet duplicates, 810 unique successors
+  15 legal pushes: 52 states, 52 exact reversals, 549 HashSet duplicates, 179 unique successors
+  16 legal pushes: 29 states, 29 exact reversals, 311 HashSet duplicates, 124 unique successors
+
+FIRST ZERO-PUSH STATE CRATE BLOCKING REASONS
+  Player access blocked: 60
+  Wall blocked: 18
+  Another crate blocked: 13
+  Static corner deadlock: 23
+
+FIRST ZERO-PUSH STATE PLAYER ACCESS BLOCKED DIRECTIONS
+  Up: 45
+  Down: 46
+  Left: 44
+  Right: 44
+
+FIRST ZERO-PUSH STATE LAST-PUSHED CRATE FOUR-DIRECTION ANALYSIS
+  Player access blocked: 38
+  Wall blocked: 7
+  Another crate blocked: 5
+  Static corner deadlock: 6
+  Legal pushes: 0
+
 SOLUTION
-Minimum pushes: 36
+Minimum pushes: 11
 Crates moved: 4
-Crate push order changes: 3
-Maximum consecutive pushes: 13
+Crate push order changes: 5
+Maximum consecutive pushes: 3
 
 Crate 1:
-  Pushes: 9
+  Pushes: 3
   First push: 1
-  Last push: 9
+  Last push: 3
 
 Crate 2:
-  Pushes: 8
-  First push: 10
-  Last push: 17
+  Pushes: 4
+  First push: 4
+  Last push: 8
 
 Crate 3:
-  Pushes: 6
-  First push: 18
-  Last push: 23
+  Pushes: 2
+  First push: 5
+  Last push: 9
 
 Crate 4:
-  Pushes: 13
-  First push: 24
-  Last push: 36
+  Pushes: 2
+  First push: 10
+  Last push: 11
+
+INITIAL CRATE MOBILITY DISTRIBUTION
+  12 legal pushes: 3
+  13 legal pushes: 3
+  14 legal pushes: 1
+  15 legal pushes: 1
+  16 legal pushes: 8
+
+INITIAL PLAYER PUSH MOBILITY DISTRIBUTION
+  0 legal pushes: 1
+  1 legal pushes: 2
+  2 legal pushes: 5
+  3 legal pushes: 1
+  4 legal pushes: 1
+  5 legal pushes: 4
+  6 legal pushes: 1
+  15 legal pushes: 1
+
+INITIAL PLAYER MOBILITY -> MAXIMUM PUSH DISTRIBUTION
+  Initial 0 legal pushes:
+    0 maximum pushes: 1
+  Initial 1 legal pushes:
+    1 maximum pushes: 2
+  Initial 2 legal pushes:
+    2 maximum pushes: 3
+    3 maximum pushes: 1
+    4 maximum pushes: 1
+  Initial 3 legal pushes:
+    3 maximum pushes: 1
+  Initial 4 legal pushes:
+    12 maximum pushes: 1
+  Initial 5 legal pushes:
+    6 maximum pushes: 2
+    7 maximum pushes: 1
+    16 maximum pushes: 1
+  Initial 6 legal pushes:
+    9 maximum pushes: 1
+
+INITIAL -> AFTER FIRST PUSH MOBILITY DISTRIBUTION
+  Initial 1 legal pushes:
+    0 legal pushes after first push: 1
+    1 legal pushes after first push: 1
+  Initial 2 legal pushes:
+    1 legal pushes after first push: 1
+    2 legal pushes after first push: 3
+    3 legal pushes after first push: 1
+  Initial 3 legal pushes:
+    3 legal pushes after first push: 1
+  Initial 4 legal pushes:
+    2 legal pushes after first push: 1
+  Initial 5 legal pushes:
+    3 legal pushes after first push: 1
+    4 legal pushes after first push: 1
+    5 legal pushes after first push: 1
+    6 legal pushes after first push: 1
+  Initial 6 legal pushes:
+    3 legal pushes after first push: 1
+  Initial 15 legal pushes:
+    13 legal pushes after first push: 1
 
 CRATE GEOMETRY
-Crate 1: start (9,4), distance 1, reachable goals 4
-  Reachable positions: 89
-    (1,1) (2,1) (4,1) (6,1) (7,1) (8,1) (9,1) (10,1) (11,1) (1,2) (2,2) (4,2) (6,2) (7,2) (10,2)
-    (9,1) (10,1) (11,1) (1,2) (2,2) (4,2) (6,2) (7,2) (10,2) (11,2) (12,2) (1,3) (2,3) (3,3) (4,3)
-    (6,2) (7,2) (10,2) (11,2) (12,2) (1,3) (2,3) (3,3) (4,3) (5,3) (6,3) (9,3) (10,3) (12,3) (1,4)
-    (2,3) (3,3) (4,3) (5,3) (6,3) (9,3) (10,3) (12,3) (1,4) (2,4) (3,4) (4,4) (5,4) (6,4) (7,4)
-    (10,3) (12,3) (1,4) (2,4) (3,4) (4,4) (5,4) (6,4) (7,4) (8,4) (10,4) (11,4) (12,4) (1,5) (2,5)
-    (5,4) (6,4) (7,4) (8,4) (10,4) (11,4) (12,4) (1,5) (2,5) (4,5) (8,5) (9,5) (10,5) (12,5) (2,6)
-    (12,4) (1,5) (2,5) (4,5) (8,5) (9,5) (10,5) (12,5) (2,6) (3,6) (4,6) (5,6) (6,6) (7,6) (8,6)
-    (10,5) (12,5) (2,6) (3,6) (4,6) (5,6) (6,6) (7,6) (8,6) (10,6) (11,6) (1,7) (2,7) (3,7) (5,7)
-    (6,6) (7,6) (8,6) (10,6) (11,6) (1,7) (2,7) (3,7) (5,7) (6,7) (8,7) (10,7) (12,7) (1,8) (2,8)
-    (2,7) (3,7) (5,7) (6,7) (8,7) (10,7) (12,7) (1,8) (2,8) (3,8) (4,8) (5,8) (8,8) (9,8) (10,8)
-    (12,7) (1,8) (2,8) (3,8) (4,8) (5,8) (8,8) (9,8) (10,8) (11,8) (12,8) (1,9) (2,9) (3,9) (4,9)
-    (8,8) (9,8) (10,8) (11,8) (12,8) (1,9) (2,9) (3,9) (4,9) (5,9) (6,9) (7,9) (8,9) (9,9) (10,9)
-    (2,9) (3,9) (4,9) (5,9) (6,9) (7,9) (8,9) (9,9) (10,9) (3,10) (5,10) (6,10) (7,10) (8,10) (10,10)
-    (8,9) (9,9) (10,9) (3,10) (5,10) (6,10) (7,10) (8,10) (10,10) (11,10) (12,10)
-    (7,10) (8,10) (10,10) (11,10) (12,10)
-  Goal: (9,1), minimum pushes 5
-  Goal: (4,2), minimum pushes 7
-  Goal: (3,10), minimum pushes 12
-  Goal: (10,10), minimum pushes 7
-Crate 2: start (2,3), distance 1, reachable goals 4
-  Reachable positions: 89
-    (1,1) (2,1) (4,1) (6,1) (7,1) (8,1) (9,1) (10,1) (11,1) (1,2) (2,2) (4,2) (6,2) (7,2) (10,2)
-    (9,1) (10,1) (11,1) (1,2) (2,2) (4,2) (6,2) (7,2) (10,2) (11,2) (12,2) (1,3) (3,3) (4,3) (5,3)
-    (6,2) (7,2) (10,2) (11,2) (12,2) (1,3) (3,3) (4,3) (5,3) (6,3) (9,3) (10,3) (12,3) (1,4) (2,4)
-    (3,3) (4,3) (5,3) (6,3) (9,3) (10,3) (12,3) (1,4) (2,4) (3,4) (4,4) (5,4) (6,4) (7,4) (8,4)
-    (12,3) (1,4) (2,4) (3,4) (4,4) (5,4) (6,4) (7,4) (8,4) (9,4) (10,4) (11,4) (12,4) (1,5) (2,5)
-    (6,4) (7,4) (8,4) (9,4) (10,4) (11,4) (12,4) (1,5) (2,5) (4,5) (8,5) (9,5) (10,5) (12,5) (2,6)
-    (12,4) (1,5) (2,5) (4,5) (8,5) (9,5) (10,5) (12,5) (2,6) (3,6) (4,6) (5,6) (6,6) (7,6) (8,6)
-    (10,5) (12,5) (2,6) (3,6) (4,6) (5,6) (6,6) (7,6) (8,6) (10,6) (11,6) (1,7) (2,7) (3,7) (5,7)
-    (6,6) (7,6) (8,6) (10,6) (11,6) (1,7) (2,7) (3,7) (5,7) (6,7) (8,7) (10,7) (12,7) (1,8) (2,8)
-    (2,7) (3,7) (5,7) (6,7) (8,7) (10,7) (12,7) (1,8) (2,8) (3,8) (4,8) (5,8) (8,8) (9,8) (10,8)
-    (12,7) (1,8) (2,8) (3,8) (4,8) (5,8) (8,8) (9,8) (10,8) (11,8) (12,8) (1,9) (2,9) (3,9) (4,9)
-    (8,8) (9,8) (10,8) (11,8) (12,8) (1,9) (2,9) (3,9) (4,9) (5,9) (6,9) (7,9) (8,9) (9,9) (10,9)
-    (2,9) (3,9) (4,9) (5,9) (6,9) (7,9) (8,9) (9,9) (10,9) (3,10) (5,10) (6,10) (7,10) (8,10) (10,10)
-    (8,9) (9,9) (10,9) (3,10) (5,10) (6,10) (7,10) (8,10) (10,10) (11,10) (12,10)
-    (7,10) (8,10) (10,10) (11,10) (12,10)
-  Goal: (9,1), minimum pushes 9
-  Goal: (4,2), minimum pushes 3
-  Goal: (3,10), minimum pushes 8
-  Goal: (10,10), minimum pushes 15
-Crate 3: start (10,4), distance 1, reachable goals 4
-  Reachable positions: 89
-    (1,1) (2,1) (4,1) (6,1) (7,1) (8,1) (9,1) (10,1) (11,1) (1,2) (2,2) (4,2) (6,2) (7,2) (10,2)
-    (9,1) (10,1) (11,1) (1,2) (2,2) (4,2) (6,2) (7,2) (10,2) (11,2) (12,2) (1,3) (2,3) (3,3) (4,3)
-    (6,2) (7,2) (10,2) (11,2) (12,2) (1,3) (2,3) (3,3) (4,3) (5,3) (6,3) (9,3) (10,3) (12,3) (1,4)
-    (2,3) (3,3) (4,3) (5,3) (6,3) (9,3) (10,3) (12,3) (1,4) (2,4) (3,4) (4,4) (5,4) (6,4) (7,4)
-    (10,3) (12,3) (1,4) (2,4) (3,4) (4,4) (5,4) (6,4) (7,4) (8,4) (9,4) (11,4) (12,4) (1,5) (2,5)
-    (5,4) (6,4) (7,4) (8,4) (9,4) (11,4) (12,4) (1,5) (2,5) (4,5) (8,5) (9,5) (10,5) (12,5) (2,6)
-    (12,4) (1,5) (2,5) (4,5) (8,5) (9,5) (10,5) (12,5) (2,6) (3,6) (4,6) (5,6) (6,6) (7,6) (8,6)
-    (10,5) (12,5) (2,6) (3,6) (4,6) (5,6) (6,6) (7,6) (8,6) (10,6) (11,6) (1,7) (2,7) (3,7) (5,7)
-    (6,6) (7,6) (8,6) (10,6) (11,6) (1,7) (2,7) (3,7) (5,7) (6,7) (8,7) (10,7) (12,7) (1,8) (2,8)
-    (2,7) (3,7) (5,7) (6,7) (8,7) (10,7) (12,7) (1,8) (2,8) (3,8) (4,8) (5,8) (8,8) (9,8) (10,8)
-    (12,7) (1,8) (2,8) (3,8) (4,8) (5,8) (8,8) (9,8) (10,8) (11,8) (12,8) (1,9) (2,9) (3,9) (4,9)
-    (8,8) (9,8) (10,8) (11,8) (12,8) (1,9) (2,9) (3,9) (4,9) (5,9) (6,9) (7,9) (8,9) (9,9) (10,9)
-    (2,9) (3,9) (4,9) (5,9) (6,9) (7,9) (8,9) (9,9) (10,9) (3,10) (5,10) (6,10) (7,10) (8,10) (10,10)
-    (8,9) (9,9) (10,9) (3,10) (5,10) (6,10) (7,10) (8,10) (10,10) (11,10) (12,10)
-    (7,10) (8,10) (10,10) (11,10) (12,10)
-  Goal: (9,1), minimum pushes 4
-  Goal: (4,2), minimum pushes 8
-  Goal: (3,10), minimum pushes 13
-  Goal: (10,10), minimum pushes 6
-Crate 4: start (8,9), distance 1, reachable goals 4
-  Reachable positions: 89
-    (1,1) (2,1) (4,1) (6,1) (7,1) (8,1) (9,1) (10,1) (11,1) (1,2) (2,2) (4,2) (6,2) (7,2) (10,2)
-    (9,1) (10,1) (11,1) (1,2) (2,2) (4,2) (6,2) (7,2) (10,2) (11,2) (12,2) (1,3) (2,3) (3,3) (4,3)
-    (6,2) (7,2) (10,2) (11,2) (12,2) (1,3) (2,3) (3,3) (4,3) (5,3) (6,3) (9,3) (10,3) (12,3) (1,4)
-    (2,3) (3,3) (4,3) (5,3) (6,3) (9,3) (10,3) (12,3) (1,4) (2,4) (3,4) (4,4) (5,4) (6,4) (7,4)
-    (10,3) (12,3) (1,4) (2,4) (3,4) (4,4) (5,4) (6,4) (7,4) (8,4) (9,4) (10,4) (11,4) (12,4) (1,5)
-    (5,4) (6,4) (7,4) (8,4) (9,4) (10,4) (11,4) (12,4) (1,5) (2,5) (4,5) (8,5) (9,5) (10,5) (12,5)
-    (11,4) (12,4) (1,5) (2,5) (4,5) (8,5) (9,5) (10,5) (12,5) (2,6) (3,6) (4,6) (5,6) (6,6) (7,6)
-    (9,5) (10,5) (12,5) (2,6) (3,6) (4,6) (5,6) (6,6) (7,6) (8,6) (10,6) (11,6) (1,7) (2,7) (3,7)
-    (5,6) (6,6) (7,6) (8,6) (10,6) (11,6) (1,7) (2,7) (3,7) (5,7) (6,7) (8,7) (10,7) (12,7) (1,8)
-    (1,7) (2,7) (3,7) (5,7) (6,7) (8,7) (10,7) (12,7) (1,8) (2,8) (3,8) (4,8) (5,8) (8,8) (9,8)
-    (10,7) (12,7) (1,8) (2,8) (3,8) (4,8) (5,8) (8,8) (9,8) (10,8) (11,8) (12,8) (1,9) (2,9) (3,9)
-    (5,8) (8,8) (9,8) (10,8) (11,8) (12,8) (1,9) (2,9) (3,9) (4,9) (5,9) (6,9) (7,9) (9,9) (10,9)
-    (1,9) (2,9) (3,9) (4,9) (5,9) (6,9) (7,9) (9,9) (10,9) (3,10) (5,10) (6,10) (7,10) (8,10) (10,10)
-    (7,9) (9,9) (10,9) (3,10) (5,10) (6,10) (7,10) (8,10) (10,10) (11,10) (12,10)
-    (7,10) (8,10) (10,10) (11,10) (12,10)
-  Goal: (9,1), minimum pushes 11
-  Goal: (4,2), minimum pushes 11
-  Goal: (3,10), minimum pushes 6
-  Goal: (10,10), minimum pushes 3
+Crate 1: start (5,5), distance 1, reachable goals 4
+  Reachable positions: 59
+    (1,1) (2,1) (3,1) (6,1) (7,1) (8,1) (9,1) (10,1) (2,2) (4,2) (6,2) (7,2) (8,2) (10,2) (1,3)
+    (2,3) (3,3) (4,3) (7,3) (8,3) (9,3) (10,3) (3,4) (4,4) (5,4) (6,4) (7,4) (8,4) (9,4) (10,4)
+    (3,5) (4,5) (6,5) (7,5) (10,5) (1,6) (2,6) (4,6) (5,6) (6,6) (7,6) (8,6) (9,6) (10,6) (1,7)
+    (2,7) (3,7) (4,7) (5,7) (7,7) (8,7) (10,7) (1,8) (3,8) (5,8) (6,8) (7,8) (8,8) (10,8)
+  Goal: (6,1), minimum pushes 7
+  Goal: (8,1), minimum pushes 7
+  Goal: (5,6), minimum pushes 1
+  Goal: (5,8), minimum pushes 3
+Crate 2: start (7,4), distance 1, reachable goals 4
+  Reachable positions: 59
+    (1,1) (2,1) (3,1) (6,1) (7,1) (8,1) (9,1) (10,1) (2,2) (4,2) (6,2) (7,2) (8,2) (10,2) (1,3)
+    (2,3) (3,3) (4,3) (7,3) (8,3) (9,3) (10,3) (3,4) (4,4) (5,4) (6,4) (8,4) (9,4) (10,4) (3,5)
+    (4,5) (5,5) (6,5) (7,5) (10,5) (1,6) (2,6) (4,6) (5,6) (6,6) (7,6) (8,6) (9,6) (10,6) (1,7)
+    (2,7) (3,7) (4,7) (5,7) (7,7) (8,7) (10,7) (1,8) (3,8) (5,8) (6,8) (7,8) (8,8) (10,8)
+  Goal: (6,1), minimum pushes 4
+  Goal: (8,1), minimum pushes 4
+  Goal: (5,6), minimum pushes 4
+  Goal: (5,8), minimum pushes 6
+Crate 3: start (7,2), distance 1, reachable goals 4
+  Reachable positions: 59
+    (1,1) (2,1) (3,1) (6,1) (7,1) (8,1) (9,1) (10,1) (2,2) (4,2) (6,2) (8,2) (10,2) (1,3) (2,3)
+    (3,3) (4,3) (7,3) (8,3) (9,3) (10,3) (3,4) (4,4) (5,4) (6,4) (7,4) (8,4) (9,4) (10,4) (3,5)
+    (4,5) (5,5) (6,5) (7,5) (10,5) (1,6) (2,6) (4,6) (5,6) (6,6) (7,6) (8,6) (9,6) (10,6) (1,7)
+    (2,7) (3,7) (4,7) (5,7) (7,7) (8,7) (10,7) (1,8) (3,8) (5,8) (6,8) (7,8) (8,8) (10,8)
+  Goal: (6,1), minimum pushes 2
+  Goal: (8,1), minimum pushes 2
+  Goal: (5,6), minimum pushes 6
+  Goal: (5,8), minimum pushes 8
+Crate 4: start (7,6), distance 1, reachable goals 4
+  Reachable positions: 59
+    (1,1) (2,1) (3,1) (6,1) (7,1) (8,1) (9,1) (10,1) (2,2) (4,2) (6,2) (7,2) (8,2) (10,2) (1,3)
+    (2,3) (3,3) (4,3) (7,3) (8,3) (9,3) (10,3) (3,4) (4,4) (5,4) (6,4) (7,4) (8,4) (9,4) (10,4)
+    (3,5) (4,5) (5,5) (6,5) (7,5) (10,5) (1,6) (2,6) (4,6) (5,6) (6,6) (8,6) (9,6) (10,6) (1,7)
+    (2,7) (3,7) (4,7) (5,7) (7,7) (8,7) (10,7) (1,8) (3,8) (5,8) (6,8) (7,8) (8,8) (10,8)
+  Goal: (6,1), minimum pushes 6
+  Goal: (8,1), minimum pushes 6
+  Goal: (5,6), minimum pushes 2
+  Goal: (5,8), minimum pushes 4
 
 GOALS
-Crate 1 goal: (4,2)
-Crate 2 goal: (3,10)
-Crate 3 goal: (10,10)
-Crate 4 goal: (9,1)
+Crate 1 goal: (5,8)
+Crate 2 goal: (6,1)
+Crate 3 goal: (8,1)
+Crate 4 goal: (5,6)
 
 SOLUTION OPPORTUNITIES
-Opportunity pairs: 1
-Opportunity blocks: 2
+Opportunity pairs: 3
+Opportunity blocks: 5
 
 SOLUTION PLAYER ACCESS BLOCKS
-Player access block pairs: 1
-Player access block moves: 1
-Crate 3 blocks player access to: 1
+Player access block pairs: 2
+Player access block moves: 2
+Crate 2 blocks player access to: 3
+Crate 3 blocks player access to: 2
 
 REQUIRED SOLUTION DEPENDENCIES
-Required dependency pairs: 0
-Required dependency blocks: 0
-Crate 1 opens opportunities for: 3
+Required dependency pairs: 2
+Required dependency blocks: 2
+Crate 2 must move before: 3
+Crate 3 must move before: 2
+Crate 2 opens opportunities for: 3, 4
+Crate 3 opens opportunities for: 2
 
 SOLUTION PUSH SEQUENCE
-Push 1: Crate 1 {X=9,Y=4} -> {X=9,Y=5}
-Push 2: Crate 1 {X=9,Y=5} -> {X=8,Y=5}
-Push 3: Crate 1 {X=8,Y=5} -> {X=8,Y=4}
-Push 4: Crate 1 {X=8,Y=4} -> {X=7,Y=4}
-Push 5: Crate 1 {X=7,Y=4} -> {X=6,Y=4}
-Push 6: Crate 1 {X=6,Y=4} -> {X=5,Y=4}
-Push 7: Crate 1 {X=5,Y=4} -> {X=4,Y=4}
-Push 8: Crate 1 {X=4,Y=4} -> {X=4,Y=3}
-Push 9: Crate 1 {X=4,Y=3} -> {X=4,Y=2}
-Push 10: Crate 2 {X=2,Y=3} -> {X=2,Y=4}
-Push 11: Crate 2 {X=2,Y=4} -> {X=2,Y=5}
-Push 12: Crate 2 {X=2,Y=5} -> {X=2,Y=6}
-Push 13: Crate 2 {X=2,Y=6} -> {X=2,Y=7}
-Push 14: Crate 2 {X=2,Y=7} -> {X=2,Y=8}
-Push 15: Crate 2 {X=2,Y=8} -> {X=2,Y=9}
-Push 16: Crate 2 {X=2,Y=9} -> {X=3,Y=9}
-Push 17: Crate 2 {X=3,Y=9} -> {X=3,Y=10}
-Push 18: Crate 3 {X=10,Y=4} -> {X=10,Y=5}
-Push 19: Crate 3 {X=10,Y=5} -> {X=10,Y=6}
-Push 20: Crate 3 {X=10,Y=6} -> {X=10,Y=7}
-Push 21: Crate 3 {X=10,Y=7} -> {X=10,Y=8}
-Push 22: Crate 3 {X=10,Y=8} -> {X=10,Y=9}
-Push 23: Crate 3 {X=10,Y=9} -> {X=10,Y=10}
-Push 24: Crate 4 {X=8,Y=9} -> {X=8,Y=8}
-Push 25: Crate 4 {X=8,Y=8} -> {X=8,Y=7}
-Push 26: Crate 4 {X=8,Y=7} -> {X=8,Y=6}
-Push 27: Crate 4 {X=8,Y=6} -> {X=8,Y=5}
-Push 28: Crate 4 {X=8,Y=5} -> {X=8,Y=4}
-Push 29: Crate 4 {X=8,Y=4} -> {X=9,Y=4}
-Push 30: Crate 4 {X=9,Y=4} -> {X=9,Y=5}
-Push 31: Crate 4 {X=9,Y=5} -> {X=10,Y=5}
-Push 32: Crate 4 {X=10,Y=5} -> {X=10,Y=4}
-Push 33: Crate 4 {X=10,Y=4} -> {X=10,Y=3}
-Push 34: Crate 4 {X=10,Y=3} -> {X=10,Y=2}
-Push 35: Crate 4 {X=10,Y=2} -> {X=10,Y=1}
-Push 36: Crate 4 {X=10,Y=1} -> {X=9,Y=1}
+Push 1: Crate 1 {X=5,Y=5} -> {X=5,Y=6}
+Push 2: Crate 1 {X=5,Y=6} -> {X=5,Y=7}
+Push 3: Crate 1 {X=5,Y=7} -> {X=5,Y=8}
+Push 4: Crate 2 {X=7,Y=4} -> {X=7,Y=3}
+Push 5: Crate 3 {X=7,Y=2} -> {X=8,Y=2}
+Push 6: Crate 2 {X=7,Y=3} -> {X=7,Y=2}
+Push 7: Crate 2 {X=7,Y=2} -> {X=7,Y=1}
+Push 8: Crate 2 {X=7,Y=1} -> {X=6,Y=1}
+Push 9: Crate 3 {X=8,Y=2} -> {X=8,Y=1}
+Push 10: Crate 4 {X=7,Y=6} -> {X=6,Y=6}
+Push 11: Crate 4 {X=6,Y=6} -> {X=5,Y=6}
 
 TIMING
-Candidate generation: 111126 ms
-Solver: 5538 ms
-Average solver call: 2.05 ms
-Total time: 00:02:00Crate interaction pairs: 1
-Crate interaction blocks: 2
+Candidate generation: 34 ms
+Solver: 3186 ms
+Average solver call: 199.12 ms
+  Occupancy: 262 ms
+  Current reachability: 227 ms
+  Successor reachability: 1334 ms
+  Push validation: 155 ms
+  Array copy: 102 ms
+  State construction: 309 ms
+  HashSet lookup: 211 ms
+  Static deadlock: 165 ms
+Total time: 00:00:04
+Crate interaction pairs: 0
+Crate interaction blocks: 0
 
 
 ========================================
-TOTAL CREATION TIME: 00:02:00
-START TIME:          2026-09-18 02:40:01 PM
+TOTAL CREATION TIME: 00:00:04
+START TIME:          2026-09-26 11:55:35
 ========================================
