@@ -43,6 +43,8 @@ namespace NovaWright.NumberPush.LevelGenerator
 
         private int uniqueSuccessorStatesForCurrentState;
 
+        private readonly Dictionary<string, HashSet<int>> crateConfigurationRegions = new();
+
         public int StatesExplored { get; private set; }
 
         public long TotalLegalPushes { get; private set; }
@@ -199,85 +201,46 @@ namespace NovaWright.NumberPush.LevelGenerator
             HashSet<SolverState> visited = new(new SolverStateComparer());
 
             StatesExplored = 0;
-
             TotalLegalPushes = 0;
-
             MaximumLegalPushes = 0;
-
             ZeroLegalPushStates = 0;
-
             MinimumZeroLegalPushDepth = -1;
-
             LegalPushesBeforeMinimumZeroPushDepth = -1;
-
             FirstZeroPushPlayerAccessBlockedCrates = 0;
-
             FirstZeroPushWallBlockedCrates = 0;
-
             FirstZeroPushCrateBlockedCrates = 0;
-
             FirstZeroPushCornerDeadlockedCrates = 0;
-
             FirstZeroPushUpBlocked = 0;
-
             FirstZeroPushDownBlocked = 0;
-
             FirstZeroPushLeftBlocked = 0;
-
             FirstZeroPushRightBlocked = 0;
-
             FirstZeroPushLastCratePlayerAccessBlocked = 0;
-
             FirstZeroPushLastCrateWallBlocked = 0;
-
             FirstZeroPushLastCrateCrateBlocked = 0;
-
             FirstZeroPushLastCrateCornerDeadlocked = 0;
-
             FirstZeroPushLastCrateLegalPushes = 0;
-
             DuplicateStates = 0;
-
             ExactParentReversalStates = 0;
-
             HashSetDuplicateStates = 0;
-
             UniqueSuccessorStates = 0;
-
+            crateConfigurationRegions.Clear();
             OccupancyMilliseconds = 0;
-
             CurrentReachabilityMilliseconds = 0;
-
             SuccessorReachabilityMilliseconds = 0;
-
             PushValidationMilliseconds = 0;
-
             ArrayCopyMilliseconds = 0;
-
             StateConstructionMilliseconds = 0;
-
             HashSetLookupMilliseconds = 0;
-
             StaticDeadlockMilliseconds = 0;
-
             GoalProgressStates.Clear();
-
             GoalProgressIncreases = 0;
-
             GoalProgressDecreases = 0;
-
             GoalProgressUnchanged = 0;
-
             DuplicateCrateConfigurations = 0;
-
             InitialTryPushLegalPushes = 0;
-
             SuccessorStatesByLegalPushCount.Clear();
-
             ExactParentReversalsByLegalPushCount.Clear();
-
             HashSetDuplicatesByLegalPushCount.Clear();
-
             UniqueSuccessorsByLegalPushCount.Clear();
 
             int startPositionHashSum = 0;
@@ -860,6 +823,33 @@ namespace NovaWright.NumberPush.LevelGenerator
             UniqueSuccessorStates++;
 
             uniqueSuccessorStatesForCurrentState++;
+
+            string crateConfigurationKey =
+    CreateCrateConfigurationKey(
+        newCratePositions.ToList()
+    );
+
+            if (
+                crateConfigurationRegions.TryGetValue(
+                    crateConfigurationKey,
+                    out HashSet<int>? existingRegions
+                )
+            )
+            {
+                if (!existingRegions.Contains(newPlayerRegion))
+                {
+                    DuplicateCrateConfigurations++;
+                }
+            }
+            else
+            {
+                existingRegions = new HashSet<int>();
+
+                crateConfigurationRegions[crateConfigurationKey] =
+                    existingRegions;
+            }
+
+            existingRegions.Add(newPlayerRegion);
 
             // Only the pushed crate changes position, so we can determine
             // goal progress by comparing its old and new positions.

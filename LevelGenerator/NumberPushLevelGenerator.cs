@@ -320,6 +320,9 @@ namespace NovaWright.NumberPush.LevelGenerator
 
                         diagnostics.UniqueSuccessorStates += solver.UniqueSuccessorStates;
 
+                        diagnostics.DuplicateCrateConfigurations +=
+                            solver.DuplicateCrateConfigurations;
+
                         diagnostics.OccupancyMilliseconds += solver.OccupancyMillisecondsValue;
 
                         diagnostics.CurrentReachabilityMilliseconds +=

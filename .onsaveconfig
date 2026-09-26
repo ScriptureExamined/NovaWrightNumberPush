@@ -2,3 +2,4 @@
 [*.cs]
 command = C:\Users\Stan\.dotnet\tools\csharpier.exe
 arguments = format {file}
+always_run = true

@@ -48,6 +48,8 @@
 
         public long UniqueSuccessorStates { get; set; }
 
+        public long DuplicateCrateConfigurations { get; set; }
+
         public long OccupancyMilliseconds { get; set; }
 
         public long CurrentReachabilityMilliseconds { get; set; }
@@ -83,12 +85,14 @@
         public Dictionary<
             int,
             Dictionary<int, int>
-        > InitialPlayerMobilityMaximumPushDistribution { get; set; } = new();
+        > InitialPlayerMobilityMaximumPushDistribution
+        { get; set; } = new();
 
         public Dictionary<
             int,
             Dictionary<int, int>
-        > InitialToAfterFirstPushMobilityDistribution { get; set; } = new();
+        > InitialToAfterFirstPushMobilityDistribution
+        { get; set; } = new();
 
         public Dictionary<int, int> UnsolvableCandidateMinimumZeroPushDepths { get; set; } = new();
 
@@ -223,13 +227,14 @@
                 + $"Pre-solver failed crate distance 4+: {PreSolverFailedCrateDistance4Plus}\r\n"
                 + $"Pre-solver no distinct goal matching: {PreSolverNoDistinctGoalMatching}\r\n"
                 + $"Unsolvable: {UnsolvableCandidates}\r\n"
-                + $"  States explored: {UnsolvableStatesExplored}\r\n"
-                + $"  Zero-legal-push states: {UnsolvableZeroLegalPushStates}\r\n"
-                + $"  Maximum legal pushes: {UnsolvableMaximumLegalPushes}\r\n"
-                + $"  Duplicate states: {UnsolvableDuplicateStates}\r\n"
-                + $"    Exact parent reversals: {UnsolvableExactParentReversalStates}\r\n"
-                + $"    HashSet duplicates: {UnsolvableHashSetDuplicateStates}\r\n"
+                + $"States explored: {UnsolvableStatesExplored}\r\n"
+                + $"Zero-legal-push states: {UnsolvableZeroLegalPushStates}\r\n"
+                + $"Maximum legal pushes: {UnsolvableMaximumLegalPushes}\r\n"
+                + $"Duplicate states: {UnsolvableDuplicateStates}\r\n"
+                + $"Exact parent reversals: {UnsolvableExactParentReversalStates}\r\n"
+                + $"HashSet duplicates: {UnsolvableHashSetDuplicateStates}\r\n"
                 + $"Unique successor states: {UniqueSuccessorStates}\r\n"
+                + $"Duplicate crate configurations: {DuplicateCrateConfigurations}\r\n"
                 + $"Below target: {BelowTargetCandidates}\r\n"
                 + $"Above target: {AboveTargetCandidates}\r\n"
                 + $"Accepted: {AcceptedCandidates}\r\n";
