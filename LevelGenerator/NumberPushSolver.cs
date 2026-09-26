@@ -1,6 +1,6 @@
-﻿using System.Diagnostics;
+﻿using NovaWrightNumberPush;
+using System.Diagnostics;
 using System.Text;
-using NovaWrightNumberPush;
 
 namespace NovaWright.NumberPush.LevelGenerator
 {
@@ -1438,120 +1438,126 @@ namespace NovaWright.NumberPush.LevelGenerator
 
             if (successorReachableVisitId == int.MaxValue)
             {
-                Array.Clear(successorReachableVisit, 0, successorReachableVisit.Length);
+                Array.Clear(
+                    successorReachableVisit,
+                    0,
+                    successorReachableVisit.Length);
 
                 successorReachableVisitId = 1;
             }
 
-            if (IsWall(startPosition) || IsOccupiedByAnyCrate(startPosition))
+            if (
+                IsWall(startPosition) ||
+                IsOccupiedByAnyCrate(startPosition))
             {
                 return successorReachableVisitId;
             }
 
-            int startIndex = GetCellIndex(startPosition);
-
-            int minimumReachableIndex = startIndex;
+            int startIndex =
+                GetCellIndex(startPosition);
 
             int head = 0;
 
             int tail = 0;
 
-            successorReachableQueue[tail++] = startIndex;
+            successorReachableQueue[tail++] =
+                startIndex;
 
-            successorReachableVisit[startIndex] = successorReachableVisitId;
+            successorReachableVisit[startIndex] =
+                successorReachableVisitId;
 
             while (head < tail)
             {
-                int currentIndex = successorReachableQueue[head++];
+                int currentIndex =
+                    successorReachableQueue[head++];
 
-                int currentX = currentIndex % columns;
+                int currentX =
+                    currentIndex % columns;
 
                 if (currentX > 0)
                 {
-                    int index = currentIndex - 1;
+                    int index =
+                        currentIndex - 1;
 
                     if (
-                        successorReachableVisit[index] != successorReachableVisitId
-                        && !blockedCells[index]
-                        && crateOccupancyVisit[index] != crateOccupancyVisitId
-                    )
+                        successorReachableVisit[index] !=
+                            successorReachableVisitId &&
+                        !blockedCells[index] &&
+                        crateOccupancyVisit[index] !=
+                            crateOccupancyVisitId)
                     {
-                        successorReachableVisit[index] = successorReachableVisitId;
+                        successorReachableVisit[index] =
+                            successorReachableVisitId;
 
-                        successorReachableQueue[tail++] = index;
-
-                        if (index < minimumReachableIndex)
-                        {
-                            minimumReachableIndex = index;
-                        }
+                        successorReachableQueue[tail++] =
+                            index;
                     }
                 }
 
                 if (currentX < columns - 1)
                 {
-                    int index = currentIndex + 1;
+                    int index =
+                        currentIndex + 1;
 
                     if (
-                        successorReachableVisit[index] != successorReachableVisitId
-                        && !blockedCells[index]
-                        && crateOccupancyVisit[index] != crateOccupancyVisitId
-                    )
+                        successorReachableVisit[index] !=
+                            successorReachableVisitId &&
+                        !blockedCells[index] &&
+                        crateOccupancyVisit[index] !=
+                            crateOccupancyVisitId)
                     {
-                        successorReachableVisit[index] = successorReachableVisitId;
+                        successorReachableVisit[index] =
+                            successorReachableVisitId;
 
-                        successorReachableQueue[tail++] = index;
-
-                        if (index < minimumReachableIndex)
-                        {
-                            minimumReachableIndex = index;
-                        }
+                        successorReachableQueue[tail++] =
+                            index;
                     }
                 }
 
                 if (currentIndex >= columns)
                 {
-                    int index = currentIndex - columns;
+                    int index =
+                        currentIndex - columns;
 
                     if (
-                        successorReachableVisit[index] != successorReachableVisitId
-                        && !blockedCells[index]
-                        && crateOccupancyVisit[index] != crateOccupancyVisitId
-                    )
+                        successorReachableVisit[index] !=
+                            successorReachableVisitId &&
+                        !blockedCells[index] &&
+                        crateOccupancyVisit[index] !=
+                            crateOccupancyVisitId)
                     {
-                        successorReachableVisit[index] = successorReachableVisitId;
+                        successorReachableVisit[index] =
+                            successorReachableVisitId;
 
-                        successorReachableQueue[tail++] = index;
-
-                        if (index < minimumReachableIndex)
-                        {
-                            minimumReachableIndex = index;
-                        }
+                        successorReachableQueue[tail++] =
+                            index;
                     }
                 }
 
-                if (currentIndex < successorReachableVisit.Length - columns)
+                if (
+                    currentIndex <
+                    successorReachableVisit.Length - columns)
                 {
-                    int index = currentIndex + columns;
+                    int index =
+                        currentIndex + columns;
 
                     if (
-                        successorReachableVisit[index] != successorReachableVisitId
-                        && !blockedCells[index]
-                        && crateOccupancyVisit[index] != crateOccupancyVisitId
-                    )
+                        successorReachableVisit[index] !=
+                            successorReachableVisitId &&
+                        !blockedCells[index] &&
+                        crateOccupancyVisit[index] !=
+                            crateOccupancyVisitId)
                     {
-                        successorReachableVisit[index] = successorReachableVisitId;
+                        successorReachableVisit[index] =
+                            successorReachableVisitId;
 
-                        successorReachableQueue[tail++] = index;
-
-                        if (index < minimumReachableIndex)
-                        {
-                            minimumReachableIndex = index;
-                        }
+                        successorReachableQueue[tail++] =
+                            index;
                     }
                 }
             }
 
-            return minimumReachableIndex;
+            return successorReachableVisitId;
         }
 
         private void MarkReachableNeighbor(int x, int y, ref int tail)
